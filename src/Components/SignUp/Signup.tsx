@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from "react";
-import { auth } from "../Firebase/Firebase";
+import { auth } from "../../Firebase/Firebase";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 const Signup = () => {
