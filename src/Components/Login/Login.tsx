@@ -1,26 +1,25 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { auth } from "../../Firebase/Firebase";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { LOG_IN } from "../../Consts/Routes";
+import { HOME } from "../../Consts/Routes";
 
-const Signup = () => {
+const Login = () => {
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [createUserWithEmailAndPassword, user, , error] =
-    useCreateUserWithEmailAndPassword(auth);
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("user", user);
-    if (user) {
-      navigate(LOG_IN);
+    if (!loading && user) {
+      navigate(HOME);
     }
   }, [user]);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createUserWithEmailAndPassword(email, password);
+    signInWithEmailAndPassword(email, password);
   };
 
   return (
@@ -40,11 +39,10 @@ const Signup = () => {
           onChange={(e) => setPassword(e.target.value)}
           value={password}
         />
-        {error && <p>{error.message}</p>}
-        <button type="submit">Register</button>
+        <button type="submit">Log In</button>
       </form>
     </>
   );
 };
 
-export default Signup;
+export default Login;
