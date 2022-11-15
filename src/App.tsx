@@ -10,20 +10,18 @@ import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <HomePage />
-              </PrivateRoute>
-            }
-          />
-          <Route path={ROUTES.SIGN_UP} element={<SignupPage />} />
-          <Route path={ROUTES.LOG_IN} element={<LoginPage />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <HomePage />
+            </PrivateRoute>
+          }
+        />
+        <Route path={ROUTES.SIGN_UP} element={<SignupPage />} />
+        <Route path={ROUTES.LOG_IN} element={<LoginPage />} />
+      </Routes>
     </>
   );
 }

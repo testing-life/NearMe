@@ -7,8 +7,8 @@ import { Navigate, useLocation } from "react-router-dom";
 const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
   const [user, loading] = useAuthState(auth);
   const location = useLocation();
-
-  if (!loading && !user) {
+  console.log("user", user, loading);
+  if (!user) {
     return <Navigate to={ROUTES.LOG_IN} state={{ from: location }} replace />;
   }
   return <>{children}</>;
