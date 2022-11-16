@@ -1,19 +1,25 @@
-import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../Firebase/Firebase";
-import * as ROUTES from "../Consts/Routes";
-import { Navigate } from "react-router-dom";
+import React, { ChangeEvent, useState } from "react";
+import { blobToBase64 } from "../Utils/image";
 
 const HomePage = () => {
-  const [user, loading, error] = useAuthState(auth);
-
-  if (!user) {
-    return <Navigate to={ROUTES.LOG_IN} />;
-  }
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-  return <div>HomePage</div>;
+  const [first, setfirst] = useState("");
+  const uploadHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("target", e.target);
+    const img = await blobToBase64(e.target.files![0]);
+    setfirst(`url(${img}`);
+  };
+  return (
+    <div
+      style={{
+        backgroundSize: "contain",
+        backgroundImage: first,
+        height: "100vh",
+      }}
+    >
+      HomePage
+      <input type="file" placeholder="image" onChange={uploadHandler} />
+    </div>
+  );
 };
 
 export default HomePage;

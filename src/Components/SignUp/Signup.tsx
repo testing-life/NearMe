@@ -12,7 +12,6 @@ const Signup = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("user", user);
     if (user) {
       navigate(LOG_IN);
     }
