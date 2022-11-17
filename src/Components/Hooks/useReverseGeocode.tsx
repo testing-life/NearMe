@@ -20,7 +20,7 @@ const useReverseGeocode = (): Ihook => {
 
     if (res && res.ok) {
       const data = await res.json();
-      setAddress(data);
+      setAddress(data.features[0].properties);
     }
   };
   return { address, getAddress, addressError };
