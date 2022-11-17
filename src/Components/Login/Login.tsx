@@ -3,8 +3,8 @@ import { auth } from "../../Firebase/Firebase";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { HOME } from "../../Consts/Routes";
-import useGeolocation from "../Hooks/useGeolocation";
-import useReverseGeocode from "../Hooks/useReverseGeocode";
+import useGeolocation from "../../Hooks/useGeolocation";
+import useReverseGeocode from "../../Hooks/useReverseGeocode";
 
 const Login = () => {
   const [signInWithEmailAndPassword, user, loading] =

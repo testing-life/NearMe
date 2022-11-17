@@ -2,7 +2,8 @@ import { initializeApp } from 'firebase/app';
 import {
   getAuth,
 } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { FirestoreDataConverter, getFirestore, QueryDocumentSnapshot, SnapshotOptions } from 'firebase/firestore';
+import { Profile } from '../Models/profile';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,

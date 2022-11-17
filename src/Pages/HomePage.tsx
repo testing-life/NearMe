@@ -3,6 +3,7 @@ import { blobToBase64 } from "../Utils/image";
 
 const HomePage = () => {
   const [first, setfirst] = useState("");
+
   const uploadHandler = async (e: ChangeEvent<HTMLInputElement>) => {
     console.log("target", e.target);
     const img = await blobToBase64(e.target.files![0]);

@@ -1,25 +1,42 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { auth } from "../../Firebase/Firebase";
+import { auth, db } from "../../Firebase/Firebase";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { LOG_IN } from "../../Consts/Routes";
+import {
+  addDoc,
+  collection,
+  doc,
+  DocumentData,
+  DocumentReference,
+  setDoc,
+} from "firebase/firestore";
+import { Profile } from "../../Models/profile";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [createUserWithEmailAndPassword, user, , error] =
+  const [createUserWithEmailAndPassword, user, , createUserError] =
     useCreateUserWithEmailAndPassword(auth);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
-      navigate(LOG_IN);
+      createProfile(user);
     }
   }, [user]);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createUserWithEmailAndPassword(email, password);
+  };
+
+  const createProfile = async (user: any): Promise<void> => {
+    await setDoc(doc(db, "users", user.user.uid), {
+      ...Profile.create(),
+      email,
+    }).catch((error: Error) => console.error(error.message));
+    navigate(LOG_IN);
   };
 
   return (
@@ -39,7 +56,7 @@ const Signup = () => {
           onChange={(e) => setPassword(e.target.value)}
           value={password}
         />
-        {error && <p>{error.message}</p>}
+        {createUserError && <p>{createUserError.message}</p>}
         <button type="submit">Register</button>
       </form>
     </>

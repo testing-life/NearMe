@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Requests } from "../../Consts/Requests";
+import { Requests } from "../Consts/Requests";
 import { Ilocation } from "./useGeolocation";
 
 interface Ihook {
