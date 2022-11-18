@@ -3,8 +3,6 @@ import { auth } from "../../Firebase/Firebase";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { HOME } from "../../Consts/Routes";
-import useGeolocation from "../../Hooks/useGeolocation";
-import useReverseGeocode from "../../Hooks/useReverseGeocode";
 
 const Login = () => {
   const [signInWithEmailAndPassword, user, loading] =
@@ -12,8 +10,6 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { location, error, getLocation } = useGeolocation();
-  const { address, getAddress, addressError } = useReverseGeocode();
 
   useEffect(() => {
     if (!loading && user) {
@@ -28,8 +24,6 @@ const Login = () => {
 
   return (
     <>
-      {console.log("location, error", location, error)}
-      {console.log("address error", address, addressError)}
       <form onSubmit={onSubmit}>
         <label htmlFor="email">Email</label>
         <input
@@ -51,13 +45,6 @@ const Login = () => {
         />
         <button type="submit">Log In</button>
       </form>
-      <button type="button" onClick={() => getLocation()}>
-        loc
-      </button>
-
-      <button type="button" onClick={() => getAddress(location)}>
-        address
-      </button>
     </>
   );
 };

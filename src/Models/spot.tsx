@@ -1,9 +1,14 @@
+import { GeoPoint } from "firebase/firestore";
+import { Ilocation } from "../Hooks/useGeolocation";
+
 export interface ISpot {
   poster: string;
   tags: string[];
   address: string;
   notes: string;
-  createSpot: () => typeof Spot;
+  location: Ilocation;
+  name: string;
+  create: () => typeof Spot;
 }
 
 export class Spot {
@@ -11,7 +16,9 @@ export class Spot {
   tags: string[] = [];
   address: string = "";
   notes: string = "";
-  static createSpot(): Spot {
+  name: string = "";
+  location: Ilocation = new GeoPoint(0, 0);
+  static create(): Spot {
     return new Spot();
   }
 }

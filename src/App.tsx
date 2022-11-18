@@ -6,6 +6,7 @@ import SignupPage from "./Pages/SignupPage";
 import HomePage from "./Pages/HomePage";
 import LoginPage from "./Pages/LoginPage";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
+import AddSpotPage from "./Pages/AddSpotPage";
 
 function App() {
   return (
@@ -21,6 +22,14 @@ function App() {
         />
         <Route path={ROUTES.SIGN_UP} element={<SignupPage />} />
         <Route path={ROUTES.LOG_IN} element={<LoginPage />} />
+        <Route
+          path={ROUTES.ADD}
+          element={
+            <PrivateRoute>
+              <AddSpotPage />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </>
   );
