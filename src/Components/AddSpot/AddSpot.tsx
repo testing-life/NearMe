@@ -1,11 +1,15 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import useGeolocation from "../../Hooks/useGeolocation";
 import useReverseGeocode from "../../Hooks/useReverseGeocode";
 import { Spot } from "../../Models/spot";
 import { blobToBase64 } from "../../Utils/image";
 import { GeoPoint } from "firebase/firestore";
 
-const AddSpot = () => {
+interface Props {
+  submitHandler: (spot: Spot) => void;
+}
+
+const AddSpot: FC<Props> = ({ submitHandler }) => {
   const [first, setfirst] = useState("");
   const [spot, setSpot] = useState(Spot.create());
   const { location, error, getLocation } = useGeolocation();
@@ -19,9 +23,9 @@ const AddSpot = () => {
     setfirst(`url(${img}`);
   };
 
-  const submitHandler = (e: FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log("spot", spot);
+    submitHandler(spot);
   };
 
   useEffect(() => {
@@ -41,7 +45,7 @@ const AddSpot = () => {
   const guessAddress = (): void => getLocation();
 
   return (
-    <form onSubmit={submitHandler}>
+    <form onSubmit={onSubmit}>
       <div
         style={{
           backgroundSize: "contain",
@@ -54,6 +58,7 @@ const AddSpot = () => {
       <input
         type="file"
         id="poster"
+        required
         placeholder="image"
         onChange={uploadHandler}
       />
@@ -61,14 +66,27 @@ const AddSpot = () => {
       <input
         type="text"
         id="place"
+        required
+        value={spot.name}
         placeholder="Place's name"
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setSpot({ ...spot, name: e.target.value })
         }
       />
-      <button type="button" onClick={guessAddress}>
-        Guess address
-      </button>
+      <div>
+        <label htmlFor="address">Address</label>
+        <input
+          value={spot.address}
+          type="string"
+          placeholder="This places address"
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setSpot({ ...spot, address: e.target.value })
+          }
+        />
+        <button type="button" onClick={guessAddress}>
+          Guess address
+        </button>
+      </div>
       <button type="submit">Add</button>
     </form>
   );
