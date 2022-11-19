@@ -58,7 +58,6 @@ const AddSpot: FC<Props> = ({ submitHandler }) => {
       <input
         type="file"
         id="poster"
-        required
         placeholder="image"
         onChange={uploadHandler}
       />
@@ -87,6 +86,13 @@ const AddSpot: FC<Props> = ({ submitHandler }) => {
           Guess address
         </button>
       </div>
+      <textarea
+        placeholder="Notes"
+        value={spot.notes}
+        onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+          setSpot({ ...spot, notes: e.target.value })
+        }
+      />
       <button type="submit">Add</button>
     </form>
   );
