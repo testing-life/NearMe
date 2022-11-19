@@ -4,25 +4,16 @@ import useReverseGeocode from "../../Hooks/useReverseGeocode";
 import { Spot } from "../../Models/spot";
 import { blobToBase64 } from "../../Utils/image";
 import { GeoPoint } from "firebase/firestore";
+import { IKImage, IKUpload } from "imagekitio-react";
 
 interface Props {
   submitHandler: (spot: Spot) => void;
 }
 
 const AddSpot: FC<Props> = ({ submitHandler }) => {
-  const [first, setfirst] = useState("");
   const [spot, setSpot] = useState(Spot.create());
   const { location, error, getLocation } = useGeolocation();
   const { address, getAddress, addressError } = useReverseGeocode();
-
-  const uploadHandler = async (e: ChangeEvent<HTMLInputElement>) => {
-    const img = await blobToBase64(e.target.files![0]);
-    if (img) {
-      setSpot({ ...spot, poster: img });
-    }
-    setfirst(`url(${img}`);
-  };
-
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     submitHandler(spot);
@@ -44,23 +35,21 @@ const AddSpot: FC<Props> = ({ submitHandler }) => {
 
   const guessAddress = (): void => getLocation();
 
+  const onError = (err: any) => console.log("upload error", err);
+  const onSuccess = (res: any) => {
+    setSpot({
+      ...spot,
+      poster: { ...spot.poster, filePath: res.filePath, url: res.url },
+    });
+  };
+
   return (
     <form onSubmit={onSubmit}>
-      <div
-        style={{
-          backgroundSize: "contain",
-          backgroundImage: first,
-          height: "100px",
-          width: "100px",
-        }}
-      ></div>
-      <label htmlFor="poster">Poster</label>
-      <input
-        type="file"
-        id="poster"
-        placeholder="image"
-        onChange={uploadHandler}
+      <IKImage
+        lqip={{ active: true, quality: 20 }}
+        path={spot.poster.filePath}
       />
+      <IKUpload fileName={"test.jpg"} onError={onError} onSuccess={onSuccess} />
       <label htmlFor="place">Name</label>
       <input
         type="text"

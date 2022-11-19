@@ -6,7 +6,7 @@ import AddSpot from "../Components/AddSpot/AddSpot";
 import { HOME } from "../Consts/Routes";
 import { auth, db } from "../Firebase/Firebase";
 import { Spot } from "../Models/spot";
-
+import { IKContext } from "imagekitio-react";
 const AddSpotPage = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
@@ -20,8 +20,15 @@ const AddSpotPage = () => {
       navigate(HOME);
     }
   };
-
-  return <AddSpot submitHandler={addSpot} />;
+  return (
+    <IKContext
+      publicKey={process.env.REACT_APP_IMAGEKIT_API_KEY}
+      urlEndpoint={process.env.REACT_APP_IMAGEKIT_URL}
+      authenticationEndpoint={"http://localhost:3001/auth"}
+    >
+      <AddSpot submitHandler={addSpot} />;
+    </IKContext>
+  );
 };
 
 export default AddSpotPage;

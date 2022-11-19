@@ -2,7 +2,7 @@ import { GeoPoint } from "firebase/firestore";
 import { Ilocation } from "../Hooks/useGeolocation";
 
 export interface ISpot {
-  poster: string;
+  poster: { filePath: string; url: URL };
   tags: string[];
   address: string;
   notes: string;
@@ -12,7 +12,7 @@ export interface ISpot {
 }
 
 export class Spot {
-  poster: string = "";
+  poster = { filePath: "", url: "" };
   tags: string[] = [];
   address: string = "";
   notes: string = "";
