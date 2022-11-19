@@ -49,7 +49,12 @@ const AddSpot: FC<Props> = ({ submitHandler }) => {
         lqip={{ active: true, quality: 20 }}
         path={spot.poster.filePath}
       />
-      <IKUpload fileName={"test.jpg"} onError={onError} onSuccess={onSuccess} />
+      <IKUpload
+        value={""}
+        fileName={"test.jpg"}
+        onError={onError}
+        onSuccess={onSuccess}
+      />
       <label htmlFor="place">Name</label>
       <input
         type="text"
