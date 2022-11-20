@@ -3,6 +3,7 @@ import { auth } from "../../Firebase/Firebase";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { HOME } from "../../Consts/Routes";
+import { browserSessionPersistence } from "firebase/auth";
 
 const Login = () => {
   const [signInWithEmailAndPassword, user, loading] =
@@ -19,6 +20,7 @@ const Login = () => {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    await auth.setPersistence(browserSessionPersistence);
     signInWithEmailAndPassword(email, password);
   };
 

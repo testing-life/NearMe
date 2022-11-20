@@ -8,9 +8,10 @@ import { IKImage, IKUpload } from "imagekitio-react";
 
 interface Props {
   submitHandler: (spot: Spot) => void;
+  userId: string;
 }
 
-const AddSpot: FC<Props> = ({ submitHandler }) => {
+const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   const [spot, setSpot] = useState(Spot.create());
   const { location, error, getLocation } = useGeolocation();
   const { address, getAddress, addressError } = useReverseGeocode();
@@ -53,6 +54,7 @@ const AddSpot: FC<Props> = ({ submitHandler }) => {
         value={""}
         fileName={"test.jpg"}
         onError={onError}
+        folder={userId}
         onSuccess={onSuccess}
       />
       <label htmlFor="place">Name</label>

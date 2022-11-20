@@ -20,7 +20,6 @@ const HomePage = () => {
   useEffect(() => {
     if (value) {
       const data = value.data();
-
       setData(data as IProfile);
     }
   }, [value]);
@@ -34,8 +33,8 @@ const HomePage = () => {
       >
         <ul>
           {data
-            ? data.spots.map((spot: ISpot) => (
-                <li>
+            ? data.spots.map((spot: ISpot, index: number) => (
+                <li key={`${spot.name}${index}`}>
                   <Spot spot={spot} />
                 </li>
               ))

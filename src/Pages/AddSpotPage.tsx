@@ -26,7 +26,7 @@ const AddSpotPage = () => {
       urlEndpoint={process.env.REACT_APP_IMAGEKIT_URL}
       authenticationEndpoint={"http://localhost:3001/auth"}
     >
-      <AddSpot submitHandler={addSpot} />;
+      {user ? <AddSpot submitHandler={addSpot} userId={user.uid} /> : null};
     </IKContext>
   );
 };
