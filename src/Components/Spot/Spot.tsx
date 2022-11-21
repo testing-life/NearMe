@@ -15,7 +15,7 @@ const Spot: FC<Props> = ({ spot }) => {
           path={spot.poster.filePath}
         />
       ) : null}
-      {spot.tags ? <span>{spot.tags[0]}</span> : null}
+      {spot.tags ? spot.tags.map((tag) => <span>{tag}</span>) : null}
       <span>{spot.name}</span>
       <span>{spot.address}</span>
       {spot.notes ? <span>{spot.notes}</span> : null}

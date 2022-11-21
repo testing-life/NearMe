@@ -5,6 +5,7 @@ import { Spot } from "../../Models/spot";
 import { blobToBase64 } from "../../Utils/image";
 import { GeoPoint } from "firebase/firestore";
 import { IKImage, IKUpload } from "imagekitio-react";
+import { Tags } from "../../Consts/Tags";
 
 interface Props {
   submitHandler: (spot: Spot) => void;
@@ -68,6 +69,32 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
           setSpot({ ...spot, name: e.target.value })
         }
       />
+      <div>
+        <>
+          <div>Tags:</div>
+          {Tags.map((tag: string, index: number) => {
+            return !spot.tags.includes(tag) ? (
+              <button
+                type="button"
+                key={`${tag}${index}`}
+                onClick={() => setSpot({ ...spot, tags: [...spot.tags, tag] })}
+              >
+                {tag} +
+              </button>
+            ) : (
+              <button
+                type="button"
+                key={`${tag}${index}`}
+                onClick={() =>
+                  setSpot({ ...spot, tags: spot.tags.filter((t) => t !== tag) })
+                }
+              >
+                {tag} -
+              </button>
+            );
+          })}
+        </>
+      </div>
       <div>
         <label htmlFor="address">Address</label>
         <input
