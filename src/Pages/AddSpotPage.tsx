@@ -1,7 +1,7 @@
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AddSpot from "../Components/AddSpot/AddSpot";
 import { HOME } from "../Consts/Routes";
 import { auth, db } from "../Firebase/Firebase";
@@ -27,6 +27,7 @@ const AddSpotPage = () => {
       authenticationEndpoint={"http://localhost:3001/auth"}
     >
       {user ? <AddSpot submitHandler={addSpot} userId={user.uid} /> : null};
+      <Link to={HOME}>Cancel</Link>
     </IKContext>
   );
 };

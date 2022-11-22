@@ -2,7 +2,6 @@ import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import useGeolocation from "../../Hooks/useGeolocation";
 import useReverseGeocode from "../../Hooks/useReverseGeocode";
 import { Spot } from "../../Models/spot";
-import { blobToBase64 } from "../../Utils/image";
 import { GeoPoint } from "firebase/firestore";
 import { IKImage, IKUpload } from "imagekitio-react";
 import { Tags } from "../../Consts/Tags";
