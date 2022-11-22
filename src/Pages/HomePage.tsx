@@ -4,15 +4,17 @@ import { ADD } from "../Consts/Routes";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { auth, db } from "../Firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { doc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { ISpot } from "../Models/spot";
 import { IProfile } from "../Models/profile";
 import Spot from "../Components/Spot/Spot";
 import { IKContext } from "imagekitio-react";
+import EditSpot from "../Components/EditSpot/EditSpot";
 
 const HomePage = () => {
   const [user] = useAuthState(auth);
   const [data, setData] = useState<IProfile>();
+  const [editIndex, setEditIndex] = useState<undefined | number>();
   const [value, loading, error] = useDocument(doc(db, "users", user!.uid), {
     snapshotListenOptions: { includeMetadataChanges: true },
   });
@@ -24,6 +26,24 @@ const HomePage = () => {
     }
   }, [value]);
 
+  const cancelHandler = (): void => setEditIndex(undefined);
+
+  const editHandler = async (spot: ISpot) => {
+    const ref = user && doc(db, "users", user.uid);
+    if (ref) {
+      const newSpots = data!.spots.map((item: ISpot, i: number) => {
+        if (i === editIndex) {
+          return spot;
+        }
+        return item;
+      });
+      await updateDoc(ref, { spots: newSpots }).catch((e: Error) =>
+        console.error(e)
+      );
+      cancelHandler();
+    }
+  };
+
   return (
     <>
       <IKContext
@@ -31,16 +51,27 @@ const HomePage = () => {
         urlEndpoint={process.env.REACT_APP_IMAGEKIT_URL}
         authenticationEndpoint={"http://localhost:3001/auth"}
       >
-        <ul>
-          {data
-            ? data.spots.map((spot: ISpot, index: number) => (
+        {data && editIndex === undefined && (
+          <>
+            <ul>
+              {data.spots.map((spot: ISpot, index: number) => (
                 <li key={`${spot.name}${index}`}>
                   <Spot spot={spot} />
+                  <button onClick={() => setEditIndex(index)}>Edit</button>
                 </li>
-              ))
-            : null}
-        </ul>
-        <Link to={ADD}>Add Spot</Link>
+              ))}
+            </ul>
+            <Link to={ADD}>Add Spot</Link>
+          </>
+        )}
+        {data && editIndex !== undefined && (
+          <EditSpot
+            editHandler={editHandler}
+            cancelHandler={cancelHandler}
+            data={data!.spots[editIndex]}
+            userId={user!.uid}
+          />
+        )}
       </IKContext>
     </>
   );

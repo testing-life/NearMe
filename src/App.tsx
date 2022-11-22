@@ -7,6 +7,7 @@ import HomePage from "./Pages/HomePage";
 import LoginPage from "./Pages/LoginPage";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import AddSpotPage from "./Pages/AddSpotPage";
+import EditSpotPage from "./Pages/EditSpotPage";
 
 function App() {
   return (
@@ -27,6 +28,14 @@ function App() {
           element={
             <PrivateRoute>
               <AddSpotPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={ROUTES.EDIT}
+          element={
+            <PrivateRoute>
+              <EditSpotPage />
             </PrivateRoute>
           }
         />
