@@ -4,7 +4,7 @@ import { ADD } from "../Consts/Routes";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { auth, db } from "../Firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { doc, updateDoc } from "firebase/firestore";
+import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { ISpot } from "../Models/spot";
 import { IProfile } from "../Models/profile";
 import Spot from "../Components/Spot/Spot";
@@ -28,6 +28,14 @@ const HomePage = () => {
 
   const cancelHandler = (): void => setEditIndex(undefined);
 
+  const deleteHandler = async (index: number) => {
+    const ref = user && doc(db, "users", user.uid);
+    if (ref) {
+      await updateDoc(ref, { spots: arrayRemove(data!.spots[index]) }).catch(
+        (e: Error) => console.error(e)
+      );
+    }
+  };
   const editHandler = async (spot: ISpot) => {
     const ref = user && doc(db, "users", user.uid);
     if (ref) {
@@ -58,6 +66,7 @@ const HomePage = () => {
                 <li key={`${spot.name}${index}`}>
                   <Spot spot={spot} />
                   <button onClick={() => setEditIndex(index)}>Edit</button>
+                  <button onClick={() => deleteHandler(index)}>Delete</button>
                 </li>
               ))}
             </ul>
