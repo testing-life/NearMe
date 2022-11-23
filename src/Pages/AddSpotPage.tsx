@@ -7,6 +7,7 @@ import { HOME } from "../Consts/Routes";
 import { auth, db } from "../Firebase/Firebase";
 import { Spot } from "../Models/spot";
 import { IKContext } from "imagekitio-react";
+import Header from "../Components/Header/Header";
 const AddSpotPage = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const AddSpotPage = () => {
       urlEndpoint={process.env.REACT_APP_IMAGEKIT_URL}
       authenticationEndpoint={process.env.REACT_APP_IMAGEKIT_PRIV_URL}
     >
+      <Header auth={auth} />
       {user ? <AddSpot submitHandler={addSpot} userId={user.uid} /> : null};
       <Link to={HOME}>Cancel</Link>
     </IKContext>

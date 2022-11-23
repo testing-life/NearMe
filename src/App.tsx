@@ -7,6 +7,7 @@ import HomePage from "./Pages/HomePage";
 import LoginPage from "./Pages/LoginPage";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import AddSpotPage from "./Pages/AddSpotPage";
+import "cirrus-ui";
 
 function App() {
   return (

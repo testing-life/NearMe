@@ -8,7 +8,7 @@ describe("Login component", () => {
     render(
       <BrowserRouter>
         <Routes>
-          <Route path="*" element={<Login />} />
+          <Route path="*" element={<Login submitHandler={jest.fn()} />} />
         </Routes>
       </BrowserRouter>
     );
@@ -30,7 +30,7 @@ describe("Login component", () => {
     render(
       <BrowserRouter>
         <Routes>
-          <Route path="*" element={<Login />} />
+          <Route path="*" element={<Login submitHandler={jest.fn()} />} />
         </Routes>
       </BrowserRouter>
     );

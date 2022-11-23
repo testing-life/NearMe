@@ -1,51 +1,48 @@
-import React, { FormEvent, useEffect, useState } from "react";
-import { auth } from "../../Firebase/Firebase";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
-import { HOME } from "../../Consts/Routes";
-import { browserSessionPersistence } from "firebase/auth";
+import React, { FC, FormEvent, useState } from "react";
 
-const Login = () => {
-  const [signInWithEmailAndPassword, user, loading] =
-    useSignInWithEmailAndPassword(auth);
+interface Props {
+  submitHandler: (email: string, password: string) => void;
+}
+
+const Login: FC<Props> = ({ submitHandler }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!loading && user) {
-      navigate(HOME);
-    }
-  }, [user]);
-
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await auth.setPersistence(browserSessionPersistence);
-    signInWithEmailAndPassword(email, password);
+    submitHandler(email, password);
   };
 
   return (
     <>
       <form onSubmit={onSubmit}>
-        <label htmlFor="email">Email</label>
-        <input
-          required
-          id="email"
-          type="email"
-          placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          required
-          id="password"
-          type="password"
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-        />
-        <button type="submit">Log In</button>
+        <ul className="no-bullets">
+          <li className="row level">
+            <label htmlFor="email">Email</label>
+            <input
+              required
+              id="email"
+              type="email"
+              placeholder="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </li>
+          <li className="row level">
+            <label htmlFor="password">Password</label>
+            <input
+              required
+              id="password"
+              type="password"
+              placeholder="password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+            />
+          </li>
+          <li>
+            <button type="submit">Log In</button>
+          </li>
+        </ul>
       </form>
     </>
   );

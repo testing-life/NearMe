@@ -10,6 +10,7 @@ import { IProfile } from "../Models/profile";
 import Spot from "../Components/Spot/Spot";
 import { IKContext } from "imagekitio-react";
 import EditSpot from "../Components/EditSpot/EditSpot";
+import Header from "../Components/Header/Header";
 
 const HomePage = () => {
   const [user] = useAuthState(auth);
@@ -59,6 +60,7 @@ const HomePage = () => {
         urlEndpoint={process.env.REACT_APP_IMAGEKIT_URL}
         authenticationEndpoint={process.env.REACT_APP_IMAGEKIT_PRIV_URL}
       >
+        <Header auth={auth} />
         {data && editIndex === undefined && (
           <>
             <ul>
