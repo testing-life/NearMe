@@ -28,6 +28,7 @@ const Input: FC<Props> = ({
         required={required}
         id={id}
         type={type}
+        className="bg-light"
         placeholder={placeholder}
         value={value}
         onChange={onChange}

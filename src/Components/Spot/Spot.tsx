@@ -25,11 +25,13 @@ const Spot: FC<Props> = ({ spot, children }) => {
           <span className="subtitle">{spot.address}</span>
         </div>
       </div>
-      <div className="content w-80p notes-max-hight">
-        <p className="leading-tight">
-          {spot.notes ? <span>{spot.notes}</span> : null}
-        </p>
-      </div>
+      {spot.notes ? (
+        <div className="content w-80p notes-max-hight">
+          <p className="leading-tight">
+            <span>{spot.notes}</span>
+          </p>
+        </div>
+      ) : null}
       <div className="card__action-bar u-center">{children}</div>
       <div className="card__footer">
         <div className="u-text-center">
