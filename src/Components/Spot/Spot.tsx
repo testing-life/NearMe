@@ -9,14 +9,14 @@ interface Props {
 
 const Spot: FC<Props> = ({ spot, children }) => {
   return (
-    <article className="card m-2">
+    <article className="card m-2 h-100p u-flex u-flex-column">
       <div className="card__container">
         <div className="card__image bg-dark">
           {spot.poster.filePath ? (
             <IKImage
               lqip={{ active: true, quality: 20 }}
               path={spot.poster.filePath}
-              className="h-100p image-cover"
+              className="h-100p w-100p image-cover"
             />
           ) : null}
         </div>
@@ -25,7 +25,7 @@ const Spot: FC<Props> = ({ spot, children }) => {
           <span className="subtitle">{spot.address}</span>
         </div>
       </div>
-      <div className="content w-80p .notes-max-hight">
+      <div className="content w-80p notes-max-hight">
         <p className="leading-tight">
           {spot.notes ? <span>{spot.notes}</span> : null}
         </p>

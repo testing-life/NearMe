@@ -11,6 +11,7 @@ import Spot from "../Components/Spot/Spot";
 import { IKContext } from "imagekitio-react";
 import EditSpot from "../Components/EditSpot/EditSpot";
 import Header from "../Components/Header/Header";
+import "./HomePage.css";
 
 const HomePage = () => {
   const [user] = useAuthState(auth);
@@ -63,7 +64,7 @@ const HomePage = () => {
         <Header auth={auth} />
         {data && editIndex === undefined && (
           <>
-            <ul className="ml-0 p-0">
+            <ul className="ml-0 p-0 spots-list">
               {data.spots.map((spot: ISpot, index: number) => (
                 <li key={`${spot.name}${index}`}>
                   <Spot spot={spot}>
