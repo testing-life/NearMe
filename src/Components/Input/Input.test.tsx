@@ -41,6 +41,23 @@ describe("Input component", () => {
     expect((field as HTMLInputElement).required).toBeFalsy();
   });
 
+  it("should display error", () => {
+    render(
+      <Input
+        id="email"
+        label="Email"
+        type="email"
+        error="I am an error"
+        placeholder="email"
+        value=""
+        onChange={(e: ChangeEvent<HTMLInputElement>) => jest.fn()}
+      />
+    );
+
+    const error = screen.getByText("I am an error");
+    expect(error).toBeInTheDocument();
+  });
+
   it("should trigger handler on change", async () => {
     const changeHandler = jest.fn();
     render(

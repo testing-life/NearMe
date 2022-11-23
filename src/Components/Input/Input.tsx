@@ -8,6 +8,7 @@ interface Props {
   value: any;
   type: "text" | "email" | "password";
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
 }
 
 const Input: FC<Props> = ({
@@ -18,6 +19,7 @@ const Input: FC<Props> = ({
   value,
   type,
   onChange,
+  error,
 }) => {
   return (
     <div className="mb-2">
@@ -30,6 +32,8 @@ const Input: FC<Props> = ({
         value={value}
         onChange={onChange}
       />
+
+      {error ? <p className="text-warning">{error}</p> : null}
     </div>
   );
 };

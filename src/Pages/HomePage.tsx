@@ -63,12 +63,23 @@ const HomePage = () => {
         <Header auth={auth} />
         {data && editIndex === undefined && (
           <>
-            <ul>
+            <ul className="ml-0 p-0">
               {data.spots.map((spot: ISpot, index: number) => (
                 <li key={`${spot.name}${index}`}>
-                  <Spot spot={spot} />
-                  <button onClick={() => setEditIndex(index)}>Edit</button>
-                  <button onClick={() => deleteHandler(index)}>Delete</button>
+                  <Spot spot={spot}>
+                    <button
+                      className="btn-link outline"
+                      onClick={() => setEditIndex(index)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn-link outline"
+                      onClick={() => deleteHandler(index)}
+                    >
+                      Delete
+                    </button>
+                  </Spot>
                 </li>
               ))}
             </ul>
