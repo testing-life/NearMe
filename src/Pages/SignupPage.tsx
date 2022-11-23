@@ -31,10 +31,10 @@ const SignupPage = () => {
   };
 
   return (
-    <>
+    <div className="p-1">
       <Signup submitHandler={onSubmit} />;
       {createUserError && <p>{createUserError.message}</p>}
-    </>
+    </div>
   );
 };
 
