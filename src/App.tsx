@@ -11,7 +11,7 @@ import "cirrus-ui";
 
 function App() {
   return (
-    <>
+    <div className="bg-blue-300 h-screen">
       <Routes>
         <Route
           path="/"
@@ -32,7 +32,7 @@ function App() {
           }
         />
       </Routes>
-    </>
+    </div>
   );
 }
 

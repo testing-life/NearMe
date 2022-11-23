@@ -1,4 +1,5 @@
-import React, { FC, FormEvent, useState } from "react";
+import React, { ChangeEvent, FC, FormEvent, useState } from "react";
+import Input from "../Input/Input";
 
 interface Props {
   submitHandler: (email: string, password: string) => void;
@@ -16,33 +17,29 @@ const Signup: FC<Props> = ({ submitHandler }) => {
   return (
     <>
       <form onSubmit={onSubmit}>
-        <ul className="no-bullets">
-          <li className="row level">
-            <label htmlFor="email">Email</label>
-            <input
-              required
-              id="email"
-              type="email"
-              placeholder="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </li>
-          <li className="row level">
-            <label htmlFor="password">Password</label>
-            <input
-              required
-              id="password"
-              type="password"
-              placeholder="password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
-          </li>
-          <li>
-            <button type="submit">Register</button>
-          </li>
-        </ul>
+        <Input
+          id="email"
+          required
+          label="Email"
+          type="email"
+          placeholder="email"
+          value={email}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setEmail(e.target.value)
+          }
+        />
+        <Input
+          id="password"
+          required
+          label="Password"
+          type="password"
+          placeholder="password"
+          value={password}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setPassword(e.target.value)
+          }
+        />
+        <button type="submit">Register</button>
       </form>
     </>
   );
