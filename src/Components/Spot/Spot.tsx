@@ -25,13 +25,15 @@ const Spot: FC<Props> = ({ spot, children }) => {
           <span className="subtitle">{spot.address}</span>
         </div>
       </div>
-      <div className="content w-80p">
-        <p>{spot.notes ? <span>{spot.notes}</span> : null}</p>
+      <div className="content w-80p .notes-max-hight">
+        <p className="leading-tight">
+          {spot.notes ? <span>{spot.notes}</span> : null}
+        </p>
       </div>
       <div className="card__action-bar u-center">{children}</div>
       <div className="card__footer">
         <div className="u-text-center">
-          <ul className="ml-0 p-0">
+          <ul className="ml-0 p-2 u-flex u-gap-3 u-flex-wrap">
             {spot.tags
               ? spot.tags.map((tag) => (
                   <li className="u-inline">
