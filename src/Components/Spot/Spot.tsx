@@ -33,11 +33,13 @@ const Spot: FC<Props> = ({ spot, children }) => {
       <div className="card__action-bar u-center">{children}</div>
       <div className="card__footer">
         <div className="u-text-center">
-          <ul className="ml-0 p-2 u-flex u-gap-3 u-flex-wrap">
+          <ul className="ml-0 p-1 u-flex u-gap-1 u-flex-wrap tag-container">
             {spot.tags
               ? spot.tags.map((tag) => (
                   <li className="u-inline">
-                    <span>{tag}</span>
+                    <span className="tag bg-yellow-300 text-yellow-900 tag--rounded tag--sm">
+                      {tag}
+                    </span>
                   </li>
                 ))
               : null}
