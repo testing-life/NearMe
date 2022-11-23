@@ -24,7 +24,7 @@ const AddSpotPage = () => {
     <IKContext
       publicKey={process.env.REACT_APP_IMAGEKIT_API_KEY}
       urlEndpoint={process.env.REACT_APP_IMAGEKIT_URL}
-      authenticationEndpoint={"http://localhost:3001/auth"}
+      authenticationEndpoint={process.env.REACT_APP_IMAGEKIT_PRIV_URL}
     >
       {user ? <AddSpot submitHandler={addSpot} userId={user.uid} /> : null};
       <Link to={HOME}>Cancel</Link>
