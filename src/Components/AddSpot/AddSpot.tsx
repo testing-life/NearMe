@@ -5,6 +5,8 @@ import { Spot } from "../../Models/spot";
 import { GeoPoint } from "firebase/firestore";
 import { IKImage, IKUpload } from "imagekitio-react";
 import { Tags } from "../../Consts/Tags";
+import Input from "../Input/Input";
+import TagButton from "../TagButton/TagButton";
 
 interface Props {
   submitHandler: (spot: Spot) => void;
@@ -57,42 +59,49 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
         folder={userId}
         onSuccess={onSuccess}
       />
-      <label htmlFor="place">Name</label>
-      <input
-        type="text"
+      <Input
         id="place"
         required
+        label="Name"
+        type="text"
+        placeholder="place"
         value={spot.name}
-        placeholder="Place's name"
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setSpot({ ...spot, name: e.target.value })
         }
       />
       <div>
-        <>
-          <div>Tags:</div>
-          {Tags.map((tag: string, index: number) => {
+        <div>Tags:</div>
+        <ul className="u-flex u-flex-wrap u-gap-1">
+          {Tags.map((tag: typeof Tags[number], index: number) => {
             return !spot.tags.includes(tag) ? (
-              <button
-                type="button"
-                key={`${tag}${index}`}
-                onClick={() => setSpot({ ...spot, tags: [...spot.tags, tag] })}
-              >
-                {tag} +
-              </button>
+              <li>
+                <TagButton
+                  tagLabel={tag}
+                  key={`${tag}${index}`}
+                  clickHandler={() =>
+                    setSpot({ ...spot, tags: [...spot.tags, tag] })
+                  }
+                />
+              </li>
             ) : (
-              <button
-                type="button"
-                key={`${tag}${index}`}
-                onClick={() =>
-                  setSpot({ ...spot, tags: spot.tags.filter((t) => t !== tag) })
-                }
-              >
-                {tag} -
-              </button>
+              <li>
+                <TagButton
+                  remove
+                  isSelected
+                  tagLabel={tag}
+                  key={`${tag}${index}`}
+                  clickHandler={() =>
+                    setSpot({
+                      ...spot,
+                      tags: spot.tags.filter((t) => t !== tag),
+                    })
+                  }
+                />
+              </li>
             );
           })}
-        </>
+        </ul>
       </div>
       <div>
         <label htmlFor="address">Address</label>

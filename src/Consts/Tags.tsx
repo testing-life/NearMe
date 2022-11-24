@@ -8,4 +8,4 @@ export const Tags = [
   "waffles",
   "restaurant",
   "cafe",
-];
+] as const;
