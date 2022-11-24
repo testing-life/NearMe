@@ -27,9 +27,11 @@ const AddSpotPage = () => {
       urlEndpoint={process.env.REACT_APP_IMAGEKIT_URL}
       authenticationEndpoint={process.env.REACT_APP_IMAGEKIT_PRIV_URL}
     >
-      <Header auth={auth} />
-      {user ? <AddSpot submitHandler={addSpot} userId={user.uid} /> : null};
-      <Link to={HOME}>Cancel</Link>
+      <div className="p-2">
+        <Header auth={auth} />
+        {user ? <AddSpot submitHandler={addSpot} userId={user.uid} /> : null};
+        <Link to={HOME}>Cancel</Link>
+      </div>
     </IKContext>
   );
 };

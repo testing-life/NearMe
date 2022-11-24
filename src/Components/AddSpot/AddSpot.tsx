@@ -49,6 +49,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   return (
     <form onSubmit={onSubmit}>
       <IKImage
+        className="img-stretch"
         lqip={{ active: true, quality: 20 }}
         path={spot.poster.filePath}
       />
@@ -103,19 +104,25 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
           })}
         </ul>
       </div>
-      <div>
-        <label htmlFor="address">Address</label>
-        <input
-          value={spot.address}
-          type="string"
-          placeholder="This places address"
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setSpot({ ...spot, address: e.target.value })
-          }
-        />
-        <button type="button" onClick={guessAddress}>
-          Guess address
-        </button>
+      <div className="row u-items-flex-end u-gap-2">
+        <div className="col">
+          <Input
+            id="address"
+            required
+            label="Address"
+            type="text"
+            placeholder="address"
+            value={spot.name}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setSpot({ ...spot, address: e.target.value })
+            }
+          />
+        </div>
+        <div className="col">
+          <button type="button" onClick={guessAddress}>
+            Guess address
+          </button>
+        </div>
       </div>
       <textarea
         placeholder="Notes"
