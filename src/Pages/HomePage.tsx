@@ -62,6 +62,11 @@ const HomePage = () => {
         authenticationEndpoint={process.env.REACT_APP_IMAGEKIT_PRIV_URL}
       >
         <Header auth={auth} />
+        <button className="bg-primary lg border-red-800">
+          <Link className="text-light" to={ADD}>
+            Add Spot
+          </Link>
+        </button>
         {data && editIndex === undefined && (
           <>
             <ul className="ml-0 p-0 spots-list">
@@ -84,7 +89,6 @@ const HomePage = () => {
                 </li>
               ))}
             </ul>
-            <Link to={ADD}>Add Spot</Link>
           </>
         )}
         {data && editIndex !== undefined && (

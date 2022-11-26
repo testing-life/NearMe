@@ -22,7 +22,7 @@ const Input: FC<Props> = ({
   error,
 }) => {
   return (
-    <div className="mb-2">
+    <>
       <label htmlFor={id}>{label}</label>
       <input
         required={required}
@@ -35,7 +35,7 @@ const Input: FC<Props> = ({
       />
 
       {error ? <p className="text-warning">{error}</p> : null}
-    </div>
+    </>
   );
 };
 

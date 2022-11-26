@@ -9,7 +9,7 @@ import { Tags } from "../../Consts/Tags";
 interface Props {
   editHandler: (spot: ISpot) => void;
   cancelHandler: () => void;
-  data: Spot;
+  data: ISpot;
   userId: string;
 }
 
@@ -74,7 +74,7 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
         <div>
           <>
             <div>Tags:</div>
-            {Tags.map((tag: string, index: number) => {
+            {Tags.map((tag: typeof Tags[number], index: number) => {
               return !spot.tags.includes(tag) ? (
                 <button
                   type="button"
