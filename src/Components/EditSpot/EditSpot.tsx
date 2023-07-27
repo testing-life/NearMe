@@ -38,18 +38,18 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
 
   const guessAddress = (): void => getLocation();
 
-  const onError = (err: any) => console.log("upload error", err);
-  const onSuccess = (res: any) => {
-    setSpot({
-      ...spot,
-      poster: { ...spot.poster, filePath: res.filePath, url: res.url },
-    });
-  };
+  // const onError = (err: any) => console.log("upload error", err);
+  // const onSuccess = (res: any) => {
+  //   setSpot({
+  //     ...spot,
+  //     poster: { ...spot.poster, filePath: res.filePath, url: res.url },
+  //   });
+  // };
 
   return (
     <>
       <form onSubmit={onSubmit}>
-        <IKImage
+        {/* <IKImage
           lqip={{ active: true, quality: 20 }}
           path={spot.poster.filePath}
         />
@@ -59,7 +59,7 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
           onError={onError}
           folder={userId}
           onSuccess={onSuccess}
-        />
+        /> */}
         <label htmlFor="place">Name</label>
         <input
           type="text"
@@ -74,7 +74,7 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
         <div>
           <>
             <div>Tags:</div>
-            {Tags.map((tag: typeof Tags[number], index: number) => {
+            {Tags.map((tag: (typeof Tags)[number], index: number) => {
               return !spot.tags.includes(tag) ? (
                 <button
                   type="button"

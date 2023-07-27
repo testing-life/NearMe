@@ -10,7 +10,6 @@ import useGeolocation from "../../Hooks/useGeolocation";
 import useReverseGeocode from "../../Hooks/useReverseGeocode";
 import { Spot } from "../../Models/spot";
 import { GeoPoint } from "firebase/firestore";
-import { IKImage, IKUpload } from "imagekitio-react";
 import { Tags } from "../../Consts/Tags";
 import Input from "../Input/Input";
 import TagButton from "../TagButton/TagButton";
@@ -32,8 +31,6 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     submitHandler(spot);
   };
 
-  const fileInput = useRef();
-
   useEffect(() => {
     if (location) {
       const geopoint = new GeoPoint(location.latitude, location.longitude);
@@ -50,25 +47,13 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
 
   const guessAddress = (): void => getLocation();
 
-  const onError = (err: any) => setUploadError(err.message);
-  const onSuccess = (res: any) => {
-    if (uploadError) {
-      setUploadError("");
-    }
-    setSpot({
-      ...spot,
-      poster: { ...spot.poster, filePath: res.filePath, url: res.url },
-    });
-  };
-
   const uploadHandler = (e: any) => {
     e.preventDefault();
     const file = e.target.files[0];
     if (!file) {
       return;
     }
-    console.log("storage", storage);
-    const storageRef = ref(storage, `test/${file.name}`);
+    const storageRef = ref(storage, `imgs/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
     uploadTask.on(
       "state_changed",
@@ -79,11 +64,15 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
         console.log("progress", progress);
       },
       (error) => {
-        console.error(error);
+        setUploadError(`${error.cause} ${error.message}`);
       },
       async () => {
         const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
         console.log("downloadUrl", downloadUrl);
+        setSpot({
+          ...spot,
+          poster: { ...spot.poster, url: downloadUrl },
+        });
       }
     );
     console.log("e", e.target.files, e);
@@ -93,6 +82,13 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     <form onSubmit={onSubmit}>
       <ul className="p-0 m-0">
         <li className="mb-3">
+          {spot.poster?.url && (
+            <img
+              src={spot.poster.url}
+              className="h-100p w-100p max-w-[200px] image-cover"
+              alt=""
+            />
+          )}
           <input type="file" onChange={uploadHandler} />
           {uploadError && <p className="text-orange-600">{uploadError}</p>}
         </li>
@@ -160,6 +156,9 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
             <button type="button" onClick={guessAddress}>
               Guess address
             </button>
+            {addressError && (
+              <p className="text-orange-600">{addressError.message}</p>
+            )}
           </div>
         </li>
         <li className="mb-3">
