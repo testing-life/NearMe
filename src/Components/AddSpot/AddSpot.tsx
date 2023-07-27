@@ -1,4 +1,11 @@
-import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  FC,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import useGeolocation from "../../Hooks/useGeolocation";
 import useReverseGeocode from "../../Hooks/useReverseGeocode";
 import { Spot } from "../../Models/spot";
@@ -7,6 +14,8 @@ import { IKImage, IKUpload } from "imagekitio-react";
 import { Tags } from "../../Consts/Tags";
 import Input from "../Input/Input";
 import TagButton from "../TagButton/TagButton";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../Firebase/Firebase";
 
 interface Props {
   submitHandler: (spot: Spot) => void;
@@ -22,6 +31,8 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     e.preventDefault();
     submitHandler(spot);
   };
+
+  const fileInput = useRef();
 
   useEffect(() => {
     if (location) {
@@ -50,23 +61,39 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     });
   };
 
+  const uploadHandler = (e: any) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    if (!file) {
+      return;
+    }
+    console.log("storage", storage);
+    const storageRef = ref(storage, `test/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        console.log("progress", progress);
+      },
+      (error) => {
+        console.error(error);
+      },
+      async () => {
+        const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+        console.log("downloadUrl", downloadUrl);
+      }
+    );
+    console.log("e", e.target.files, e);
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <ul className="p-0 m-0">
         <li className="mb-3">
-          <IKImage
-            className="img-stretch"
-            lqip={{ active: true, quality: 20 }}
-            path={spot.poster.filePath}
-          />
-
-          <IKUpload
-            value={""}
-            fileName={"test.jpg"}
-            onError={onError}
-            folder={userId}
-            onSuccess={onSuccess}
-          />
+          <input type="file" onChange={uploadHandler} />
           {uploadError && <p className="text-orange-600">{uploadError}</p>}
         </li>
         <li className="mb-3">
@@ -85,7 +112,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
         <li className="mb-3">
           <span>Tags:</span>
           <ul className="u-flex u-flex-wrap u-gap-1">
-            {Tags.map((tag: typeof Tags[number], index: number) => {
+            {Tags.map((tag: (typeof Tags)[number], index: number) => {
               return !spot.tags.includes(tag) ? (
                 <li>
                   <TagButton
