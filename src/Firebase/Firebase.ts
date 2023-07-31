@@ -2,9 +2,8 @@ import { initializeApp } from 'firebase/app';
 import {
   getAuth,
 } from 'firebase/auth';
-import { FirestoreDataConverter, getFirestore, QueryDocumentSnapshot, SnapshotOptions } from 'firebase/firestore';
-import { Profile } from '../Models/profile';
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -19,7 +18,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app)
-console.log('storage', storage)
 export {
   auth,
   db,

@@ -1,11 +1,4 @@
-import React, {
-  ChangeEvent,
-  FC,
-  FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import useGeolocation from "../../Hooks/useGeolocation";
 import useReverseGeocode from "../../Hooks/useReverseGeocode";
 import { Spot } from "../../Models/spot";
@@ -14,7 +7,8 @@ import { Tags } from "../../Consts/Tags";
 import Input from "../Input/Input";
 import TagButton from "../TagButton/TagButton";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { storage } from "../../Firebase/Firebase";
+import { auth, storage } from "../../Firebase/Firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 interface Props {
   submitHandler: (spot: Spot) => void;
@@ -23,9 +17,12 @@ interface Props {
 
 const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   const [uploadError, setUploadError] = useState("");
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [spot, setSpot] = useState(Spot.create());
   const { location, error, getLocation } = useGeolocation();
+  const [user] = useAuthState(auth);
   const { address, getAddress, addressError } = useReverseGeocode();
+
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     submitHandler(spot);
@@ -53,7 +50,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     if (!file) {
       return;
     }
-    const storageRef = ref(storage, `imgs/${file.name}`);
+    const storageRef = ref(storage, `${user?.uid || "img"}/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
     uploadTask.on(
       "state_changed",
@@ -61,21 +58,19 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
-        console.log("progress", progress);
+        setUploadProgress(progress);
       },
       (error) => {
         setUploadError(`${error.cause} ${error.message}`);
       },
       async () => {
         const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-        console.log("downloadUrl", downloadUrl);
         setSpot({
           ...spot,
           poster: { ...spot.poster, url: downloadUrl },
         });
       }
     );
-    console.log("e", e.target.files, e);
   };
 
   return (
@@ -85,11 +80,16 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
           {spot.poster?.url && (
             <img
               src={spot.poster.url}
-              className="h-100p w-100p max-w-[200px] image-cover"
+              className="h-100p max-w-[200px] image-cover"
               alt=""
             />
           )}
           <input type="file" onChange={uploadHandler} />
+          {uploadProgress !== 100 && !spot.poster.url ? (
+            <>
+              {uploadProgress} <progress value={uploadProgress}></progress>
+            </>
+          ) : null}
           {uploadError && <p className="text-orange-600">{uploadError}</p>}
         </li>
         <li className="mb-3">
