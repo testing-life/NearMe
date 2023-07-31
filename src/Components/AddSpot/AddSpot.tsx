@@ -76,7 +76,6 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
 
   return (
     <>
-      <TakePhoto />
       <form onSubmit={onSubmit}>
         <ul className="p-0 m-0">
           <li className="mb-3">

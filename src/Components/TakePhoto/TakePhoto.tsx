@@ -1,9 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const TakePhoto = () => {
+const TakePhoto = ({
+  captureHandler,
+}: {
+  captureHandler: (data: FormData) => void;
+}) => {
   const canvas = useRef<HTMLCanvasElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [dataUrl, setDataUrl] = useState("");
+  const [imageBlob, setImageBlob] = useState<FormData>();
 
   useEffect(() => {
     startCamera();
@@ -18,7 +23,7 @@ const TakePhoto = () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       video.current!.srcObject = stream;
-      video.current?.play();
+      await video.current?.play().catch((e) => console.error(e));
     } catch (error) {
       console.error("video error", error);
     }
@@ -35,6 +40,12 @@ const TakePhoto = () => {
     );
     const data = canvas.current!.toDataURL("image/png");
     setDataUrl(data);
+    canvas.current?.toBlob((blob) => {
+      const formData = new FormData();
+      formData.append("photo", blob as Blob, "le name");
+      setImageBlob(formData);
+      captureHandler(formData);
+    });
   };
   return (
     <div>
