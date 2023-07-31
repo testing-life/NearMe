@@ -12,11 +12,11 @@ const Spot: FC<Props> = ({ spot, children }) => {
     <article className="card m-2 h-100p u-flex u-flex-column">
       <div className="card__container">
         <div className="card__image bg-dark">
-          {spot.poster.filePath ? (
-            <IKImage
-              lqip={{ active: true, quality: 20 }}
-              path={spot.poster.filePath}
+          {spot.poster.url ? (
+            <img
               className="h-100p w-100p image-cover"
+              src={spot.poster.url}
+              alt=""
             />
           ) : null}
         </div>

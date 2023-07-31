@@ -6,7 +6,6 @@ import AddSpot from "../Components/AddSpot/AddSpot";
 import { HOME } from "../Consts/Routes";
 import { auth, db } from "../Firebase/Firebase";
 import { Spot } from "../Models/spot";
-import { IKContext } from "imagekitio-react";
 import Header from "../Components/Header/Header";
 const AddSpotPage = () => {
   const [user] = useAuthState(auth);
@@ -14,6 +13,8 @@ const AddSpotPage = () => {
 
   const addSpot = async (spot: Spot) => {
     const ref = user && doc(db, "users", user.uid);
+    console.log('doc(db, "users", user.uid)', doc(db, "users", user!.uid));
+    debugger;
     if (ref) {
       await updateDoc(ref, { spots: arrayUnion(spot) }).catch((e: Error) =>
         console.error(e)
@@ -22,17 +23,13 @@ const AddSpotPage = () => {
     }
   };
   return (
-    <IKContext
-      publicKey={process.env.REACT_APP_IMAGEKIT_API_KEY}
-      urlEndpoint={process.env.REACT_APP_IMAGEKIT_URL}
-      authenticationEndpoint={process.env.REACT_APP_IMAGEKIT_PRIV_URL}
-    >
+    <>
       <Header auth={auth} />
       <div className="p-2 max-w-sm u-center">
         {user ? <AddSpot submitHandler={addSpot} userId={user.uid} /> : null}
         <Link to={HOME}>Cancel</Link>
       </div>
-    </IKContext>
+    </>
   );
 };
 

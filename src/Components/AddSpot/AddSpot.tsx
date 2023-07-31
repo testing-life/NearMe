@@ -3,10 +3,12 @@ import useGeolocation from "../../Hooks/useGeolocation";
 import useReverseGeocode from "../../Hooks/useReverseGeocode";
 import { Spot } from "../../Models/spot";
 import { GeoPoint } from "firebase/firestore";
-import { IKImage, IKUpload } from "imagekitio-react";
 import { Tags } from "../../Consts/Tags";
 import Input from "../Input/Input";
 import TagButton from "../TagButton/TagButton";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { auth, storage } from "../../Firebase/Firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 interface Props {
   submitHandler: (spot: Spot) => void;
@@ -15,9 +17,12 @@ interface Props {
 
 const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   const [uploadError, setUploadError] = useState("");
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [spot, setSpot] = useState(Spot.create());
   const { location, error, getLocation } = useGeolocation();
+  const [user] = useAuthState(auth);
   const { address, getAddress, addressError } = useReverseGeocode();
+
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     submitHandler(spot);
@@ -39,34 +44,52 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
 
   const guessAddress = (): void => getLocation();
 
-  const onError = (err: any) => setUploadError(err.message);
-  const onSuccess = (res: any) => {
-    if (uploadError) {
-      setUploadError("");
+  const uploadHandler = (e: any) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    if (!file) {
+      return;
     }
-    setSpot({
-      ...spot,
-      poster: { ...spot.poster, filePath: res.filePath, url: res.url },
-    });
+    const storageRef = ref(storage, `${user?.uid || "img"}/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setUploadProgress(progress);
+      },
+      (error) => {
+        setUploadError(`${error.cause} ${error.message}`);
+      },
+      async () => {
+        const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+        setSpot({
+          ...spot,
+          poster: { ...spot.poster, url: downloadUrl },
+        });
+      }
+    );
   };
 
   return (
     <form onSubmit={onSubmit}>
       <ul className="p-0 m-0">
         <li className="mb-3">
-          <IKImage
-            className="img-stretch"
-            lqip={{ active: true, quality: 20 }}
-            path={spot.poster.filePath}
-          />
-
-          <IKUpload
-            value={""}
-            fileName={"test.jpg"}
-            onError={onError}
-            folder={userId}
-            onSuccess={onSuccess}
-          />
+          {spot.poster?.url && (
+            <img
+              src={spot.poster.url}
+              className="h-100p max-w-[200px] image-cover"
+              alt=""
+            />
+          )}
+          <input type="file" onChange={uploadHandler} />
+          {uploadProgress !== 100 && !spot.poster.url ? (
+            <>
+              {uploadProgress} <progress value={uploadProgress}></progress>
+            </>
+          ) : null}
           {uploadError && <p className="text-orange-600">{uploadError}</p>}
         </li>
         <li className="mb-3">
@@ -85,7 +108,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
         <li className="mb-3">
           <span>Tags:</span>
           <ul className="u-flex u-flex-wrap u-gap-1">
-            {Tags.map((tag: typeof Tags[number], index: number) => {
+            {Tags.map((tag: (typeof Tags)[number], index: number) => {
               return !spot.tags.includes(tag) ? (
                 <li>
                   <TagButton
@@ -133,6 +156,9 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
             <button type="button" onClick={guessAddress}>
               Guess address
             </button>
+            {addressError && (
+              <p className="text-orange-600">{addressError.message}</p>
+            )}
           </div>
         </li>
         <li className="mb-3">
