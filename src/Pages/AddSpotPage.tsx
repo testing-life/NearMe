@@ -13,8 +13,6 @@ const AddSpotPage = () => {
 
   const addSpot = async (spot: Spot) => {
     const ref = user && doc(db, "users", user.uid);
-    console.log('doc(db, "users", user.uid)', doc(db, "users", user!.uid));
-    debugger;
     if (ref) {
       await updateDoc(ref, { spots: arrayUnion(spot) }).catch((e: Error) =>
         console.error(e)

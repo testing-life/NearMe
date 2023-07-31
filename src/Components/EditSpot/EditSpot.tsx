@@ -3,7 +3,6 @@ import useGeolocation from "../../Hooks/useGeolocation";
 import useReverseGeocode from "../../Hooks/useReverseGeocode";
 import { ISpot, Spot } from "../../Models/spot";
 import { GeoPoint } from "firebase/firestore";
-import { IKImage, IKUpload } from "imagekitio-react";
 import { Tags } from "../../Consts/Tags";
 
 interface Props {

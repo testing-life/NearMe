@@ -9,6 +9,7 @@ import TagButton from "../TagButton/TagButton";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { auth, storage } from "../../Firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import TakePhoto from "../TakePhoto/TakePhoto";
 
 interface Props {
   submitHandler: (spot: Spot) => void;
@@ -74,115 +75,118 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <ul className="p-0 m-0">
-        <li className="mb-3">
-          {spot.poster?.url && (
-            <img
-              src={spot.poster.url}
-              className="h-100p max-w-[200px] image-cover"
-              alt=""
-            />
-          )}
-          <input type="file" onChange={uploadHandler} />
-          {uploadProgress !== 100 && !spot.poster.url ? (
-            <>
-              {uploadProgress} <progress value={uploadProgress}></progress>
-            </>
-          ) : null}
-          {uploadError && <p className="text-orange-600">{uploadError}</p>}
-        </li>
-        <li className="mb-3">
-          <Input
-            id="place"
-            required
-            label="Name"
-            type="text"
-            placeholder="place"
-            value={spot.name}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setSpot({ ...spot, name: e.target.value })
-            }
-          />
-        </li>
-        <li className="mb-3">
-          <span>Tags:</span>
-          <ul className="u-flex u-flex-wrap u-gap-1">
-            {Tags.map((tag: (typeof Tags)[number], index: number) => {
-              return !spot.tags.includes(tag) ? (
-                <li>
-                  <TagButton
-                    tagLabel={tag}
-                    key={`${tag}${index}`}
-                    clickHandler={() =>
-                      setSpot({ ...spot, tags: [...spot.tags, tag] })
-                    }
-                  />
-                </li>
-              ) : (
-                <li>
-                  <TagButton
-                    remove
-                    isSelected
-                    tagLabel={tag}
-                    key={`${tag}${index}`}
-                    clickHandler={() =>
-                      setSpot({
-                        ...spot,
-                        tags: spot.tags.filter((t) => t !== tag),
-                      })
-                    }
-                  />
-                </li>
-              );
-            })}
-          </ul>
-        </li>
-        <li className="row u-items-flex-end u-gap-2">
-          <div className="col p-0">
+    <>
+      <TakePhoto />
+      <form onSubmit={onSubmit}>
+        <ul className="p-0 m-0">
+          <li className="mb-3">
+            {spot.poster?.url && (
+              <img
+                src={spot.poster.url}
+                className="h-100p max-w-[200px] image-cover"
+                alt=""
+              />
+            )}
+            <input type="file" onChange={uploadHandler} />
+            {uploadProgress !== 100 && !spot.poster.url ? (
+              <>
+                {uploadProgress} <progress value={uploadProgress}></progress>
+              </>
+            ) : null}
+            {uploadError && <p className="text-orange-600">{uploadError}</p>}
+          </li>
+          <li className="mb-3">
             <Input
-              id="address"
+              id="place"
               required
-              label="Address"
+              label="Name"
               type="text"
-              placeholder="address"
-              value={spot.address}
+              placeholder="place"
+              value={spot.name}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setSpot({ ...spot, address: e.target.value })
+                setSpot({ ...spot, name: e.target.value })
               }
             />
-          </div>
-          <div className="col p-0">
-            <button type="button" onClick={guessAddress}>
-              Guess address
+          </li>
+          <li className="mb-3">
+            <span>Tags:</span>
+            <ul className="u-flex u-flex-wrap u-gap-1">
+              {Tags.map((tag: (typeof Tags)[number], index: number) => {
+                return !spot.tags.includes(tag) ? (
+                  <li>
+                    <TagButton
+                      tagLabel={tag}
+                      key={`${tag}${index}`}
+                      clickHandler={() =>
+                        setSpot({ ...spot, tags: [...spot.tags, tag] })
+                      }
+                    />
+                  </li>
+                ) : (
+                  <li>
+                    <TagButton
+                      remove
+                      isSelected
+                      tagLabel={tag}
+                      key={`${tag}${index}`}
+                      clickHandler={() =>
+                        setSpot({
+                          ...spot,
+                          tags: spot.tags.filter((t) => t !== tag),
+                        })
+                      }
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          </li>
+          <li className="row u-items-flex-end u-gap-2">
+            <div className="col p-0">
+              <Input
+                id="address"
+                required
+                label="Address"
+                type="text"
+                placeholder="address"
+                value={spot.address}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setSpot({ ...spot, address: e.target.value })
+                }
+              />
+            </div>
+            <div className="col p-0">
+              <button type="button" onClick={guessAddress}>
+                Guess address
+              </button>
+              {addressError && (
+                <p className="text-orange-600">{addressError.message}</p>
+              )}
+            </div>
+          </li>
+          <li className="mb-3">
+            <label htmlFor="notes">Notes</label>
+            <textarea
+              id="notes"
+              className="bg-light"
+              placeholder="Notes"
+              value={spot.notes}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                setSpot({ ...spot, notes: e.target.value })
+              }
+            />
+          </li>
+          <li>
+            <button
+              className="bg-primary lg border-red-800 text-light"
+              type="submit"
+            >
+              Add
             </button>
-            {addressError && (
-              <p className="text-orange-600">{addressError.message}</p>
-            )}
-          </div>
-        </li>
-        <li className="mb-3">
-          <label htmlFor="notes">Notes</label>
-          <textarea
-            id="notes"
-            className="bg-light"
-            placeholder="Notes"
-            value={spot.notes}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-              setSpot({ ...spot, notes: e.target.value })
-            }
-          />
-        </li>
-        <li>
-          <button
-            className="bg-primary lg border-red-800 text-light"
-            type="submit"
-          >
-            Add
-          </button>
-        </li>
-      </ul>
-    </form>
+          </li>
+        </ul>
+      </form>
+    </>
   );
 };
 
