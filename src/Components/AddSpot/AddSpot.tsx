@@ -45,14 +45,9 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
 
   const guessAddress = (): void => getLocation();
 
-  const uploadHandler = (e: any) => {
-    e.preventDefault();
-    const file = e.target.files[0];
-    if (!file) {
-      return;
-    }
-    const storageRef = ref(storage, `${user?.uid || "img"}/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+  const storageUpload = (data: File) => {
+    const storageRef = ref(storage, `${user?.uid || "img"}/${data.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, data);
     uploadTask.on(
       "state_changed",
       (snapshot) => {
@@ -74,25 +69,32 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     );
   };
 
+  const uploadHandler = (e: ChangeEvent) => {
+    e.preventDefault();
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) {
+      return;
+    }
+    storageUpload(file);
+  };
+
+  const captureHandler = (data: File) => {
+    storageUpload(data);
+  };
+
   return (
     <>
+      <TakePhoto captureHandler={captureHandler} />
       <form onSubmit={onSubmit}>
         <ul className="p-0 m-0">
           <li className="mb-3">
-            {spot.poster?.url && (
-              <img
-                src={spot.poster.url}
-                className="h-100p max-w-[200px] image-cover"
-                alt=""
-              />
-            )}
             <input type="file" onChange={uploadHandler} />
-            {uploadProgress !== 100 && !spot.poster.url ? (
+            {uploadProgress && uploadProgress !== 100 && !spot.poster.url ? (
               <>
                 {uploadProgress} <progress value={uploadProgress}></progress>
               </>
             ) : null}
-            {uploadError && <p className="text-orange-600">{uploadError}</p>}
+            {uploadError && <p className="text-orange-600">t{uploadError}</p>}
           </li>
           <li className="mb-3">
             <Input

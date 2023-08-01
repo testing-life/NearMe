@@ -1,23 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 const TakePhoto = ({
   captureHandler,
 }: {
-  captureHandler: (data: FormData) => void;
+  captureHandler: (data: File) => void;
 }) => {
   const canvas = useRef<HTMLCanvasElement>(null);
   const video = useRef<HTMLVideoElement>(null);
-  const [dataUrl, setDataUrl] = useState("");
-  const [imageBlob, setImageBlob] = useState<FormData>();
 
   useEffect(() => {
     startCamera();
   }, []);
-
-  // const url = URL.createObjectURL(file);
-  // this.videoElementRef.current.src = url;
-  // await this.videoElementRef.current.play();
-  // const mediaSream = this.videoElementRef.current.captureStream();
 
   const startCamera = async () => {
     try {
@@ -35,27 +28,35 @@ const TakePhoto = ({
       video.current!,
       0,
       0,
-      (canvas.current as any).width,
-      (canvas.current as any).height
+      canvas.current!.width,
+      canvas.current!.height
     );
-    const data = canvas.current!.toDataURL("image/png");
-    setDataUrl(data);
-    canvas.current?.toBlob((blob) => {
+    canvas.current!.toBlob((blob) => {
       const formData = new FormData();
-      formData.append("photo", blob as Blob, "le name");
-      setImageBlob(formData);
-      captureHandler(formData);
+      formData.append("photoCapture", blob as Blob, `${Date.now()}-capture`);
+      captureHandler(formData.get("photoCapture") as File);
     });
   };
   return (
-    <div>
-      <video ref={video} height="300" width="300">
-        {/* <source src={stream} /> */}
-      </video>
-      <canvas ref={canvas} height="240" width="300" />
-      {/* {dataUrl && <img src={dataUrl} alt="captured images" />} */}
-      <button onClick={capture}>Capture</button>
-    </div>
+    <>
+      <div className="u-flex">
+        <video
+          className="u-flex-grow-1"
+          ref={video}
+          height="300"
+          width="300"
+        ></video>
+        <canvas
+          className="u-flex-grow-1"
+          ref={canvas}
+          height="240"
+          width="300"
+        />
+      </div>
+      <button className="u-basis-max-content" onClick={capture}>
+        Capture
+      </button>
+    </>
   );
 };
 

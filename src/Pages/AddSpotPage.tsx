@@ -7,7 +7,7 @@ import { HOME } from "../Consts/Routes";
 import { auth, db } from "../Firebase/Firebase";
 import { Spot } from "../Models/spot";
 import Header from "../Components/Header/Header";
-import TakePhoto from "../Components/TakePhoto/TakePhoto";
+
 const AddSpotPage = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
@@ -22,14 +22,10 @@ const AddSpotPage = () => {
     }
   };
 
-  const captureHandler = (data: any) => {
-    console.log("data", data);
-  };
   return (
     <>
       <Header auth={auth} />
       <div className="p-2 max-w-sm u-center">
-        <TakePhoto captureHandler={captureHandler} />
         {user ? <AddSpot submitHandler={addSpot} userId={user.uid} /> : null}
         <Link to={HOME}>Cancel</Link>
       </div>
