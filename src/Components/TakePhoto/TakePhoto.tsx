@@ -14,7 +14,21 @@ const TakePhoto = ({
 
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          width: {
+            min: 1280,
+            ideal: 1920,
+            max: 2560,
+          },
+          height: {
+            min: 720,
+            ideal: 1080,
+            max: 1440,
+          },
+          facingMode: "environment",
+        },
+      });
       video.current!.srcObject = stream;
       await video.current?.play().catch((e) => console.error(e));
     } catch (error) {
