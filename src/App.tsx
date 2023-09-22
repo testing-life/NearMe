@@ -8,6 +8,7 @@ import LoginPage from "./Pages/LoginPage";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import AddSpotPage from "./Pages/AddSpotPage";
 import "cirrus-ui";
+import UpdateCredentialsPage from "./Pages/UpdateCredentialsPage";
 
 function App() {
   return (
@@ -28,6 +29,14 @@ function App() {
           element={
             <PrivateRoute>
               <AddSpotPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={ROUTES.UPDATE}
+          element={
+            <PrivateRoute>
+              <UpdateCredentialsPage />
             </PrivateRoute>
           }
         />
