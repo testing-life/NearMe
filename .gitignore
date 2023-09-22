@@ -87,4 +87,6 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
+env
+
 build
