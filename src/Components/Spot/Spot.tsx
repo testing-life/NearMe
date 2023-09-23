@@ -1,4 +1,3 @@
-import { IKImage } from "imagekitio-react";
 import React, { FC, ReactNode } from "react";
 import { ISpot } from "../../Models/spot";
 import "./Spot.css";

@@ -4,9 +4,14 @@ import Input from "../Input/Input";
 interface Props {
   submitHandler: (value: string) => void;
   type: "email" | "password";
+  action?: "update" | "reset";
 }
 
-const UpdateCredentials: FC<Props> = ({ submitHandler, type }) => {
+const UpdateCredentials: FC<Props> = ({
+  submitHandler,
+  type,
+  action = "update",
+}) => {
   const [credential, setCredential] = useState("");
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -20,7 +25,7 @@ const UpdateCredentials: FC<Props> = ({ submitHandler, type }) => {
         <Input
           id={type}
           required
-          label={`Update ${type}`}
+          label={`${action} ${type}`}
           type={type}
           placeholder={`New ${type}`}
           value={credential}

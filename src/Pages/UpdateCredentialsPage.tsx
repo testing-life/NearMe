@@ -3,7 +3,7 @@ import { useUpdateEmail, useUpdatePassword } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
 import { HOME } from "../Consts/Routes";
 import { auth } from "../Firebase/Firebase";
-import ResetCredentials from "../Components/UpdateCredentials/UpdateCredentials";
+import UpdateCredentials from "../Components/UpdateCredentials/UpdateCredentials";
 
 const UpdateCredentialsPage = () => {
   const [updateEmail, emailUpdating, emailError] = useUpdateEmail(auth);
@@ -26,10 +26,10 @@ const UpdateCredentialsPage = () => {
 
   return (
     <div className="p-1">
-      <ResetCredentials type="password" submitHandler={onSubmitPassword} />
+      <UpdateCredentials type="password" submitHandler={onSubmitPassword} />
       {passUpdating && <p>Updating password...</p>}
       {passError && <p>{passError.message}</p>}
-      <ResetCredentials type="email" submitHandler={onSubmitEmail} />
+      <UpdateCredentials type="email" submitHandler={onSubmitEmail} />
       {emailUpdating && <p>Updating email...</p>}
       {emailError && <p>{emailError.message}</p>}
       {success && <p>{success}</p>}

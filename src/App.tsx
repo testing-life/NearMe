@@ -9,6 +9,7 @@ import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import AddSpotPage from "./Pages/AddSpotPage";
 import "cirrus-ui";
 import UpdateCredentialsPage from "./Pages/UpdateCredentialsPage";
+import ResetPasswordPage from "./Pages/ResetPasswordPage";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path={ROUTES.RESET} element={<ResetPasswordPage />} />
       </Routes>
     </div>
   );
