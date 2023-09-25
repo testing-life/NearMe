@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { useUserMedia } from "../../Hooks/useUserMedia";
 
 const TakePhoto = ({
   captureHandler,
@@ -7,35 +8,21 @@ const TakePhoto = ({
 }) => {
   const canvas = useRef<HTMLCanvasElement>(null);
   const video = useRef<HTMLVideoElement>(null);
+  const mediaStream = useUserMedia({
+    video: { facingMode: "environment" },
+  });
 
   useEffect(() => {
-    startCamera();
-  }, []);
-
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices
-        .getUserMedia({
-          video: {
-            width: {
-              min: 1280,
-              ideal: 1920,
-              max: 2560,
-            },
-            height: {
-              min: 720,
-              ideal: 1080,
-              max: 1440,
-            },
-            facingMode: "environment",
-          },
-        })
-        .catch((e: Error) => console.error(e.message));
-      (video.current as any)!.srcObject = stream;
-      await video.current?.play().catch((e) => console.error(e));
-    } catch (error) {
-      console.error("video error", error);
+    console.log("video", video, mediaStream);
+    if (mediaStream && video.current && !video.current.srcObject) {
+      video.current.srcObject = mediaStream;
+      startCamera();
     }
+  }, [mediaStream]);
+
+  const startCamera = () => {
+    console.log("mediaStream,video", mediaStream, video);
+    video.current?.play();
   };
 
   const capture = () => {
@@ -59,6 +46,7 @@ const TakePhoto = ({
         <video
           className="u-flex-grow-1"
           ref={video}
+          autoPlay
           height="300"
           width="300"
         ></video>
