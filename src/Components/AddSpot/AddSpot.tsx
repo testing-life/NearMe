@@ -20,13 +20,18 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   const [uploadError, setUploadError] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [spot, setSpot] = useState(Spot.create());
+  const [image, setImage] = useState<File | null>(null);
   const { location, error, getLocation } = useGeolocation();
   const [user] = useAuthState(auth);
   const { address, getAddress, addressError } = useReverseGeocode();
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    submitHandler(spot);
+    if (image) {
+      storageUpload(image);
+    } else {
+      submitHandler(spot);
+    }
   };
 
   useEffect(() => {
@@ -61,10 +66,14 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
       },
       async () => {
         const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-        setSpot({
-          ...spot,
-          poster: { ...spot.poster, url: downloadUrl },
-        });
+        if (downloadUrl) {
+          const imagedSpot = {
+            ...spot,
+            poster: { ...spot.poster, url: downloadUrl },
+          };
+          // TODO split this method
+          submitHandler(imagedSpot);
+        }
       }
     );
   };
@@ -78,8 +87,9 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     storageUpload(file);
   };
 
-  const captureHandler = (data: File) => {
-    storageUpload(data);
+  const captureHandler = (data: File | null) => {
+    // storageUpload(data);
+    setImage(data);
   };
 
   return (
