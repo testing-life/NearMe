@@ -24,6 +24,8 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   const { location, error, getLocation } = useGeolocation();
   const [user] = useAuthState(auth);
   const { address, getAddress, addressError } = useReverseGeocode();
+  // TODO look into making this common - existing hook ?
+  const [isSearching, setIsSearching] = useState(false);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -36,6 +38,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
 
   useEffect(() => {
     if (location) {
+      setIsSearching(true);
       const geopoint = new GeoPoint(location.latitude, location.longitude);
       setSpot({ ...spot, location: geopoint });
       getAddress(location);
@@ -45,6 +48,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   useEffect(() => {
     if (address) {
       setSpot({ ...spot, address: address.formatted });
+      setIsSearching(false);
     }
   }, [address]);
 
@@ -88,10 +92,9 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   };
 
   const captureHandler = (data: File | null) => {
-    // storageUpload(data);
     setImage(data);
   };
-
+  // TODO  almost same form as edit - look into reusing
   return (
     <>
       <TakePhoto captureHandler={captureHandler} />

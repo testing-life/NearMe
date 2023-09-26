@@ -16,6 +16,7 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
   const [spot, setSpot] = useState(data);
   const { location, error, getLocation } = useGeolocation();
   const { address, getAddress, addressError } = useReverseGeocode();
+  const [isSearching, setIsSearching] = useState(false);
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     editHandler(spot);
@@ -23,6 +24,8 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
 
   useEffect(() => {
     if (location) {
+      setIsSearching(true);
+
       const geopoint = new GeoPoint(location.latitude, location.longitude);
       setSpot({ ...spot, location: geopoint });
       getAddress(location);
@@ -32,11 +35,13 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
   useEffect(() => {
     if (address) {
       setSpot({ ...spot, address: address.formatted });
+      setIsSearching(false);
     }
   }, [address]);
 
-  const guessAddress = (): void => getLocation();
-
+  const guessAddress = (): void => {
+    getLocation();
+  };
   // const onError = (err: any) => console.log("upload error", err);
   // const onSuccess = (res: any) => {
   //   setSpot({
@@ -48,17 +53,6 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
   return (
     <>
       <form onSubmit={onSubmit}>
-        {/* <IKImage
-          lqip={{ active: true, quality: 20 }}
-          path={spot.poster.filePath}
-        />
-        <IKUpload
-          value={""}
-          fileName={"test.jpg"}
-          onError={onError}
-          folder={userId}
-          onSuccess={onSuccess}
-        /> */}
         <label htmlFor="place">Name</label>
         <input
           type="text"
@@ -114,6 +108,8 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
           <button type="button" onClick={guessAddress}>
             Guess address
           </button>
+          {addressError && <p>{addressError.message}</p>}
+          {isSearching && <p>Looking up address...</p>}
         </div>
         <textarea
           placeholder="Notes"
