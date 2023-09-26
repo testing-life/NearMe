@@ -64,7 +64,13 @@ const TakePhoto = ({
         <button className="u-basis-max-content" onClick={clearCanvas}>
           Clear
         </button>
-        <canvas className="w-100p" ref={canvas} height="430" width="600" />
+        <canvas
+          hidden={!captured}
+          className="w-100p"
+          ref={canvas}
+          height="430"
+          width="600"
+        />
       </div>
     </>
   );
