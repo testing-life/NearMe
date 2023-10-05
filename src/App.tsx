@@ -10,6 +10,7 @@ import AddSpotPage from "./Pages/AddSpotPage";
 import "cirrus-ui";
 import UpdateCredentialsPage from "./Pages/UpdateCredentialsPage";
 import ResetPasswordPage from "./Pages/ResetPasswordPage";
+import EditSpotPage from "./Pages/EditSpotPage";
 
 function App() {
   return (
@@ -30,6 +31,14 @@ function App() {
           element={
             <PrivateRoute>
               <AddSpotPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={ROUTES.EDIT}
+          element={
+            <PrivateRoute>
+              <EditSpotPage />
             </PrivateRoute>
           }
         />

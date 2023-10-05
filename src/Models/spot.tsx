@@ -8,9 +8,13 @@ export interface ISpot {
   notes: string;
   location: Ilocation;
   name: string;
+  id: string;
+  ref: any;
 }
 
 export class Spot {
+  id = "";
+  ref = "";
   poster = { url: "" };
   tags: string[] = [];
   address: string = "";

@@ -7,12 +7,11 @@ import { Tags } from "../../Consts/Tags";
 
 interface Props {
   editHandler: (spot: ISpot) => void;
-  cancelHandler: () => void;
   data: ISpot;
   userId: string;
 }
 
-const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
+const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
   const [spot, setSpot] = useState(data);
   const { location, error, getLocation } = useGeolocation();
   const { address, getAddress, addressError } = useReverseGeocode();
@@ -120,9 +119,6 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
         />
         <button type="submit">Edit</button>
       </form>
-      <button onClick={cancelHandler} type="button">
-        Cancel
-      </button>
     </>
   );
 };
