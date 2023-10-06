@@ -1,57 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ADD } from "../Consts/Routes";
-import { useDocument } from "react-firebase-hooks/firestore";
-import { auth, db } from "../Firebase/Firebase";
+import { ADD, EDIT } from "../Consts/Routes";
+import { useCollectionData, useDocument } from "react-firebase-hooks/firestore";
+import { auth, db, spotConverter } from "../Firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { arrayRemove, doc, updateDoc } from "firebase/firestore";
+import { DocumentReference, collection, deleteDoc } from "firebase/firestore";
 import { ISpot } from "../Models/spot";
-import { IProfile } from "../Models/profile";
 import Spot from "../Components/Spot/Spot";
-import EditSpot from "../Components/EditSpot/EditSpot";
 import Header from "../Components/Header/Header";
 import "./HomePage.css";
+import TagFilter from "../Components/TagFilter/TagFilter";
+import { Tags } from "../Consts/Tags";
+import { filterByArray } from "../Utils/array";
 
 const HomePage = () => {
   const [user] = useAuthState(auth);
-  const [data, setData] = useState<IProfile>();
-  const [editIndex, setEditIndex] = useState<undefined | number>();
-  const [value, loading, error] = useDocument(doc(db, "users", user!.uid), {
-    snapshotListenOptions: { includeMetadataChanges: true },
-  });
+  const [data, setData] = useState<ISpot[]>();
+  const [filteredData, setFilteredData] = useState<ISpot[]>();
+  const ref = collection(db, "users", user!.uid, "spots").withConverter(
+    spotConverter
+  );
+  const [value, loading, error] = useCollectionData(ref);
 
   useEffect(() => {
     if (value) {
-      const data = value.data();
-      setData(data as IProfile);
+      setData(value);
+      setFilteredData(value);
     }
   }, [value]);
 
-  const cancelHandler = (): void => setEditIndex(undefined);
-
-  const deleteHandler = async (index: number) => {
-    const ref = user && doc(db, "users", user.uid);
+  const deleteHandler = async (ref: DocumentReference) => {
     if (ref) {
-      await updateDoc(ref, { spots: arrayRemove(data!.spots[index]) }).catch(
-        (e: Error) => console.error(e)
-      );
+      await deleteDoc(ref).catch((e: Error) => console.error(e));
     }
   };
 
-  const editHandler = async (spot: ISpot) => {
-    const ref = user && doc(db, "users", user.uid);
-    if (ref) {
-      const newSpots = data!.spots.map((item: ISpot, i: number) => {
-        if (i === editIndex) {
-          return spot;
-        }
-        return item;
-      });
-      await updateDoc(ref, { spots: newSpots }).catch((e: Error) =>
-        console.error(e)
-      );
-      cancelHandler();
-    }
+  const filterHandler = (filterList: (typeof Tags)[]) => {
+    const filteredData = filterByArray(data as ISpot[], filterList, "tags");
+    setFilteredData(filteredData);
   };
 
   return (
@@ -62,21 +48,25 @@ const HomePage = () => {
           Add Spot
         </Link>
       </button>
-      {data && editIndex === undefined && (
+      <TagFilter clickHandler={filterHandler} />
+      {filteredData && (
         <>
           <ul className="ml-0 p-0 spots-list">
-            {data.spots.map((spot: ISpot, index: number) => (
-              <li key={`${spot.name}${index}`}>
+            {filteredData.map((spot: ISpot, index: number) => (
+              <li key={spot.id}>
                 <Spot spot={spot}>
+                  {spot?.id && (
+                    <Link
+                      className="btn-link btn-primary outline"
+                      state={{ id: spot.id }}
+                      to={EDIT}
+                    >
+                      Edit
+                    </Link>
+                  )}
                   <button
-                    className="btn-link outline"
-                    onClick={() => setEditIndex(index)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn-link outline"
-                    onClick={() => deleteHandler(index)}
+                    className="btn-link bg-orange-2 outline"
+                    onClick={() => deleteHandler(spot.ref)}
                   >
                     Delete
                   </button>
@@ -85,14 +75,6 @@ const HomePage = () => {
             ))}
           </ul>
         </>
-      )}
-      {data && editIndex !== undefined && (
-        <EditSpot
-          editHandler={editHandler}
-          cancelHandler={cancelHandler}
-          data={data!.spots[editIndex]}
-          userId={user!.uid}
-        />
       )}
       {loading && <p>Loading data...</p>}
       {error && <p>{error.message}</p>}

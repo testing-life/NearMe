@@ -3,7 +3,7 @@ import { ISpot } from "../../Models/spot";
 import "./Spot.css";
 interface Props {
   spot: ISpot;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const Spot: FC<Props> = ({ spot, children }) => {
@@ -36,8 +36,8 @@ const Spot: FC<Props> = ({ spot, children }) => {
         <div className="u-text-center">
           <ul className="ml-0 p-1 u-flex u-gap-1 u-flex-wrap tag-container">
             {spot.tags
-              ? spot.tags.map((tag) => (
-                  <li className="u-inline">
+              ? spot.tags.map((tag: string, index: number) => (
+                  <li className="u-inline" key={`${tag}${index}`}>
                     <span className="tag bg-yellow-300 text-yellow-900 tag--rounded tag--sm">
                       {tag}
                     </span>

@@ -1,20 +1,20 @@
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import useGeolocation from "../../Hooks/useGeolocation";
 import useReverseGeocode from "../../Hooks/useReverseGeocode";
-import { ISpot, Spot } from "../../Models/spot";
+import { ISpot } from "../../Models/spot";
 import { GeoPoint } from "firebase/firestore";
 import { Tags } from "../../Consts/Tags";
+import TagButton from "../TagButton/TagButton";
 
 interface Props {
   editHandler: (spot: ISpot) => void;
-  cancelHandler: () => void;
   data: ISpot;
   userId: string;
 }
 
-const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
+const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
   const [spot, setSpot] = useState(data);
-  const { location, error, getLocation } = useGeolocation();
+  const { location, locationError, getLocation } = useGeolocation();
   const { address, getAddress, addressError } = useReverseGeocode();
   const [isSearching, setIsSearching] = useState(false);
   const onSubmit = (e: FormEvent) => {
@@ -24,8 +24,6 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
 
   useEffect(() => {
     if (location) {
-      setIsSearching(true);
-
       const geopoint = new GeoPoint(location.latitude, location.longitude);
       setSpot({ ...spot, location: geopoint });
       getAddress(location);
@@ -40,15 +38,9 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
   }, [address]);
 
   const guessAddress = (): void => {
+    setIsSearching(true);
     getLocation();
   };
-  // const onError = (err: any) => console.log("upload error", err);
-  // const onSuccess = (res: any) => {
-  //   setSpot({
-  //     ...spot,
-  //     poster: { ...spot.poster, filePath: res.filePath, url: res.url },
-  //   });
-  // };
 
   return (
     <>
@@ -57,7 +49,6 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
         <input
           type="text"
           id="place"
-          required
           value={spot.name}
           placeholder="Place's name"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -69,28 +60,23 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
             <div>Tags:</div>
             {Tags.map((tag: (typeof Tags)[number], index: number) => {
               return !spot.tags.includes(tag) ? (
-                <button
-                  type="button"
+                <TagButton
+                  tagLabel={tag}
                   key={`${tag}${index}`}
-                  onClick={() =>
+                  clickHandler={() =>
                     setSpot({ ...spot, tags: [...spot.tags, tag] })
                   }
-                >
-                  {tag} +
-                </button>
+                />
               ) : (
-                <button
-                  type="button"
+                <TagButton
+                  remove
+                  isSelected
+                  tagLabel={tag}
                   key={`${tag}${index}`}
-                  onClick={() =>
-                    setSpot({
-                      ...spot,
-                      tags: spot.tags.filter((t) => t !== tag),
-                    })
+                  clickHandler={() =>
+                    setSpot({ ...spot, tags: [...spot.tags, tag] })
                   }
-                >
-                  {tag} -
-                </button>
+                />
               );
             })}
           </>
@@ -108,6 +94,7 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
           <button type="button" onClick={guessAddress}>
             Guess address
           </button>
+          {locationError && <p>{locationError.message}</p>}
           {addressError && <p>{addressError.message}</p>}
           {isSearching && <p>Looking up address...</p>}
         </div>
@@ -120,9 +107,6 @@ const EditSpot: FC<Props> = ({ cancelHandler, editHandler, data, userId }) => {
         />
         <button type="submit">Edit</button>
       </form>
-      <button onClick={cancelHandler} type="button">
-        Cancel
-      </button>
     </>
   );
 };

@@ -1,4 +1,11 @@
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,12 +19,20 @@ const AddSpotPage = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
 
+  // const addSpot = async (spot: Spot) => {
+  //   const ref = user && doc(db, "users", user.uid);
+  //   if (ref) {
+  //     await updateDoc(ref, { spots: arrayUnion(spot) }).catch((e: Error) =>
+  //       console.error(e)
+  //     );
+  //     navigate(HOME);
+  //   }
+  // };
+
   const addSpot = async (spot: Spot) => {
-    const ref = user && doc(db, "users", user.uid);
+    const ref = user && collection(db, "users", user.uid, "spots");
     if (ref) {
-      await updateDoc(ref, { spots: arrayUnion(spot) }).catch((e: Error) =>
-        console.error(e)
-      );
+      await addDoc(ref, spot).catch((e: Error) => console.error(e));
       navigate(HOME);
     }
   };
