@@ -77,7 +77,8 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
             ...spot,
             poster: { ...spot.poster, url: downloadUrl },
           };
-          // TODO split this method
+          // TODO split this
+          // BUG submits spot immediately after img upload
           submitHandler(imagedSpot);
         }
       }

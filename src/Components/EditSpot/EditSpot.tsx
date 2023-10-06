@@ -23,7 +23,6 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
   };
 
   useEffect(() => {
-    console.log("guess2");
     if (location) {
       const geopoint = new GeoPoint(location.latitude, location.longitude);
       setSpot({ ...spot, location: geopoint });
@@ -50,7 +49,6 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
         <input
           type="text"
           id="place"
-          required
           value={spot.name}
           placeholder="Place's name"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
