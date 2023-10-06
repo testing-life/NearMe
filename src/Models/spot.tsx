@@ -1,4 +1,4 @@
-import { GeoPoint } from "firebase/firestore";
+import { DocumentData, DocumentReference, GeoPoint } from "firebase/firestore";
 import { Ilocation } from "../Hooks/useGeolocation";
 
 export interface ISpot {
@@ -9,12 +9,12 @@ export interface ISpot {
   location: Ilocation;
   name: string;
   id: string;
-  ref: any;
+  ref: DocumentReference<DocumentData>;
 }
 
 export class Spot {
   id = "";
-  ref = "";
+  ref = {};
   poster = { url: "" };
   tags: string[] = [];
   address: string = "";
