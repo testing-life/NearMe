@@ -9,10 +9,14 @@ import { ISpot } from "../Models/spot";
 import Spot from "../Components/Spot/Spot";
 import Header from "../Components/Header/Header";
 import "./HomePage.css";
+import TagFilter from "../Components/TagFilter/TagFilter";
+import { Tags } from "../Consts/Tags";
+import { filterByArray } from "../Utils/array";
 
 const HomePage = () => {
   const [user] = useAuthState(auth);
   const [data, setData] = useState<ISpot[]>();
+  const [filteredData, setFilteredData] = useState<ISpot[]>();
   const ref = collection(db, "users", user!.uid, "spots").withConverter(
     spotConverter
   );
@@ -20,7 +24,8 @@ const HomePage = () => {
 
   useEffect(() => {
     if (value) {
-      setData(value as any);
+      setData(value);
+      setFilteredData(value);
     }
   }, [value]);
 
@@ -28,6 +33,11 @@ const HomePage = () => {
     if (ref) {
       await deleteDoc(ref).catch((e: Error) => console.error(e));
     }
+  };
+
+  const filterHandler = (filterList: (typeof Tags)[]) => {
+    const filteredData = filterByArray(data as ISpot[], filterList, "tags");
+    setFilteredData(filteredData);
   };
 
   return (
@@ -38,10 +48,11 @@ const HomePage = () => {
           Add Spot
         </Link>
       </button>
-      {data && (
+      <TagFilter clickHandler={filterHandler} />
+      {filteredData && (
         <>
           <ul className="ml-0 p-0 spots-list">
-            {data.map((spot: ISpot, index: number) => (
+            {filteredData.map((spot: ISpot, index: number) => (
               <li key={spot.id}>
                 <Spot spot={spot}>
                   {spot?.id && (
