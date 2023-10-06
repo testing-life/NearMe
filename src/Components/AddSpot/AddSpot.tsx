@@ -21,7 +21,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [spot, setSpot] = useState(Spot.create());
   const [image, setImage] = useState<File | null>(null);
-  const { location, error, getLocation } = useGeolocation();
+  const { location, locationError, getLocation } = useGeolocation();
   const [user] = useAuthState(auth);
   const { address, getAddress, addressError } = useReverseGeocode();
   // TODO look into making this common - existing hook ?
@@ -38,7 +38,6 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
 
   useEffect(() => {
     if (location) {
-      setIsSearching(true);
       const geopoint = new GeoPoint(location.latitude, location.longitude);
       setSpot({ ...spot, location: geopoint });
       getAddress(location);
@@ -52,7 +51,10 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     }
   }, [address]);
 
-  const guessAddress = (): void => getLocation();
+  const guessAddress = (): void => {
+    setIsSearching(true);
+    getLocation();
+  };
 
   const storageUpload = (data: File) => {
     const storageRef = ref(storage, `${user?.uid || "img"}/${data.name}`);
@@ -173,6 +175,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
               <button type="button" onClick={guessAddress}>
                 Guess address
               </button>
+              {locationError && <p>{locationError.message}</p>}
               {addressError && (
                 <p className="text-orange-600">{addressError.message}</p>
               )}

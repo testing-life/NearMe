@@ -6,7 +6,7 @@ export interface Ilocation {
 }
 
 interface Ihook {
-  error: GeolocationPositionError;
+  locationError: GeolocationPositionError;
   location: Ilocation;
   getLocation: () => void;
 }
@@ -15,7 +15,7 @@ const useGeolocation = (): Ihook => {
   const [location, setLocation] = useState<
     Pick<GeolocationCoordinates, "latitude" | "longitude">
   >({ latitude: 0, longitude: 0 });
-  const [error, setError] = useState<GeolocationPositionError>(
+  const [locationError, setLocationError] = useState<GeolocationPositionError>(
     {} as GeolocationPositionError
   );
 
@@ -28,12 +28,12 @@ const useGeolocation = (): Ihook => {
     }
   };
 
-  const onError = (error: GeolocationPositionError) => setError(error);
+  const onError = (error: GeolocationPositionError) => setLocationError(error);
 
   const getLocation = () =>
     navigator.geolocation.getCurrentPosition(onChange, onError);
 
-  return { location, getLocation, error };
+  return { location, getLocation, locationError };
 };
 
 export default useGeolocation;
