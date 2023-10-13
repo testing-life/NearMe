@@ -18,6 +18,7 @@ const HomePage = () => {
   const [user] = useAuthState(auth);
   const [data, setData] = useState<ISpot[]>();
   const [filteredData, setFilteredData] = useState<ISpot[]>();
+  const [isMapView, setIsMapView] = useState(false);
   const ref = collection(db, "users", user!.uid, "spots").withConverter(
     spotConverter
   );
@@ -50,10 +51,34 @@ const HomePage = () => {
         </Link>
       </button>
       <TagFilter clickHandler={filterHandler} />
-      {filteredData && (
-        <ListView filteredData={filteredData} deleteHandler={deleteHandler} />
+      <div className="row">
+        <div className="form-ext-control">
+          <label className="form-ext-toggle__label">
+            <span>{isMapView ? `Map` : `List`} view</span>
+            <div className="form-ext-toggle">
+              <input
+                name="toggleCheckbox"
+                type="checkbox"
+                className="form-ext-input"
+                onChange={() => setIsMapView(!isMapView)}
+                checked={isMapView}
+              />
+              <div className="form-ext-toggle__toggler">
+                <i></i>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+      {filteredData ? (
+        isMapView ? (
+          <MapView filteredData={filteredData} />
+        ) : (
+          <ListView filteredData={filteredData} deleteHandler={deleteHandler} />
+        )
+      ) : (
+        <p>No data to display</p>
       )}
-      {filteredData && <MapView filteredData={filteredData} />}
       {loading && <p>Loading data...</p>}
       {error && <p>{error.message}</p>}
       {!data && <p>You haven't added any spots yet.</p>}

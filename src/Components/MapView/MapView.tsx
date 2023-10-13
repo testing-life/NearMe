@@ -1,9 +1,7 @@
 import React, { FC, useEffect } from "react";
-import { Map } from "../Map/Map";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { ISpot } from "../../Models/spot";
 import useGeolocation from "../../Hooks/useGeolocation";
-import { LatLngExpression } from "leaflet";
 
 interface Props {
   filteredData: ISpot[];
@@ -23,16 +21,15 @@ const MapView: FC<Props> = ({ filteredData }) => {
     getLocation();
   }, []);
 
-  const zoomLevel = 15;
+  const zoom = 15;
   return (
     <>
       <MapContainer
-        zoom={zoomLevel}
+        zoom={zoom}
         center={{ lat: location.latitude, lng: location.longitude }}
         scrollWheelZoom={true}
-        style={{ height: "200px" }}
+        style={{ height: "80vh" }}
       >
-        <>{console.log("location", location)}</>
         <SetView
           location={{ lat: location.latitude, lng: location.longitude }}
         />
@@ -41,12 +38,24 @@ const MapView: FC<Props> = ({ filteredData }) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <Marker position={{ lat: location.latitude, lng: location.longitude }}>
-          <Popup>
-            Omu-Aran the Head Post of Igbomina land, is a town in the Nigerian
-            state of Kwara. It originated from Ife and currently the local
-            government headquarters of Irepodun local government.
-          </Popup>
+          <Popup>That's you.</Popup>
         </Marker>
+        {filteredData.map((spot: ISpot, index: number) => {
+          return (
+            <Marker
+              key={`${spot.name}${index}`}
+              position={{
+                lat: spot.location.latitude,
+                lng: spot.location.longitude,
+              }}
+            >
+              <Popup>
+                <p>{spot.name}</p>
+                <p>{spot.address}</p>
+              </Popup>
+            </Marker>
+          );
+        })}
       </MapContainer>
       {locationError && <p>{locationError.message}</p>}
     </>

@@ -27,13 +27,12 @@ const TagFilter: FC<Props> = ({ clickHandler }) => {
     <ul className="u-flex u-flex-wrap u-gap-1">
       {Tags.map((tag: (typeof Tags)[number], index: number) => {
         return (
-          <li>
+          <li key={`${tag}${index}`}>
             <TagButton
               //   TODO check typing
               isSelected={filterList.includes(tag as any)}
               remove={filterList.includes(tag as any)}
               tagLabel={tag}
-              key={`${tag}${index}`}
               //   TODO check typing
               clickHandler={() => filterListHandler(tag as any)}
             />
