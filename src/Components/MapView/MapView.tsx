@@ -9,6 +9,7 @@ import {
 } from "react-leaflet";
 import { ISpot } from "../../Models/spot";
 import useGeolocation from "../../Hooks/useGeolocation";
+import { distanceMetres } from "../../Utils/geo";
 
 interface Props {
   filteredData: ISpot[];
@@ -35,20 +36,6 @@ const MapView: FC<Props> = ({ filteredData }) => {
     getLocation();
   }, []);
 
-  const distance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
-    const r = 6371; // km
-    const p = Math.PI / 180;
-
-    const a =
-      0.5 -
-      Math.cos((lat2 - lat1) * p) / 2 +
-      (Math.cos(lat1 * p) *
-        Math.cos(lat2 * p) *
-        (1 - Math.cos((lon2 - lon1) * p))) /
-        2;
-
-    return 2 * r * Math.asin(Math.sqrt(a));
-  };
   const zoom = 15;
   return (
     <>
@@ -79,33 +66,34 @@ const MapView: FC<Props> = ({ filteredData }) => {
         <Marker position={{ lat: location.latitude, lng: location.longitude }}>
           <Popup>That's you.</Popup>
         </Marker>
-        {filteredData.map((spot: ISpot, index: number) => {
-          return (
-            <Marker
-              key={`${spot.name}${index}`}
-              position={{
-                lat: spot.location.latitude,
-                lng: spot.location.longitude,
-              }}
-            >
-              <>
-                {console.log(
-                  "first",
-                  distance(
-                    location.latitude,
-                    location.latitude,
-                    spot.location.latitude,
-                    spot.location.latitude
-                  )
-                )}
-              </>
-              <Popup>
-                <p>{spot.name}</p>
-                <p>{spot.address}</p>
-              </Popup>
-            </Marker>
-          );
-        })}
+        {filteredData
+          .filter((spot: ISpot) => {
+            const range = distanceMetres(
+              location.latitude,
+              location.latitude,
+              spot.location.latitude,
+              spot.location.latitude
+            );
+            if (range <= radiusMetres) {
+              return spot;
+            }
+          })
+          .map((spot: ISpot, index: number) => {
+            return (
+              <Marker
+                key={`${spot.name}${index}`}
+                position={{
+                  lat: spot.location.latitude,
+                  lng: spot.location.longitude,
+                }}
+              >
+                <Popup>
+                  <p>{spot.name}</p>
+                  <p>{spot.address}</p>
+                </Popup>
+              </Marker>
+            );
+          })}
         <>
           {console.log(
             "location.latitude, location.longitude",
