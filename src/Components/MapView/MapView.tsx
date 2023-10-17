@@ -94,13 +94,6 @@ const MapView: FC<Props> = ({ filteredData }) => {
               </Marker>
             );
           })}
-        <>
-          {console.log(
-            "location.latitude, location.longitude",
-            location.latitude,
-            location.longitude
-          )}
-        </>
         {location.latitude !== 0 && (
           <Circle
             center={[location.latitude, location.longitude]}
