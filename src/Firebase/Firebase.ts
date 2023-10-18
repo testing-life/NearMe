@@ -27,7 +27,7 @@ const storage = getStorage(app);
 export { auth, db, storage };
 
 export const spotConverter: FirestoreDataConverter<ISpot> = {
-  toFirestore(spot: WithFieldValue<Spot>): DocumentData {
+  toFirestore(spot: WithFieldValue<ISpot>): DocumentData {
     return {
       poster: spot.poster,
       tags: spot.tags,
@@ -35,6 +35,7 @@ export const spotConverter: FirestoreDataConverter<ISpot> = {
       notes: spot.notes,
       name: spot.name,
       location: spot.location,
+      geohash: spot.geohash,
     };
   },
   fromFirestore(
@@ -51,6 +52,7 @@ export const spotConverter: FirestoreDataConverter<ISpot> = {
       location: data.location,
       id: snapshot.id,
       ref: snapshot.ref,
+      geohash: data.hash,
     };
   },
 };

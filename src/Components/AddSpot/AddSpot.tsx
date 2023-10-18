@@ -10,6 +10,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { auth, storage } from "../../Firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import TakePhoto from "../TakePhoto/TakePhoto";
+import * as geofire from "geofire-common";
 
 interface Props {
   submitHandler: (spot: Spot) => void;
@@ -39,7 +40,11 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   useEffect(() => {
     if (location) {
       const geopoint = new GeoPoint(location.latitude, location.longitude);
-      setSpot({ ...spot, location: geopoint });
+      const hash = geofire.geohashForLocation([
+        location.latitude,
+        location.longitude,
+      ]);
+      setSpot({ ...spot, location: geopoint, geohash: hash });
       getAddress(location);
     }
   }, [location]);

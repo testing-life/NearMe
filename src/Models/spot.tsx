@@ -10,6 +10,7 @@ export interface ISpot {
   name: string;
   id: string;
   ref: DocumentReference<DocumentData>;
+  geohash: string;
 }
 
 export class Spot {
@@ -20,6 +21,7 @@ export class Spot {
   address: string = "";
   notes: string = "";
   name: string = "";
+  geohash: string = "";
   location: Ilocation = new GeoPoint(0, 0);
   static create(): Spot {
     return new Spot();

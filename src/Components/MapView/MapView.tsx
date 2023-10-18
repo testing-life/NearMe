@@ -1,21 +1,36 @@
-import React, { FC, useEffect } from "react";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import React, { ChangeEvent, FC, useEffect, useState } from "react";
+import {
+  Circle,
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  useMap,
+} from "react-leaflet";
 import { ISpot } from "../../Models/spot";
 import useGeolocation from "../../Hooks/useGeolocation";
+import { distanceMetres } from "../../Utils/geo";
 
 interface Props {
   filteredData: ISpot[];
 }
-const SetView = ({ location: { lat, lng } }: any) => {
+
+const SetView = ({
+  location: { lat, lng },
+}: {
+  location: { lat: number; lng: number };
+}) => {
   const map = useMap();
   if (lat && lng) {
-    map.setView({ lat, lng }, 15);
+    map.setView({ lat, lng }, map.getZoom());
   }
   return null;
 };
 
 const MapView: FC<Props> = ({ filteredData }) => {
   const { location, locationError, getLocation } = useGeolocation();
+  const [radiusMetres, setRadiusMetres] = useState(500);
+  const fillBlueOptions = { fillColor: "blue" };
 
   useEffect(() => {
     getLocation();
@@ -24,6 +39,17 @@ const MapView: FC<Props> = ({ filteredData }) => {
   const zoom = 15;
   return (
     <>
+      <label htmlFor="searchRange">Distance</label>
+      <input
+        id="searchRange"
+        type="range"
+        step="1"
+        max="5000"
+        min="500"
+        onChange={(e: ChangeEvent) =>
+          setRadiusMetres(parseInt((e.target as HTMLInputElement).value))
+        }
+      />
       <MapContainer
         zoom={zoom}
         center={{ lat: location.latitude, lng: location.longitude }}
@@ -40,22 +66,41 @@ const MapView: FC<Props> = ({ filteredData }) => {
         <Marker position={{ lat: location.latitude, lng: location.longitude }}>
           <Popup>That's you.</Popup>
         </Marker>
-        {filteredData.map((spot: ISpot, index: number) => {
-          return (
-            <Marker
-              key={`${spot.name}${index}`}
-              position={{
-                lat: spot.location.latitude,
-                lng: spot.location.longitude,
-              }}
-            >
-              <Popup>
-                <p>{spot.name}</p>
-                <p>{spot.address}</p>
-              </Popup>
-            </Marker>
-          );
-        })}
+        {filteredData
+          .filter((spot: ISpot) => {
+            const range = distanceMetres(
+              location.latitude,
+              location.latitude,
+              spot.location.latitude,
+              spot.location.latitude
+            );
+            if (range <= radiusMetres) {
+              return spot;
+            }
+          })
+          .map((spot: ISpot, index: number) => {
+            return (
+              <Marker
+                key={`${spot.name}${index}`}
+                position={{
+                  lat: spot.location.latitude,
+                  lng: spot.location.longitude,
+                }}
+              >
+                <Popup>
+                  <p>{spot.name}</p>
+                  <p>{spot.address}</p>
+                </Popup>
+              </Marker>
+            );
+          })}
+        {location.latitude !== 0 && (
+          <Circle
+            center={[location.latitude, location.longitude]}
+            pathOptions={fillBlueOptions}
+            radius={radiusMetres}
+          />
+        )}
       </MapContainer>
       {locationError && <p>{locationError.message}</p>}
     </>
