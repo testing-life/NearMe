@@ -54,7 +54,7 @@ const HomePage = () => {
       setGlobalData(globalData as ISpot[]);
       setFilteredData(globalData as ISpot[]);
     };
-    if (useGlobal && location.latitude && !locationError.code) {
+    if (useGlobal && location.latitude) {
       getSpots();
     }
   }, [location]);
@@ -132,10 +132,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-// by default load own spots in list view
-// if in list view and toggle useGlobal, load global spots within radius - needs radius slider ?
-// if in map view, load spot within radius
-
-// load global spots within fixed radius of 10km - its supposed to be near me
-// no slider needed to adjust the radius
