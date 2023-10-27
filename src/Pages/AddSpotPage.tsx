@@ -19,21 +19,12 @@ const AddSpotPage = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
 
-  // const addSpot = async (spot: Spot) => {
-  //   const ref = user && doc(db, "users", user.uid);
-  //   if (ref) {
-  //     await updateDoc(ref, { spots: arrayUnion(spot) }).catch((e: Error) =>
-  //       console.error(e)
-  //     );
-  //     navigate(HOME);
-  //   }
-  // };
-
   const addSpot = async (spot: Spot) => {
-    // const ref = user && collection(db, "users", user.uid, "spots");
-    const ref = user && collection(db, 'spots');
-    if (ref) {
-      await addDoc(ref, spot).catch((e: Error) => console.error(e));
+    const refLocal = user && collection(db, 'users', user.uid, 'spots');
+    const refGlobal = user && collection(db, 'spots');
+    if (refLocal && refGlobal) {
+      await addDoc(refLocal, spot).catch((e: Error) => console.error(e));
+      await addDoc(refGlobal, spot).catch((e: Error) => console.error(e));
       navigate(HOME);
     }
   };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ADD } from '../Consts/Routes';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { auth, db, spotConverter } from '../Firebase/Firebase';
@@ -13,32 +13,51 @@ import { Tags } from '../Consts/Tags';
 import { filterByArray } from '../Utils/array';
 import ListView from '../Components/ListView/ListView';
 import MapView from '../Components/MapView/MapView';
+import { spotsInRadius } from '../Utils/geo';
+import useGeolocation from '../Hooks/useGeolocation';
 
 const HomePage = () => {
   const [user] = useAuthState(auth);
+  const { location, locationError, getLocation } = useGeolocation();
   const [data, setData] = useState<ISpot[]>();
   const [useGlobal, setUseGlobal] = useState(false);
+  const [globalData, setGlobalData] = useState<ISpot[]>();
   const [filteredData, setFilteredData] = useState<ISpot[]>();
   const [isMapView, setIsMapView] = useState(false);
   const ref = collection(db, 'users', user!.uid, 'spots').withConverter(
     spotConverter
   );
-  const globalRef = collection(db, 'spots').withConverter(spotConverter);
   const [value, loading, error] = useCollectionData(ref);
-  const [globalValue, globalLoading, globalError] =
-    useCollectionData(globalRef);
 
   useEffect(() => {
     if (value) {
-      if (useGlobal && globalValue) {
-        setData(globalValue);
-        setFilteredData(globalValue);
-      } else {
-        setData(value);
-        setFilteredData(value);
-      }
+      setData(value);
+      setFilteredData(value);
     }
-  }, [value, useGlobal, globalValue]);
+  }, [value]);
+
+  useEffect(() => {
+    if (useGlobal) {
+      getLocation();
+    }
+    if (!useGlobal) {
+      setFilteredData(value);
+    }
+  }, [useGlobal]);
+
+  useEffect(() => {
+    const getSpots = async () => {
+      const globalData = await spotsInRadius(
+        [location.latitude, location.longitude],
+        db
+      ).catch((e) => console.log('e', e));
+      setGlobalData(globalData as ISpot[]);
+      setFilteredData(globalData as ISpot[]);
+    };
+    if (useGlobal && location.latitude && !locationError.code) {
+      getSpots();
+    }
+  }, [location]);
 
   const deleteHandler = async (ref: DocumentReference) => {
     if (ref) {
@@ -47,8 +66,7 @@ const HomePage = () => {
   };
 
   const filterHandler = (filterList: (typeof Tags)[]) => {
-    const rawData = useGlobal ? globalValue : data;
-    const filteredData = filterByArray(rawData as ISpot[], filterList, 'tags');
+    const filteredData = filterByArray(data as ISpot[], filterList, 'tags');
     setFilteredData(filteredData);
   };
 
@@ -81,7 +99,7 @@ const HomePage = () => {
         </div>
         <div className='form-ext-control'>
           <label className='form-ext-toggle__label'>
-            <span>{isMapView ? `Global` : `My`} spots</span>
+            <span>{useGlobal ? `Global` : `My`} spots</span>
             <div className='form-ext-toggle'>
               <input
                 name='toggleCheckbox'
