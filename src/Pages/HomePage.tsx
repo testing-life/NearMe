@@ -132,3 +132,8 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+// TODO delete global
+// TODO edit global
+// TODO toggles to another component
+// TODO spot operations to a service?
