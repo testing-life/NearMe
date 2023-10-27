@@ -1,5 +1,5 @@
-import { DocumentData, DocumentReference, GeoPoint } from "firebase/firestore";
-import { Ilocation } from "../Hooks/useGeolocation";
+import { DocumentData, DocumentReference, GeoPoint } from 'firebase/firestore';
+import { Ilocation } from '../Hooks/useGeolocation';
 
 export interface ISpot {
   poster: { url: string };
@@ -11,17 +11,19 @@ export interface ISpot {
   id: string;
   ref: DocumentReference<DocumentData>;
   geohash: string;
+  userId: string;
 }
 
 export class Spot {
-  id = "";
+  id = '';
   ref = {};
-  poster = { url: "" };
+  poster = { url: '' };
   tags: string[] = [];
-  address: string = "";
-  notes: string = "";
-  name: string = "";
-  geohash: string = "";
+  address: string = '';
+  notes: string = '';
+  name: string = '';
+  geohash: string = '';
+  userId: string = '';
   location: Ilocation = new GeoPoint(0, 0);
   static create(): Spot {
     return new Spot();

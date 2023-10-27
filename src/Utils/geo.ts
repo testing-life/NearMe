@@ -18,3 +18,5 @@ export const distanceMetres = (
   const result = 2 * r * Math.asin(Math.sqrt(a));
   return result * 1000;
 };
+
+export const radiusQuery = () => {};
