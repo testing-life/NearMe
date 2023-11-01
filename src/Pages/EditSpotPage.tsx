@@ -1,27 +1,29 @@
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { HOME } from "../Consts/Routes";
-import { auth, db } from "../Firebase/Firebase";
-import { ISpot, Spot } from "../Models/spot";
-import Header from "../Components/Header/Header";
-import EditSpot from "../Components/EditSpot/EditSpot";
+import { DocumentSnapshot, doc, getDoc, updateDoc } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { HOME } from '../Consts/Routes';
+import { auth, db, spotConverter } from '../Firebase/Firebase';
+import { ISpot, Spot } from '../Models/spot';
+import Header from '../Components/Header/Header';
+import EditSpot from '../Components/EditSpot/EditSpot';
+import { spotsDocRef } from '../Consts/SpotsRef';
 
 const EditSpotPage = () => {
   const [user] = useAuthState(auth);
-  const [data, setData] = useState<ISpot>();
+  const [data, setData] = useState<DocumentSnapshot<ISpot>>();
+  const [updateError, setUpdateError] = useState('');
   const navigate = useNavigate();
   let {
-    state: { id },
+    state: { id }
   } = useLocation();
 
   useEffect(() => {
     const getSpot = async () => {
-      const ref = doc(db, "users", user!.uid, "spots", id);
+      const ref = spotsDocRef(db, id);
       const querySnapshot = await getDoc(ref);
       if (querySnapshot.exists()) {
-        setData(querySnapshot.data() as ISpot);
+        setData(querySnapshot as DocumentSnapshot<ISpot>);
       }
     };
     if (id) {
@@ -30,9 +32,12 @@ const EditSpotPage = () => {
   }, [id]);
 
   const editHandler = async (newSpot: ISpot) => {
-    const ref = doc(db, "users", user!.uid, "spots", id);
-    if (ref) {
-      updateDoc(ref, { ...newSpot }).catch((e: Error) => console.error(e));
+    if (data?.ref) {
+      setUpdateError('');
+      updateDoc(data?.ref, { ...newSpot }).catch((e: Error) => {
+        console.error(e);
+        setUpdateError(e.message);
+      });
       navigate(HOME);
     }
   };
@@ -40,10 +45,15 @@ const EditSpotPage = () => {
   return (
     <>
       <Header auth={auth} />
-      <div className="p-2 max-w-sm u-center">
-        {user && data ? (
-          <EditSpot editHandler={editHandler} data={data} userId={user!.uid} />
+      <div className='p-2 max-w-sm u-center'>
+        {user && data?.data() ? (
+          <EditSpot
+            editHandler={editHandler}
+            data={data.data() as ISpot}
+            userId={user!.uid}
+          />
         ) : null}
+        {updateError && <p>{updateError}</p>}
         <Link to={HOME}>Cancel</Link>
       </div>
     </>

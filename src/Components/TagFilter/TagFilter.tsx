@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
-import { Tags } from "../../Consts/Tags";
-import TagButton from "../TagButton/TagButton";
+import React, { FC, useEffect, useState } from 'react';
+import { Tags } from '../../Consts/Tags';
+import TagButton from '../TagButton/TagButton';
 
 interface Props {
   clickHandler: (filterList: (typeof Tags)[]) => void;
@@ -24,7 +24,7 @@ const TagFilter: FC<Props> = ({ clickHandler }) => {
   };
 
   return (
-    <ul className="u-flex u-flex-wrap u-gap-1">
+    <ul className='u-flex u-flex-wrap u-gap-1'>
       {Tags.map((tag: (typeof Tags)[number], index: number) => {
         return (
           <li key={`${tag}${index}`}>
