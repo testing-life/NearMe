@@ -7,17 +7,16 @@ import { HOME } from '../Consts/Routes';
 import { auth, db } from '../Firebase/Firebase';
 import { Spot } from '../Models/spot';
 import Header from '../Components/Header/Header';
+import { spotsCollectionRef } from '../Consts/SpotsRef';
 
 const AddSpotPage = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
 
   const addSpot = async (spot: Spot) => {
-    const refLocal = user && collection(db, 'users', user.uid, 'spots');
-    const refGlobal = user && collection(db, 'spots');
-    if (refLocal && refGlobal) {
-      await addDoc(refLocal, spot).catch((e: Error) => console.error(e));
-      await addDoc(refGlobal, spot).catch((e: Error) => console.error(e));
+    const ref = user && spotsCollectionRef(db);
+    if (ref) {
+      await addDoc(ref, spot).catch((e: Error) => console.error(e));
       navigate(HOME);
     }
   };

@@ -1,10 +1,10 @@
-import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
-import useGeolocation from "../../Hooks/useGeolocation";
-import useReverseGeocode from "../../Hooks/useReverseGeocode";
-import { ISpot } from "../../Models/spot";
-import { GeoPoint } from "firebase/firestore";
-import { Tags } from "../../Consts/Tags";
-import TagButton from "../TagButton/TagButton";
+import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
+import useGeolocation from '../../Hooks/useGeolocation';
+import useReverseGeocode from '../../Hooks/useReverseGeocode';
+import { ISpot } from '../../Models/spot';
+import { GeoPoint } from 'firebase/firestore';
+import { Tags } from '../../Consts/Tags';
+import TagButton from '../TagButton/TagButton';
 
 interface Props {
   editHandler: (spot: ISpot) => void;
@@ -23,7 +23,7 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
   };
 
   useEffect(() => {
-    if (location) {
+    if (location.latitude && location.longitude) {
       const geopoint = new GeoPoint(location.latitude, location.longitude);
       setSpot({ ...spot, location: geopoint });
       getAddress(location);
@@ -31,7 +31,7 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
   }, [location]);
 
   useEffect(() => {
-    if (address) {
+    if (Object.keys(address).length) {
       setSpot({ ...spot, address: address.formatted });
       setIsSearching(false);
     }
@@ -45,10 +45,10 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
   return (
     <>
       <form onSubmit={onSubmit}>
-        <label htmlFor="place">Name</label>
+        <label htmlFor='place'>Name</label>
         <input
-          type="text"
-          id="place"
+          type='text'
+          id='place'
           value={spot.name}
           placeholder="Place's name"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -82,16 +82,16 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
           </>
         </div>
         <div>
-          <label htmlFor="address">Address</label>
+          <label htmlFor='address'>Address</label>
           <input
             value={spot.address}
-            type="string"
-            placeholder="This places address"
+            type='string'
+            placeholder='This places address'
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setSpot({ ...spot, address: e.target.value })
             }
           />
-          <button type="button" onClick={guessAddress}>
+          <button type='button' onClick={guessAddress}>
             Guess address
           </button>
           {locationError && <p>{locationError.message}</p>}
@@ -99,13 +99,13 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
           {isSearching && <p>Looking up address...</p>}
         </div>
         <textarea
-          placeholder="Notes"
+          placeholder='Notes'
           value={spot.notes}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
             setSpot({ ...spot, notes: e.target.value })
           }
         />
-        <button type="submit">Edit</button>
+        <button type='submit'>Edit</button>
       </form>
     </>
   );

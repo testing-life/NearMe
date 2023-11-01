@@ -51,7 +51,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   }, [location]);
 
   useEffect(() => {
-    if (address) {
+    if (Object.keys(address).length) {
       setSpot({ ...spot, address: address.formatted });
       setIsSearching(false);
     }

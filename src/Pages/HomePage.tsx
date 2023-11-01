@@ -4,7 +4,13 @@ import { ADD } from '../Consts/Routes';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { auth, db, spotConverter } from '../Firebase/Firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { DocumentReference, collection, deleteDoc } from 'firebase/firestore';
+import {
+  DocumentReference,
+  collection,
+  deleteDoc,
+  query,
+  where
+} from 'firebase/firestore';
 import { ISpot } from '../Models/spot';
 import Header from '../Components/Header/Header';
 import './HomePage.css';
@@ -15,6 +21,7 @@ import ListView from '../Components/ListView/ListView';
 import MapView from '../Components/MapView/MapView';
 import { spotsInRadius } from '../Utils/geo';
 import useGeolocation from '../Hooks/useGeolocation';
+import { spotsCollectionRef } from '../Consts/SpotsRef';
 
 const HomePage = () => {
   const [user] = useAuthState(auth);
@@ -24,9 +31,11 @@ const HomePage = () => {
   const [globalData, setGlobalData] = useState<ISpot[]>();
   const [filteredData, setFilteredData] = useState<ISpot[]>();
   const [isMapView, setIsMapView] = useState(false);
-  const ref = collection(db, 'users', user!.uid, 'spots').withConverter(
-    spotConverter
-  );
+  const ref = query(
+    spotsCollectionRef(db),
+    where('userId', '==', user?.uid)
+  ).withConverter(spotConverter);
+
   const [value, loading, error] = useCollectionData(ref);
 
   useEffect(() => {
@@ -127,13 +136,15 @@ const HomePage = () => {
       {loading && <p>Loading data...</p>}
       {error && <p>{error.message}</p>}
       {!data && <p>You haven't added any spots yet.</p>}
+      {useGlobal && !filteredData?.length && (
+        <p>It seems there are no spots within 10km from your location.</p>
+      )}
     </>
   );
 };
 
 export default HomePage;
 
-// TODO delete global
 // TODO edit global
 // TODO toggles to another component
 // TODO spot operations to a service?

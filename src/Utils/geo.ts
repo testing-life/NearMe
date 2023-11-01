@@ -10,6 +10,7 @@ import {
 } from 'firebase/firestore';
 
 import { spotConverter } from '../Firebase/Firebase';
+import { spotsCollectionRef } from '../Consts/SpotsRef';
 
 export const distanceMetres = (
   lat1: number,
@@ -41,7 +42,7 @@ export const spotsInRadius = async (
   const promises = [];
   for (const b of bounds) {
     const q = query(
-      collection(db, 'spots'),
+      spotsCollectionRef(db),
       orderBy('geohash'),
       startAt(b[0]),
       endAt(b[1])
