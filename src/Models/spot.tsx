@@ -9,14 +9,14 @@ export interface ISpot {
   location: Ilocation;
   name: string;
   id: string;
-  ref: DocumentReference<DocumentData>;
+  ref: DocumentReference<DocumentData> | null;
   geohash: string;
   userId: string;
 }
 
 export class Spot {
   id = '';
-  ref = {};
+  ref = null;
   poster = { url: '' };
   tags: string[] = [];
   address: string = '';

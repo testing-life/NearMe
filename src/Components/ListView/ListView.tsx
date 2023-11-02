@@ -26,7 +26,7 @@ const ListView: FC<Props> = ({ filteredData, deleteHandler }) => {
             )}
             <button
               className='btn-link bg-orange-2 outline'
-              onClick={() => deleteHandler(spot.ref)}>
+              onClick={() => deleteHandler(spot.ref as DocumentReference)}>
               Delete
             </button>
           </Spot>

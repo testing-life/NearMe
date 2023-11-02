@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
 import useGeolocation from '../../Hooks/useGeolocation';
 import useReverseGeocode from '../../Hooks/useReverseGeocode';
-import { Spot } from '../../Models/spot';
+import { ISpot, Spot } from '../../Models/spot';
 import { GeoPoint } from 'firebase/firestore';
 import { Tags } from '../../Consts/Tags';
 import Input from '../Input/Input';
@@ -13,7 +13,7 @@ import TakePhoto from '../TakePhoto/TakePhoto';
 import * as geofire from 'geofire-common';
 
 interface Props {
-  submitHandler: (spot: Spot) => void;
+  submitHandler: (spot: ISpot) => void;
   userId: string;
 }
 
@@ -30,12 +30,15 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const newSpot = { ...spot, userId: user!.uid };
+    let newSpot = { ...spot, userId: user!.uid };
     if (image) {
-      storageUpload(image);
-    } else {
-      submitHandler(newSpot);
+      const downloadUrl = await storageUpload(image);
+      newSpot = {
+        ...newSpot,
+        poster: { ...spot.poster, url: downloadUrl as any }
+      };
     }
+    submitHandler(newSpot);
   };
 
   useEffect(() => {
@@ -63,41 +66,44 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   };
 
   const storageUpload = (data: File) => {
-    const storageRef = ref(storage, `${user?.uid || 'img'}/${data.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, data);
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setUploadProgress(progress);
-      },
-      (error) => {
-        setUploadError(`${error.cause} ${error.message}`);
-      },
-      async () => {
-        const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-        if (downloadUrl) {
-          const imagedSpot = {
-            ...spot,
-            poster: { ...spot.poster, url: downloadUrl }
-          };
-          // TODO split this
-          // BUG submits spot immediately after img upload
-          submitHandler(imagedSpot);
+    return new Promise((resolve, reject) => {
+      const storageRef = ref(storage, `${user?.uid || 'img'}/${data.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, data);
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setUploadProgress(progress);
+        },
+        (error) => {
+          setUploadError(`${error.cause} ${error.message}`);
+          reject();
+        },
+        async () => {
+          const downloadUrl = getDownloadURL(uploadTask.snapshot.ref);
+          if (downloadUrl) {
+            resolve(downloadUrl);
+          }
         }
-      }
-    );
+      );
+    });
   };
 
-  const uploadHandler = (e: ChangeEvent) => {
+  const uploadHandler = async (e: ChangeEvent) => {
     e.preventDefault();
     const file = (e.target as HTMLInputElement).files?.[0];
     if (!file) {
       return;
     }
-    storageUpload(file);
+    const downloadUrl = await storageUpload(file);
+    if (downloadUrl) {
+      setSpot({
+        ...spot,
+        poster: { ...spot.poster, url: downloadUrl as any }
+      });
+    }
   };
 
   const captureHandler = (data: File | null) => {
