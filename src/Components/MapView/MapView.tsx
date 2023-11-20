@@ -1,22 +1,24 @@
-import React, { ChangeEvent, FC, useEffect, useState } from "react";
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import {
   Circle,
   MapContainer,
   Marker,
   Popup,
   TileLayer,
-  useMap,
-} from "react-leaflet";
-import { ISpot } from "../../Models/spot";
-import useGeolocation from "../../Hooks/useGeolocation";
-import { distanceMetres } from "../../Utils/geo";
+  useMap
+} from 'react-leaflet';
+import { ISpot } from '../../Models/spot';
+import useGeolocation, { Ilocation } from '../../Hooks/useGeolocation';
+import { distanceMetres } from '../../Utils/geo';
+import SetNavigation from '../Navigating/Navigating';
+declare let L: any;
 
 interface Props {
   filteredData: ISpot[];
 }
 
 const SetView = ({
-  location: { lat, lng },
+  location: { lat, lng }
 }: {
   location: { lat: number; lng: number };
 }) => {
@@ -30,7 +32,8 @@ const SetView = ({
 const MapView: FC<Props> = ({ filteredData }) => {
   const { location, locationError, getLocation } = useGeolocation();
   const [radiusMetres, setRadiusMetres] = useState(500);
-  const fillBlueOptions = { fillColor: "blue" };
+  const [destination, setDestination] = useState<Ilocation>();
+  const fillBlueOptions = { fillColor: 'blue' };
 
   useEffect(() => {
     getLocation();
@@ -39,29 +42,38 @@ const MapView: FC<Props> = ({ filteredData }) => {
   const zoom = 15;
   return (
     <>
-      <label htmlFor="searchRange">Distance</label>
+      <label htmlFor='searchRange'>Distance</label>
       <input
-        id="searchRange"
-        type="range"
-        step="1"
-        max="5000"
-        min="500"
+        id='searchRange'
+        type='range'
+        step='1'
+        max='5000'
+        min='5'
         onChange={(e: ChangeEvent) =>
           setRadiusMetres(parseInt((e.target as HTMLInputElement).value))
         }
       />
+      <button onClick={() => setDestination(undefined)}>Clear route</button>
       <MapContainer
         zoom={zoom}
         center={{ lat: location.latitude, lng: location.longitude }}
         scrollWheelZoom={true}
-        style={{ height: "80vh" }}
-      >
+        style={{ height: '80vh' }}>
         <SetView
           location={{ lat: location.latitude, lng: location.longitude }}
         />
+        {destination && (
+          <SetNavigation
+            source={{ lat: location.latitude, lng: location.longitude }}
+            destination={{
+              lat: destination.latitude,
+              lng: destination.longitude
+            }}
+          />
+        )}
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
         <Marker position={{ lat: location.latitude, lng: location.longitude }}>
           <Popup>That's you.</Popup>
@@ -74,7 +86,9 @@ const MapView: FC<Props> = ({ filteredData }) => {
               spot.location.latitude,
               spot.location.latitude
             );
-            if (range <= radiusMetres) {
+            // TODO fix range & metres, make more precise
+            console.log('range,radiusMetres', range, radiusMetres);
+            if (Math.floor(range) <= radiusMetres) {
               return spot;
             }
           })
@@ -84,12 +98,14 @@ const MapView: FC<Props> = ({ filteredData }) => {
                 key={`${spot.name}${index}`}
                 position={{
                   lat: spot.location.latitude,
-                  lng: spot.location.longitude,
-                }}
-              >
+                  lng: spot.location.longitude
+                }}>
                 <Popup>
                   <p>{spot.name}</p>
                   <p>{spot.address}</p>
+                  <button onClick={() => setDestination(spot.location)}>
+                    Show route
+                  </button>
                 </Popup>
               </Marker>
             );
