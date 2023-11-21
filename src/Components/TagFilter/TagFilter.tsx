@@ -1,6 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Tags } from '../../Consts/Tags';
 import TagButton from '../TagButton/TagButton';
+import { doc } from 'firebase/firestore';
+import { useDocument } from 'react-firebase-hooks/firestore';
+import { auth, db } from '../../Firebase/Firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 interface Props {
   clickHandler: (filterList: (typeof Tags)[]) => void;
@@ -8,10 +12,16 @@ interface Props {
 
 const TagFilter: FC<Props> = ({ clickHandler }) => {
   const [filterList, setFilterList] = useState<(typeof Tags)[]>([]);
+  const [user] = useAuthState(auth);
+  const [value, loading, error] = useDocument(doc(db, 'users', user!.uid));
 
   useEffect(() => {
     clickHandler(filterList);
   }, [filterList]);
+
+  useEffect(() => {
+    console.log('value', value?.data()?.tags);
+  }, [value]);
 
   const filterListHandler = (tag: typeof Tags) => {
     let newFilters = [];

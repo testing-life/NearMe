@@ -1,12 +1,13 @@
-import React, { ChangeEvent, FC } from "react";
+import React, { ChangeEvent, FC } from 'react';
 
 interface Props {
   required?: boolean;
   id: string;
   placeholder?: string;
   label: string;
+  name?: string;
   value: any;
-  type: "text" | "email" | "password";
+  type?: 'text' | 'email' | 'password';
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   error?: string;
 }
@@ -14,12 +15,13 @@ interface Props {
 const Input: FC<Props> = ({
   required = false,
   id,
-  placeholder = "",
+  placeholder = '',
   label,
   value,
-  type,
+  name,
+  type = 'text',
   onChange,
-  error,
+  error
 }) => {
   return (
     <>
@@ -27,14 +29,15 @@ const Input: FC<Props> = ({
       <input
         required={required}
         id={id}
+        name={name}
         type={type}
-        className="bg-light"
+        className='bg-light'
         placeholder={placeholder}
         value={value}
         onChange={onChange}
       />
 
-      {error ? <p className="text-warning">{error}</p> : null}
+      {error ? <p className='text-warning'>{error}</p> : null}
     </>
   );
 };

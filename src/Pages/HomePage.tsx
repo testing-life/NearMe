@@ -6,9 +6,12 @@ import { auth, db, spotConverter } from '../Firebase/Firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import {
   DocumentReference,
+  arrayUnion,
   collection,
   deleteDoc,
+  doc,
   query,
+  setDoc,
   where
 } from 'firebase/firestore';
 import { ISpot } from '../Models/spot';
@@ -22,6 +25,7 @@ import MapView from '../Components/MapView/MapView';
 import { spotsInRadius } from '../Utils/geo';
 import useGeolocation from '../Hooks/useGeolocation';
 import { spotsCollectionRef } from '../Consts/SpotsRef';
+import CustomTag from '../Components/CustomTag/CustomTag';
 
 const HomePage = () => {
   const [user] = useAuthState(auth);
@@ -40,6 +44,7 @@ const HomePage = () => {
 
   useEffect(() => {
     if (value) {
+      console.log('value', value, user);
       setData(value);
       setFilteredData(value);
     }
@@ -79,6 +84,16 @@ const HomePage = () => {
     setFilteredData(filteredData);
   };
 
+  const addTagHandler = async (tag: string) => {
+    await setDoc(
+      doc(db, 'users', user!.uid),
+      {
+        tags: arrayUnion(tag)
+      },
+      { merge: true }
+    ).catch((error: Error) => console.error(error.message));
+  };
+
   return (
     <>
       <Header auth={auth} />
@@ -87,7 +102,10 @@ const HomePage = () => {
           Add Spot
         </Link>
       </button>
-      <TagFilter clickHandler={filterHandler} />
+      <div className='u-flex'>
+        <CustomTag tagHandler={addTagHandler} />
+        <TagFilter clickHandler={filterHandler} />
+      </div>
       <div className='row'>
         <div className='form-ext-control'>
           <label className='form-ext-toggle__label'>
