@@ -44,7 +44,6 @@ const HomePage = () => {
 
   useEffect(() => {
     if (value) {
-      console.log('value', value, user);
       setData(value);
       setFilteredData(value);
     }

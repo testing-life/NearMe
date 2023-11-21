@@ -87,7 +87,6 @@ const MapView: FC<Props> = ({ filteredData }) => {
               spot.location.latitude
             );
             // TODO fix range & metres, make more precise
-            console.log('range,radiusMetres', range, radiusMetres);
             if (Math.floor(range) <= radiusMetres) {
               return spot;
             }
