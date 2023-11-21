@@ -7,23 +7,27 @@ import { auth, db } from '../../Firebase/Firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 interface Props {
-  clickHandler: (filterList: (typeof Tags)[]) => void;
+  clickHandler: (filterList: string[]) => void;
 }
 
 const TagFilter: FC<Props> = ({ clickHandler }) => {
-  const [filterList, setFilterList] = useState<(typeof Tags)[]>([]);
+  const [filterList, setFilterList] = useState<string[]>([]);
   const [user] = useAuthState(auth);
-  const [value, loading, error] = useDocument(doc(db, 'users', user!.uid));
+  const [customTags, loading, error] = useDocument(doc(db, 'users', user!.uid));
+  const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
     clickHandler(filterList);
   }, [filterList]);
 
   useEffect(() => {
-    console.log('value', value?.data()?.tags);
-  }, [value]);
+    const newTags: string[] = customTags?.data()?.tags;
+    if (newTags?.length) {
+      setTags([...newTags, ...Tags]);
+    }
+  }, [customTags]);
 
-  const filterListHandler = (tag: typeof Tags) => {
+  const filterListHandler = (tag: string) => {
     let newFilters = [];
     if (filterList.includes(tag)) {
       newFilters = filterList.filter((item) => item !== tag);
@@ -35,16 +39,16 @@ const TagFilter: FC<Props> = ({ clickHandler }) => {
 
   return (
     <ul className='u-flex u-flex-wrap u-gap-1'>
-      {Tags.map((tag: (typeof Tags)[number], index: number) => {
+      {loading && <p>Loading tags...</p>}
+      {error && <p>Couldn't load tags. {error.message}</p>}
+      {tags.map((tag: (typeof Tags)[number] | string, index: number) => {
         return (
           <li key={`${tag}${index}`}>
             <TagButton
-              //   TODO check typing
-              isSelected={filterList.includes(tag as any)}
-              remove={filterList.includes(tag as any)}
+              isSelected={filterList.includes(tag)}
+              remove={filterList.includes(tag)}
               tagLabel={tag}
-              //   TODO check typing
-              clickHandler={() => filterListHandler(tag as any)}
+              clickHandler={() => filterListHandler(tag)}
             />
           </li>
         );

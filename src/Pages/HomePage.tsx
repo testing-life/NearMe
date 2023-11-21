@@ -79,7 +79,7 @@ const HomePage = () => {
     }
   };
 
-  const filterHandler = (filterList: (typeof Tags)[]) => {
+  const filterHandler = (filterList: string[]) => {
     const filteredData = filterByArray(data as ISpot[], filterList, 'tags');
     setFilteredData(filteredData);
   };
