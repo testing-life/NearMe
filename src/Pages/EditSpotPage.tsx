@@ -1,10 +1,10 @@
-import { DocumentSnapshot, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { DocumentSnapshot, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { HOME } from '../Consts/Routes';
-import { auth, db, spotConverter } from '../Firebase/Firebase';
-import { ISpot, Spot } from '../Models/spot';
+import { auth, db } from '../Firebase/Firebase';
+import { ISpot } from '../Models/spot';
 import Header from '../Components/Header/Header';
 import EditSpot from '../Components/EditSpot/EditSpot';
 import { spotsDocRef } from '../Consts/SpotsRef';
