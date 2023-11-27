@@ -101,9 +101,13 @@ const HomePage = () => {
           Add Spot
         </Link>
       </button>
-      <div className='u-flex'>
-        <CustomTag tagHandler={addTagHandler} />
-        <TagFilter clickHandler={filterHandler} />
+      <div className='row'>
+        <div className='col-2'>
+          <CustomTag tagHandler={addTagHandler} />
+        </div>
+        <div className='col-2'>
+          <TagFilter clickHandler={filterHandler} />
+        </div>
       </div>
       <div className='row'>
         <div className='form-ext-control'>
