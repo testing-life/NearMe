@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ADD } from '../Consts/Routes';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { auth, db, spotConverter } from '../Firebase/Firebase';
@@ -7,7 +7,6 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import {
   DocumentReference,
   arrayUnion,
-  collection,
   deleteDoc,
   doc,
   query,
@@ -18,7 +17,6 @@ import { ISpot } from '../Models/spot';
 import Header from '../Components/Header/Header';
 import './HomePage.css';
 import TagFilter from '../Components/TagFilter/TagFilter';
-import { Tags } from '../Consts/Tags';
 import { filterByArray } from '../Utils/array';
 import ListView from '../Components/ListView/ListView';
 import MapView from '../Components/MapView/MapView';
@@ -94,7 +92,7 @@ const HomePage = () => {
   };
 
   return (
-    <>
+    <section className='h-screen'>
       <Header auth={auth} />
       <button className='bg-primary lg border-red-800'>
         <Link className='text-light' to={ADD}>
@@ -160,7 +158,7 @@ const HomePage = () => {
       {useGlobal && !filteredData?.length && (
         <p>It seems there are no spots within 10km from your location.</p>
       )}
-    </>
+    </section>
   );
 };
 

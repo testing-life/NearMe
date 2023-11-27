@@ -14,7 +14,7 @@ import EditSpotPage from './Pages/EditSpotPage';
 
 function App() {
   return (
-    <div className='bg-teal-900 u-center h-screen text-light'>
+    <div className='bg-teal-900 h-screen text-light'>
       <Routes>
         <Route
           path='/'

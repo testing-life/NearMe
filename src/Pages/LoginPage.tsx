@@ -26,7 +26,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className='p-1'>
+    <div className='p-1 h-screen u-center u-flex u-flex-column'>
       <Login submitHandler={onSubmit} classes='mb-8' />
       {error && (
         <p className='bg-danger text-light'>
@@ -36,7 +36,7 @@ const LoginPage = () => {
       {loading && <div className='animated h-8 loading loading-white'></div>}
       <p>
         No account?{' '}
-        <Link className='u u-LR text-light' to={SIGN_UP}>
+        <Link className='u u-LR  text-yellow-300 text-light' to={SIGN_UP}>
           Sign up
         </Link>
       </p>
