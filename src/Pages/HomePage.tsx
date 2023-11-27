@@ -92,22 +92,59 @@ const HomePage = () => {
   };
 
   return (
-    <section className='h-screen'>
-      <Header auth={auth} />
-      <button className='bg-primary lg border-red-800'>
+    <section className='grid bg-teal-900 u-gap-2 '>
+      <div className='grid-c-12'>
+        <Header auth={auth}>
+          <Link className='btn bg-yellow-300' to={ADD}>
+            Add Spot
+          </Link>
+        </Header>
+      </div>
+      <div className='grid-c-12 '>
+        <div className='row'>
+          {/* <div className='col-2'>
+          <CustomTag tagHandler={addTagHandler} />
+        </div> */}
+          <TagFilter clickHandler={filterHandler} />
+        </div>
+        <div className='row'>
+          {filteredData ? (
+            isMapView ? (
+              <MapView filteredData={filteredData} />
+            ) : (
+              <ListView
+                filteredData={filteredData}
+                deleteHandler={deleteHandler}
+              />
+            )
+          ) : (
+            <p>No data to display</p>
+          )}
+          {loading && <p>Loading data...</p>}
+          {error && <p>{error.message}</p>}
+          {!data && <p>You haven't added any spots yet.</p>}
+          {useGlobal && !filteredData?.length && (
+            <p>It seems there are no spots within 10km from your location.</p>
+          )}
+        </div>
+      </div>
+      <div className='grid-c-12'>
+        <footer className='footer'>
+          <div className='row level'>
+            <div className='col-4'>
+              <p className='white font-bold'>
+                <span className='faded'>© 2018</span> Penguin
+              </p>
+            </div>
+          </div>
+        </footer>
+      </div>
+      {/* <button className='bg-primary lg border-red-800'>
         <Link className='text-light' to={ADD}>
           Add Spot
         </Link>
-      </button>
-      <div className='row'>
-        <div className='col-2'>
-          <CustomTag tagHandler={addTagHandler} />
-        </div>
-        <div className='col-2'>
-          <TagFilter clickHandler={filterHandler} />
-        </div>
-      </div>
-      <div className='row'>
+      </button> */}
+      {/* <div className='row'>
         <div className='form-ext-control'>
           <label className='form-ext-toggle__label'>
             <span>{isMapView ? `Map` : `List`} view</span>
@@ -142,22 +179,7 @@ const HomePage = () => {
             </div>
           </label>
         </div>
-      </div>
-      {filteredData ? (
-        isMapView ? (
-          <MapView filteredData={filteredData} />
-        ) : (
-          <ListView filteredData={filteredData} deleteHandler={deleteHandler} />
-        )
-      ) : (
-        <p>No data to display</p>
-      )}
-      {loading && <p>Loading data...</p>}
-      {error && <p>{error.message}</p>}
-      {!data && <p>You haven't added any spots yet.</p>}
-      {useGlobal && !filteredData?.length && (
-        <p>It seems there are no spots within 10km from your location.</p>
-      )}
+      </div> */}
     </section>
   );
 };

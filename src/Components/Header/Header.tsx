@@ -1,28 +1,35 @@
-import { Auth } from "firebase/auth";
-import React, { FC } from "react";
-import { useSignOut } from "react-firebase-hooks/auth";
-import { Link } from "react-router-dom";
-import { UPDATE } from "../../Consts/Routes";
+import { Auth } from 'firebase/auth';
+import React, { FC, ReactNode } from 'react';
+import { useSignOut } from 'react-firebase-hooks/auth';
+import { Link } from 'react-router-dom';
+import { UPDATE } from '../../Consts/Routes';
+import './Header.css';
 
 interface Props {
   auth: Auth;
+  children?: ReactNode;
 }
 
-const Header: FC<Props> = ({ auth }) => {
+const Header: FC<Props> = ({ auth, children }) => {
   const [signOut, loading, error] = useSignOut(auth);
   return (
-    <nav>
-      <ul className="u-flex u-justify-space-between u-items-baseline">
+    <header className='header'>
+      <ul className='u-flex u-gap-4  u-items-baseline nav-right'>
+        {children && <li>{children}</li>}
         <li>
-          <button onClick={async () => await signOut()}>Log out</button>
-        </li>
-        <li>
-          <Link className="text-light" to={UPDATE}>
+          <Link className='btn bg-yellow-300' to={UPDATE}>
             Update Details
           </Link>
         </li>
+        <li className='--to-right'>
+          <button
+            className='bg-danger text-light'
+            onClick={async () => await signOut()}>
+            Log out
+          </button>
+        </li>
       </ul>
-    </nav>
+    </header>
   );
 };
 
