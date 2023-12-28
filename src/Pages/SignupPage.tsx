@@ -7,6 +7,7 @@ import { LOG_IN } from "../Consts/Routes";
 import { auth, db } from "../Firebase/Firebase";
 import { Profile } from "../Models/profile";
 import { UserCredential } from "firebase/auth";
+import Button from "../Components/Button/Button";
 
 const SignupPage = () => {
   const [createUserWithEmailAndPassword, user, , createUserError] =
@@ -33,7 +34,6 @@ const SignupPage = () => {
 
   return (
     <div className="p-1">
-      <Signup submitHandler={onSubmit} />;
       {createUserError && <p>{createUserError.message}</p>}
     </div>
   );

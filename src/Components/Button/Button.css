@@ -1,0 +1,27 @@
+.btn {
+  border-radius: 12px;
+  background: linear-gradient(
+    91deg,
+    var(--btn-gradient-1) -4.37%,
+    var(--btn-gradient-2) 53.69%,
+    var(--btn-gradient-3) 100%
+  );
+  border: none;
+  padding: 18px 22px;
+  text-align: center;
+}
+
+.btn:hover,
+.btn:focus {
+  cursor: pointer;
+  background: linear-gradient(
+    272deg,
+    var(--btn-gradient-1) -4.37%,
+    var(--btn-gradient-2) 53.69%,
+    var(--btn-gradient-3) 100%
+  );
+}
+
+.--full-width {
+  width: 100%;
+}

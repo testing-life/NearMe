@@ -4,6 +4,15 @@
   --bg-sphere-3: #a5fbff4d;
   --bg-sphere-4: #a4379e33;
   --bg: #0c0d12;
+  --btn-gradient-1: #b0a5ff;
+  --btn-gradient-2: #a6b3ff;
+  --btn-gradient-3: #4cabef;
+  --input-bg: #18182080;
+  --input-stroke: #ffffff26;
+  --input-valid: #00b7b7;
+  --input-invalid: #ff7d7d;
+  --text-colour: #fff;
+  --text-colour-inverted: #000;
 }
 
 html {
@@ -28,4 +37,14 @@ html {
 
 body {
   backdrop-filter: blur(4px);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.wrapper {
+  padding: 16px;
+  color: var(--text-colour);
 }

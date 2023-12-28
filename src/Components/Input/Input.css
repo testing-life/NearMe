@@ -1,0 +1,31 @@
+.invisible {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.input {
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-stroke);
+  padding: 18px 24px;
+  border-radius: 12px;
+  width: 100%;
+}
+
+.input::placeholder {
+  color: var(--text-colour);
+}
+
+.input:not(:empty):valid {
+  box-shadow: 0 0 0 2px var(--input-valid);
+  color: var(--input-valid);
+}
+
+.input:not(:empty):invalid {
+  box-shadow: 0 0 0 2px var(--input-);
+  color: var(--input-valid);
+}

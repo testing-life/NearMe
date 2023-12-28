@@ -7,50 +7,52 @@ import HomePage from "./Pages/HomePage";
 import LoginPage from "./Pages/LoginPage";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import AddSpotPage from "./Pages/AddSpotPage";
-import "cirrus-ui";
+// import "cirrus-ui";
 import UpdateCredentialsPage from "./Pages/UpdateCredentialsPage";
 import ResetPasswordPage from "./Pages/ResetPasswordPage";
 import EditSpotPage from "./Pages/EditSpotPage";
 
 function App() {
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <PrivateRoute>
-            <HomePage />
-          </PrivateRoute>
-        }
-      />
-      <Route path={ROUTES.SIGN_UP} element={<SignupPage />} />
-      <Route path={ROUTES.LOG_IN} element={<LoginPage />} />
-      <Route
-        path={ROUTES.ADD}
-        element={
-          <PrivateRoute>
-            <AddSpotPage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path={ROUTES.EDIT}
-        element={
-          <PrivateRoute>
-            <EditSpotPage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path={ROUTES.UPDATE}
-        element={
-          <PrivateRoute>
-            <UpdateCredentialsPage />
-          </PrivateRoute>
-        }
-      />
-      <Route path={ROUTES.RESET} element={<ResetPasswordPage />} />
-    </Routes>
+    <div className="wrapper">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <HomePage />
+            </PrivateRoute>
+          }
+        />
+        <Route path={ROUTES.SIGN_UP} element={<SignupPage />} />
+        <Route path={ROUTES.LOG_IN} element={<LoginPage />} />
+        <Route
+          path={ROUTES.ADD}
+          element={
+            <PrivateRoute>
+              <AddSpotPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={ROUTES.EDIT}
+          element={
+            <PrivateRoute>
+              <EditSpotPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={ROUTES.UPDATE}
+          element={
+            <PrivateRoute>
+              <UpdateCredentialsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route path={ROUTES.RESET} element={<ResetPasswordPage />} />
+      </Routes>
+    </div>
   );
 }
 

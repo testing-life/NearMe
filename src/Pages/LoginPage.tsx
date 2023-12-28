@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Login from "../Components/Login/Login";
 import { HOME, RESET, SIGN_UP } from "../Consts/Routes";
 import { auth } from "../Firebase/Firebase";
+import Button from "../Components/Button/Button";
 
 const LoginPage = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
@@ -36,6 +37,7 @@ const LoginPage = () => {
           Sign up
         </Link>
       </p>
+      <Button fullWidth>TEst</Button>
       <p>
         Forgot your password ?{" "}
         <Link className="u u-LR" to={RESET}>

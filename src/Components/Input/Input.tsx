@@ -1,5 +1,5 @@
-import React, { ChangeEvent, FC } from 'react';
-
+import React, { ChangeEvent, FC } from "react";
+import "./Input.css";
 interface Props {
   required?: boolean;
   id: string;
@@ -7,7 +7,7 @@ interface Props {
   label: string;
   name?: string;
   value: any;
-  type?: 'text' | 'email' | 'password';
+  type?: "text" | "email" | "password";
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   error?: string;
 }
@@ -15,30 +15,30 @@ interface Props {
 const Input: FC<Props> = ({
   required = false,
   id,
-  placeholder = '',
   label,
   value,
   name,
-  type = 'text',
+  type = "text",
   onChange,
-  error
+  error,
 }) => {
   return (
-    <>
-      <label htmlFor={id}>{label}</label>
+    <div className={`input-wrapper ${true ? "--is-invalid" : null}`}>
+      <label className="invisible" htmlFor={id}>
+        {label}
+      </label>
       <input
         required={required}
         id={id}
         name={name}
         type={type}
-        className='bg-light'
-        placeholder={placeholder}
+        className="input"
+        placeholder={label}
         value={value}
         onChange={onChange}
       />
-
-      {error ? <p className='text-warning'>{error}</p> : null}
-    </>
+      {error ? <p className="text-warning">{error}</p> : null}
+    </div>
   );
 };
 
