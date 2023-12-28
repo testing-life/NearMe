@@ -1,8 +1,4 @@
-html {
-  background-color: rgba(164, 202, 254, var(--bg-opacity));
-}
-
-:where(ul,ol) li {
+:where(ul, ol) li {
   list-style-type: none;
 }
 
@@ -15,7 +11,9 @@ html {
     Remove all the styles of the "User-Agent-Stylesheet", except for the 'display' property
     - The "symbol *" part is to solve Firefox SVG sprite bug
  */
-*:where(:not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)) {
+*:where(
+    :not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)
+  ) {
   all: unset;
   display: revert;
 }

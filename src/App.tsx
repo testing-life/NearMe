@@ -14,45 +14,43 @@ import EditSpotPage from "./Pages/EditSpotPage";
 
 function App() {
   return (
-    <div className="bg-blue-300 h-screen">
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <PrivateRoute>
-              <HomePage />
-            </PrivateRoute>
-          }
-        />
-        <Route path={ROUTES.SIGN_UP} element={<SignupPage />} />
-        <Route path={ROUTES.LOG_IN} element={<LoginPage />} />
-        <Route
-          path={ROUTES.ADD}
-          element={
-            <PrivateRoute>
-              <AddSpotPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path={ROUTES.EDIT}
-          element={
-            <PrivateRoute>
-              <EditSpotPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path={ROUTES.UPDATE}
-          element={
-            <PrivateRoute>
-              <UpdateCredentialsPage />
-            </PrivateRoute>
-          }
-        />
-        <Route path={ROUTES.RESET} element={<ResetPasswordPage />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <PrivateRoute>
+            <HomePage />
+          </PrivateRoute>
+        }
+      />
+      <Route path={ROUTES.SIGN_UP} element={<SignupPage />} />
+      <Route path={ROUTES.LOG_IN} element={<LoginPage />} />
+      <Route
+        path={ROUTES.ADD}
+        element={
+          <PrivateRoute>
+            <AddSpotPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path={ROUTES.EDIT}
+        element={
+          <PrivateRoute>
+            <EditSpotPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path={ROUTES.UPDATE}
+        element={
+          <PrivateRoute>
+            <UpdateCredentialsPage />
+          </PrivateRoute>
+        }
+      />
+      <Route path={ROUTES.RESET} element={<ResetPasswordPage />} />
+    </Routes>
   );
 }
 

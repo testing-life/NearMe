@@ -1,38 +1,31 @@
-.App {
-  text-align: center;
+:root {
+  --bg-sphere-1: #79529d;
+  --bg-sphere-2: #a5fbff99;
+  --bg-sphere-3: #a5fbff4d;
+  --bg-sphere-4: #a4379e33;
+  --bg: #0c0d12;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html {
+  background: radial-gradient(
+      circle at center -300px,
+      var(--bg-sphere-1),
+      transparent calc(1vw + 564px)
+    ),
+    radial-gradient(
+      circle at calc(2vw + 125px) -190px,
+      var(--bg-sphere-2),
+      transparent calc(1vw + 321px)
+    ),
+    radial-gradient(
+      circle at calc(120vw - 10vw) 65%,
+      var(--bg-sphere-3),
+      transparent calc(1vw + 229px)
+    ),
+    radial-gradient(at bottom left, var(--bg-sphere-4), transparent 357px),
+    url(./Assets/lotsOfDots.png), var(--bg);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+body {
+  backdrop-filter: blur(4px);
 }
