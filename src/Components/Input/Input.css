@@ -32,4 +32,5 @@
 
 .error {
   color: var(--invalid);
+  font-size: var(--text-size-small);
 }

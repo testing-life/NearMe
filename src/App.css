@@ -13,6 +13,8 @@
   --invalid: #ff7d7d;
   --text-colour: #fff;
   --text-colour-inverted: #000;
+  --text-size-default: 2rem;
+  --text-size-small: 1.4rem;
 }
 
 html {
@@ -46,5 +48,6 @@ body {
 
 .wrapper {
   padding: 16px;
+  font-size: var(--text-size-default);
   color: var(--text-colour);
 }
