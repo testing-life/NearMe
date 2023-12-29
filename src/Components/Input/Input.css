@@ -29,3 +29,7 @@
   box-shadow: 0 0 0 2px var(--input-);
   color: var(--input-valid);
 }
+
+.error {
+  color: var(--invalid);
+}

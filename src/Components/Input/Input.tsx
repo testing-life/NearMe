@@ -37,7 +37,7 @@ const Input: FC<Props> = ({
         value={value}
         onChange={onChange}
       />
-      {error ? <p className="text-warning">{error}</p> : null}
+      {true ? <p className="error">{error} issa error</p> : null}
     </div>
   );
 };

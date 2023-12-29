@@ -9,8 +9,8 @@
   --btn-gradient-3: #4cabef;
   --input-bg: #18182080;
   --input-stroke: #ffffff26;
-  --input-valid: #00b7b7;
-  --input-invalid: #ff7d7d;
+  --valid: #00b7b7;
+  --invalid: #ff7d7d;
   --text-colour: #fff;
   --text-colour-inverted: #000;
 }
