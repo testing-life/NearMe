@@ -1,0 +1,3 @@
+.form-layout__child:not(:last-child) {
+  margin-block-end: 32px;
+}

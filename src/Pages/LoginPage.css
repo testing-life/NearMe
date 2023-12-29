@@ -1,0 +1,13 @@
+.login-page .row:not(:last-child) {
+  margin-block-end: 32px;
+}
+
+.login-page .column {
+  display: flex;
+  flex-direction: column;
+}
+
+.centre {
+  margin: 0 auto;
+  text-align: center;
+}

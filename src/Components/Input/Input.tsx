@@ -23,7 +23,7 @@ const Input: FC<Props> = ({
   error,
 }) => {
   return (
-    <div className={`input-wrapper ${true ? "--is-invalid" : null}`}>
+    <div className={`input-wrapper ${error ? "--is-invalid" : ""}`}>
       <label className="invisible" htmlFor={id}>
         {label}
       </label>
@@ -36,7 +36,7 @@ const Input: FC<Props> = ({
         value={value}
         onChange={onChange}
       />
-      {true ? <p className="input-error">{error} issa error</p> : null}
+      {error ? <p className="input-error">{error} issa error</p> : null}
     </div>
   );
 };

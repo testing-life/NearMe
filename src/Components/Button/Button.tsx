@@ -4,11 +4,12 @@ import "./Button.css";
 interface Props {
   children: ReactNode;
   fullWidth?: boolean;
+  type?: "button" | "submit" | "reset" | undefined;
 }
 
-const Button: FC<Props> = ({ children, fullWidth }) => {
+const Button: FC<Props> = ({ children, fullWidth, type = "button" }) => {
   return (
-    <button className={`btn ${fullWidth ? "--full-width" : null}`}>
+    <button type={type} className={`btn ${fullWidth ? "--full-width" : null}`}>
       {children}
     </button>
   );

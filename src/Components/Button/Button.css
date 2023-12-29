@@ -9,6 +9,7 @@
   border: none;
   padding: 18px 22px;
   text-align: center;
+  color: var(--text-colour-inverted);
 }
 
 .btn:hover,

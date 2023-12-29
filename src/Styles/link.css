@@ -6,7 +6,6 @@ a {
     var(--btn-gradient-3) 100%
   );
   -webkit-background-clip: text;
-  /* -webkit-text-fill-color: transparent; */
   color: rgba(0, 0, 0, 0);
   background-clip: text;
 }
