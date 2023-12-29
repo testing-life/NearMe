@@ -8,7 +8,7 @@
   width: 1px;
 }
 
-.input {
+input {
   background-color: var(--input-bg);
   border: 1px solid var(--input-stroke);
   padding: 18px 24px;
@@ -16,21 +16,22 @@
   width: 100%;
 }
 
-.input::placeholder {
+input::placeholder {
   color: var(--text-colour);
 }
 
-.input:not(:empty):valid {
+input:not(:empty):valid {
   box-shadow: 0 0 0 2px var(--input-valid);
   color: var(--input-valid);
 }
 
-.input:not(:empty):invalid {
+input:not(:empty):invalid {
   box-shadow: 0 0 0 2px var(--input-);
   color: var(--input-valid);
 }
 
-.error {
+.input-error {
   color: var(--invalid);
   font-size: var(--text-size-small);
+  padding-inline-start: 24px;
 }

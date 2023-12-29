@@ -32,12 +32,11 @@ const Input: FC<Props> = ({
         id={id}
         name={name}
         type={type}
-        className="input"
         placeholder={label}
         value={value}
         onChange={onChange}
       />
-      {true ? <p className="error">{error} issa error</p> : null}
+      {true ? <p className="input-error">{error} issa error</p> : null}
     </div>
   );
 };
