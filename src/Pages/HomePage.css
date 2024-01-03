@@ -1,4 +1,9 @@
 .spots-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.filter-container,
+.filter-container .custom-tag {
+  margin-block-end: 19px;
 }

@@ -98,7 +98,7 @@ const HomePage = () => {
       <Button variant='highlight'>
         <Link to={ADD}>Add Spot</Link>
       </Button>
-      <div className='u-flex'>
+      <div className='filter-container'>
         <CustomTag tagHandler={addTagHandler} />
         <TagFilter clickHandler={filterHandler} />
       </div>

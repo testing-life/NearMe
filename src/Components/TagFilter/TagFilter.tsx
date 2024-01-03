@@ -6,7 +6,7 @@ import { useDocument } from 'react-firebase-hooks/firestore';
 import { auth, db } from '../../Firebase/Firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import useTagsStore from '../../Stores/tagsStore';
-
+import './TagFilter.css';
 interface Props {
   clickHandler: (filterList: string[]) => void;
 }
@@ -40,22 +40,26 @@ const TagFilter: FC<Props> = ({ clickHandler }) => {
   };
 
   return (
-    <ul className='u-flex u-flex-wrap u-gap-1'>
+    <div
+      className='tag-filter'
+      style={{ '--n': tags.length } as React.CSSProperties}>
       {loading && <p>Loading tags...</p>}
       {error && <p>Couldn't load tags. {error.message}</p>}
-      {tags.map((tag: (typeof tags)[number], index: number) => {
-        return (
-          <li key={`${tag}${index}`}>
-            <TagButton
-              isSelected={filterList.includes(tag)}
-              remove={filterList.includes(tag)}
-              tagLabel={tag}
-              clickHandler={() => filterListHandler(tag)}
-            />
-          </li>
-        );
-      })}
-    </ul>
+      <ul className='tag-filter__tags'>
+        {tags.map((tag: (typeof tags)[number], index: number) => {
+          return (
+            <li key={`${tag}${index}`}>
+              <TagButton
+                isSelected={filterList.includes(tag)}
+                remove={filterList.includes(tag)}
+                tagLabel={tag}
+                clickHandler={() => filterListHandler(tag)}
+              />
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 };
 
