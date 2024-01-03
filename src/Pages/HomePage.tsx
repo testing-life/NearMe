@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ADD } from '../Consts/Routes';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { auth, db, spotConverter } from '../Firebase/Firebase';
@@ -7,7 +7,6 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import {
   DocumentReference,
   arrayUnion,
-  collection,
   deleteDoc,
   doc,
   query,
@@ -18,7 +17,6 @@ import { ISpot } from '../Models/spot';
 import Header from '../Components/Header/Header';
 import './HomePage.css';
 import TagFilter from '../Components/TagFilter/TagFilter';
-import { Tags } from '../Consts/Tags';
 import { filterByArray } from '../Utils/array';
 import ListView from '../Components/ListView/ListView';
 import MapView from '../Components/MapView/MapView';
@@ -26,10 +24,11 @@ import { spotsInRadius } from '../Utils/geo';
 import useGeolocation from '../Hooks/useGeolocation';
 import { spotsCollectionRef } from '../Consts/SpotsRef';
 import CustomTag from '../Components/CustomTag/CustomTag';
+import Button from '../Components/Button/Button';
 
 const HomePage = () => {
   const [user] = useAuthState(auth);
-  const { location, locationError, getLocation } = useGeolocation();
+  const { location, getLocation } = useGeolocation();
   const [data, setData] = useState<ISpot[]>();
   const [useGlobal, setUseGlobal] = useState(false);
   const [globalData, setGlobalData] = useState<ISpot[]>();
@@ -96,11 +95,9 @@ const HomePage = () => {
   return (
     <>
       <Header auth={auth} />
-      <button className='bg-primary lg border-red-800'>
-        <Link className='text-light' to={ADD}>
-          Add Spot
-        </Link>
-      </button>
+      <Button variant='highlight'>
+        <Link to={ADD}>Add Spot</Link>
+      </Button>
       <div className='u-flex'>
         <CustomTag tagHandler={addTagHandler} />
         <TagFilter clickHandler={filterHandler} />

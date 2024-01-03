@@ -26,3 +26,20 @@
 .--full-width {
   width: 100%;
 }
+
+.--is-highlight {
+  background: linear-gradient(
+    91deg,
+    var(--btn-highlight-gradient-1) -5.74%,
+    var(--btn-highlight-gradient-2) 100%
+  );
+}
+
+.--is-highlight:hover,
+.--is-highlight:focus {
+  background: linear-gradient(
+    91deg,
+    var(--btn-highlight-gradient-2) -5.74%,
+    var(--btn-highlight-gradient-1) 100%
+  );
+}

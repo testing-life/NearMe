@@ -14,3 +14,13 @@ a:hover,
 a:focus {
   box-shadow: 0px 2px 0px 0px var(--btn-gradient-3);
 }
+
+:where(button) a {
+  color: inherit;
+  background: transparent;
+}
+
+:where(button) a:hover,
+:where(button) a:focus {
+  box-shadow: none;
+}
