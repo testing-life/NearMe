@@ -1,5 +1,5 @@
-import React, { Children, FC, FormEvent, ReactNode } from "react";
-import "./FormLayout.css";
+import React, { Children, FC, FormEvent, ReactNode } from 'react';
+import './FormLayout.css';
 
 interface Props {
   children?: ReactNode;
@@ -10,7 +10,7 @@ const FormLayout: FC<Props> = ({ children, onSubmit }) => {
   return (
     <form onSubmit={onSubmit}>
       {Children.map(children, (child) => (
-        <div className="form-layout__child">{child}</div>
+        <div className='form-layout__child'>{child}</div>
       ))}
     </form>
   );

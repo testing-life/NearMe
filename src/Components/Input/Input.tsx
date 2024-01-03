@@ -1,5 +1,5 @@
-import React, { ChangeEvent, FC } from "react";
-import "./Input.css";
+import React, { ChangeEvent, FC, useState } from 'react';
+import './Input.css';
 interface Props {
   required?: boolean;
   id: string;
@@ -7,9 +7,8 @@ interface Props {
   label: string;
   name?: string;
   value: any;
-  type?: "text" | "email" | "password";
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  error?: string;
+  type?: 'text' | 'email' | 'password';
+  onChange: (e: string) => void;
 }
 
 const Input: FC<Props> = ({
@@ -18,13 +17,21 @@ const Input: FC<Props> = ({
   label,
   value,
   name,
-  type = "text",
-  onChange,
-  error,
+  type = 'text',
+  onChange
 }) => {
+  const [error, setError] = useState('');
+  const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    if (required && e.target.validationMessage) {
+      setError(e.target.validationMessage);
+    } else {
+      setError('');
+    }
+    onChange(e.target.value);
+  };
   return (
-    <div className={`input-wrapper ${error ? "--is-invalid" : ""}`}>
-      <label className="invisible" htmlFor={id}>
+    <div className={`input-wrapper`}>
+      <label className='invisible' htmlFor={id}>
         {label}
       </label>
       <input
@@ -34,9 +41,9 @@ const Input: FC<Props> = ({
         type={type}
         placeholder={label}
         value={value}
-        onChange={onChange}
+        onChange={changeHandler}
       />
-      {error ? <p className="input-error">{error} issa error</p> : null}
+      {error ? <p className='input-error'>{error}</p> : null}
     </div>
   );
 };

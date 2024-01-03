@@ -126,9 +126,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
               type='text'
               placeholder='place'
               value={spot.name}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setSpot({ ...spot, name: e.target.value })
-              }
+              onChange={(value: string) => setSpot({ ...spot, name: value })}
             />
           </li>
           <li className='mb-3'>
@@ -173,8 +171,8 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
                 type='text'
                 placeholder='address'
                 value={spot.address}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setSpot({ ...spot, address: e.target.value })
+                onChange={(value: string) =>
+                  setSpot({ ...spot, address: value })
                 }
               />
             </div>

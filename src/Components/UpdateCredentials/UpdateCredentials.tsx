@@ -1,18 +1,18 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from "react";
-import Input from "../Input/Input";
+import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
+import Input from '../Input/Input';
 
 interface Props {
   submitHandler: (value: string) => void;
-  type: "email" | "password";
-  action?: "update" | "reset";
+  type: 'email' | 'password';
+  action?: 'update' | 'reset';
 }
 
 const UpdateCredentials: FC<Props> = ({
   submitHandler,
   type,
-  action = "update",
+  action = 'update'
 }) => {
-  const [credential, setCredential] = useState("");
+  const [credential, setCredential] = useState('');
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,11 +29,9 @@ const UpdateCredentials: FC<Props> = ({
           type={type}
           placeholder={`New ${type}`}
           value={credential}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setCredential(e.target.value)
-          }
+          onChange={(value: string) => setCredential(value)}
         />
-        <button type="submit">Update {type}</button>
+        <button type='submit'>Update {type}</button>
       </form>
     </>
   );

@@ -8,8 +8,7 @@ interface Props {
 const CustomTag: FC<Props> = ({ tagHandler }) => {
   const [tag, setTag] = useState('');
 
-  const customTagHandler = (e: ChangeEvent<HTMLInputElement>) =>
-    setTag(e.target.value);
+  const customTagHandler = (value: string) => setTag(value);
 
   const tagSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -1,46 +1,44 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from "react";
-import Input from "../Input/Input";
-import FormLayout from "../FormLayout/FormLayout";
-import Button from "../Button/Button";
+import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
+import Input from '../Input/Input';
+import FormLayout from '../FormLayout/FormLayout';
+import Button from '../Button/Button';
 
 interface Props {
   submitHandler: (email: string, password: string) => void;
 }
 
 const Login: FC<Props> = ({ submitHandler }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    submitHandler(email, password);
+    if (email && password) {
+      submitHandler(email, password);
+    }
   };
 
   return (
     <FormLayout onSubmit={onSubmit}>
       <Input
-        id="email"
+        id='email'
         required
-        label="Email"
-        type="email"
-        placeholder="email"
+        label='Email'
+        type='email'
+        placeholder='email'
         value={email}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setEmail(e.target.value)
-        }
+        onChange={(value: string) => setEmail(value)}
       />
       <Input
-        id="password"
+        id='password'
         required
-        label="Password"
-        type="password"
-        placeholder="password"
+        label='Password'
+        type='password'
+        placeholder='password'
         value={password}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setPassword(e.target.value)
-        }
+        onChange={(value: string) => setPassword(value)}
       />
-      <Button fullWidth type="submit">
+      <Button fullWidth type='submit'>
         Log In
       </Button>
     </FormLayout>

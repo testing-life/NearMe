@@ -1,13 +1,13 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from "react";
-import Input from "../Input/Input";
+import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
+import Input from '../Input/Input';
 
 interface Props {
   submitHandler: (email: string, password: string) => void;
 }
 
 const Signup: FC<Props> = ({ submitHandler }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,28 +18,24 @@ const Signup: FC<Props> = ({ submitHandler }) => {
     <>
       <form onSubmit={onSubmit}>
         <Input
-          id="email"
+          id='email'
           required
-          label="Email"
-          type="email"
-          placeholder="email"
+          label='Email'
+          type='email'
+          placeholder='email'
           value={email}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setEmail(e.target.value)
-          }
+          onChange={(value: string) => setEmail(value)}
         />
         <Input
-          id="password"
+          id='password'
           required
-          label="Password"
-          type="password"
-          placeholder="password"
+          label='Password'
+          type='password'
+          placeholder='password'
           value={password}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setPassword(e.target.value)
-          }
+          onChange={(value: string) => setPassword(value)}
         />
-        <button type="submit">Register</button>
+        <button type='submit'>Register</button>
       </form>
     </>
   );
