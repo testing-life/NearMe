@@ -1,0 +1,8 @@
+.custom-tag {
+  display: flex;
+  align-content: stretch;
+}
+
+.custom-tag .input-wrapper {
+  flex: 1 0 75%;
+}

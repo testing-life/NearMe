@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import { Tags } from '../../Consts/Tags';
 import './TagButton.css';
+import { ReactComponent as Tick } from '../../Assets/Icons/check.svg';
+import { ReactComponent as Close } from '../../Assets/Icons/close.svg';
 
 interface Props {
   remove?: boolean;
@@ -18,15 +20,13 @@ const TagButton: FC<Props> = ({
   return (
     <button
       type='button'
-      className={`tag ${isSelected ? 'is-selected' : ''} ${
-        remove ? 'is-remove' : 'is-add'
-      }  border-yellow-500 bg-yellow-400`}
+      className={`tag ${isSelected ? '-is-selected' : ''} ${
+        remove ? '-is-remove' : '-is-add'
+      } `}
       onClick={clickHandler}>
-      {tagLabel}
-      <span
-        className={`tag tag__delete ${
-          isSelected ? 'bg-red-800' : 'bg-green-700'
-        }`}></span>
+      <span className='tag__tag-label'>{tagLabel}</span>
+
+      <i className='tag__tag-icon'>{isSelected ? <Tick /> : <Close />}</i>
     </button>
   );
 };

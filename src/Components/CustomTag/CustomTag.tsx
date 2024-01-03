@@ -1,6 +1,7 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
+import React, { FC, FormEvent, useState } from 'react';
 import Input from '../Input/Input';
-
+import Button from '../Button/Button';
+import './CustomTag.css';
 interface Props {
   tagHandler: (tag: string) => void;
 }
@@ -16,7 +17,7 @@ const CustomTag: FC<Props> = ({ tagHandler }) => {
   };
 
   return (
-    <form onSubmit={tagSubmitHandler}>
+    <form className='custom-tag' onSubmit={tagSubmitHandler}>
       <Input
         placeholder='Add a tag'
         id='customTag'
@@ -26,7 +27,7 @@ const CustomTag: FC<Props> = ({ tagHandler }) => {
         value={tag}
         onChange={customTagHandler}
       />
-      <button type='submit'>Add</button>
+      <Button type='submit'>Add</Button>
     </form>
   );
 };

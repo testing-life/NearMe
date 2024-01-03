@@ -18,6 +18,10 @@
   --text-colour-inverted: #000;
   --text-size-default: 2rem;
   --text-size-small: 1.4rem;
+  --tag-gradient-1: #171620;
+  --tag-gradient-2: #161820;
+  --tag-gradient-3: #0e171f;
+  --icon-bg: #333a40;
 }
 
 html {

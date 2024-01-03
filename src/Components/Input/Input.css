@@ -20,12 +20,16 @@ input::placeholder {
   color: var(--text-colour);
 }
 
-.--is-valid {
+.input-wrapper {
+  width: 100%;
+}
+
+.-is-valid {
   box-shadow: 0 0 0 2px var(--valid);
   color: var(--valid);
 }
 
-.--is-invalid {
+.-is-invalid {
   box-shadow: 0 0 0 2px var(--invalid);
   color: var(--invalid);
 }

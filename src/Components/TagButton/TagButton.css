@@ -1,3 +1,60 @@
 .is-add .tag.tag__delete {
-    transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.tag {
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(
+        91deg,
+        var(--tag-gradient-1) -4.37%,
+        var(--tag-gradient-2) 53.69%,
+        var(--tag-gradient-3) 100%
+      )
+      padding-box,
+    linear-gradient(
+        91deg,
+        var(--btn-gradient-1) -4.37%,
+        var(--btn-gradient-2) 53.69%,
+        var(--btn-gradient-3) 100%
+      )
+      border-box;
+  border: 2px solid transparent;
+}
+
+.tag:hover,
+.tag.focus {
+  cursor: pointer;
+  border: 3px solid transparent;
+  padding: 9px;
+}
+
+.tag__tag-label {
+  background: linear-gradient(
+    91deg,
+    var(--btn-gradient-1) -4.37%,
+    var(--btn-gradient-2) 53.69%,
+    var(--btn-gradient-3) 100%
+  );
+  -webkit-background-clip: text;
+  color: rgba(0, 0, 0, 0);
+  background-clip: text;
+}
+
+.tag__tag-icon {
+  border-radius: 50%;
+  background: var(--icon-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+}
+
+.tag__tag-icon > svg {
+  width: 18px;
+  height: 18px;
 }

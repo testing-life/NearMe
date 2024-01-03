@@ -34,13 +34,13 @@ const LoginPage = () => {
           <p>Signing in...</p>
         </div>
       )}
-      <div className='column --is-centred-column --has-spearator'>
+      <div className='column -is-centred-column -has-spearator'>
         <p>No account?</p>
         <Link className='' to={SIGN_UP}>
           Sign up
         </Link>
       </div>
-      <div className='column --is-centred-column'>
+      <div className='column -is-centred-column'>
         <p>Forgot your password ?</p>
         <Link className='' to={RESET}>
           Reset password

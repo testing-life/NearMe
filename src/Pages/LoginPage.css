@@ -7,12 +7,12 @@
   flex-direction: column;
 }
 
-.--has-spearator {
+.-has-spearator {
   padding-block-end: 32px;
   margin-block-end: 32px;
   border-block-end: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.--is-centred-column {
+.-is-centred-column {
   align-items: center;
 }

@@ -17,8 +17,8 @@ const Button: FC<Props> = ({
   return (
     <button
       type={type}
-      className={`btn ${fullWidth ? '--full-width' : null} ${
-        variant ? '--is-highlight' : ''
+      className={`btn ${fullWidth ? '-full-width' : ''} ${
+        variant ? '-is-highlight' : ''
       }`}>
       {children}
     </button>

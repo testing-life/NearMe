@@ -23,11 +23,11 @@
   );
 }
 
-.--full-width {
+.-full-width {
   width: 100%;
 }
 
-.--is-highlight {
+.-is-highlight {
   background: linear-gradient(
     91deg,
     var(--btn-highlight-gradient-1) -5.74%,
@@ -35,8 +35,8 @@
   );
 }
 
-.--is-highlight:hover,
-.--is-highlight:focus {
+.-is-highlight:hover,
+.-is-highlight:focus {
   background: linear-gradient(
     91deg,
     var(--btn-highlight-gradient-2) -5.74%,

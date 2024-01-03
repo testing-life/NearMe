@@ -30,7 +30,7 @@ const Input: FC<Props> = ({
     onChange(e.target.value);
   };
   return (
-    <div className={`input-wrapper`}>
+    <div className='input-wrapper'>
       <label className='invisible' htmlFor={id}>
         {label}
       </label>
