@@ -1,13 +1,3 @@
-.invisible {
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  height: 1px;
-  overflow: hidden;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
-}
-
 input {
   background-color: var(--input-bg);
   border: 1px solid var(--input-stroke);

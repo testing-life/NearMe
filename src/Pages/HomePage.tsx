@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ADD } from '../Consts/Routes';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { auth, db, spotConverter } from '../Firebase/Firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { ADD } from "../Consts/Routes";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { auth, db, spotConverter } from "../Firebase/Firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 import {
   DocumentReference,
   arrayUnion,
@@ -11,20 +11,21 @@ import {
   doc,
   query,
   setDoc,
-  where
-} from 'firebase/firestore';
-import { ISpot } from '../Models/spot';
-import Header from '../Components/Header/Header';
-import './HomePage.css';
-import TagFilter from '../Components/TagFilter/TagFilter';
-import { filterByArray } from '../Utils/array';
-import ListView from '../Components/ListView/ListView';
-import MapView from '../Components/MapView/MapView';
-import { spotsInRadius } from '../Utils/geo';
-import useGeolocation from '../Hooks/useGeolocation';
-import { spotsCollectionRef } from '../Consts/SpotsRef';
-import CustomTag from '../Components/CustomTag/CustomTag';
-import Button from '../Components/Button/Button';
+  where,
+} from "firebase/firestore";
+import { ISpot } from "../Models/spot";
+import Header from "../Components/Header/Header";
+import "./HomePage.css";
+import TagFilter from "../Components/TagFilter/TagFilter";
+import { filterByArray } from "../Utils/array";
+import ListView from "../Components/ListView/ListView";
+import MapView from "../Components/MapView/MapView";
+import { spotsInRadius } from "../Utils/geo";
+import useGeolocation from "../Hooks/useGeolocation";
+import { spotsCollectionRef } from "../Consts/SpotsRef";
+import CustomTag from "../Components/CustomTag/CustomTag";
+import Button from "../Components/Button/Button";
+import Select from "../Components/Select/Select";
 
 const HomePage = () => {
   const [user] = useAuthState(auth);
@@ -36,7 +37,7 @@ const HomePage = () => {
   const [isMapView, setIsMapView] = useState(false);
   const ref = query(
     spotsCollectionRef(db),
-    where('userId', '==', user?.uid)
+    where("userId", "==", user?.uid)
   ).withConverter(spotConverter);
 
   const [value, loading, error] = useCollectionData(ref);
@@ -62,7 +63,7 @@ const HomePage = () => {
       const globalData = await spotsInRadius(
         [location.latitude, location.longitude],
         db
-      ).catch((e) => console.log('e', e));
+      ).catch((e) => console.log("e", e));
       setGlobalData(globalData as ISpot[]);
       setFilteredData(globalData as ISpot[]);
     };
@@ -78,60 +79,80 @@ const HomePage = () => {
   };
 
   const filterHandler = (filterList: string[]) => {
-    const filteredData = filterByArray(data as ISpot[], filterList, 'tags');
+    const filteredData = filterByArray(data as ISpot[], filterList, "tags");
     setFilteredData(filteredData);
   };
 
   const addTagHandler = async (tag: string) => {
     await setDoc(
-      doc(db, 'users', user!.uid),
+      doc(db, "users", user!.uid),
       {
-        tags: arrayUnion(tag)
+        tags: arrayUnion(tag),
       },
       { merge: true }
     ).catch((error: Error) => console.error(error.message));
+  };
+  const viewModeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    console.log("e.target.value", e.target.value);
   };
 
   return (
     <>
       <Header auth={auth} />
-      <Button variant='highlight'>
+      <Button variant="highlight">
         <Link to={ADD}>Add Spot</Link>
       </Button>
-      <div className='filter-container'>
+      <div className="filter-container">
         <CustomTag tagHandler={addTagHandler} />
         <TagFilter clickHandler={filterHandler} />
       </div>
-      <div className='row'>
-        <div className='form-ext-control'>
-          <label className='form-ext-toggle__label'>
+      <div className="row">
+        <Select
+          id="view-mode"
+          options={[
+            { label: "List View", value: "list" },
+            { label: "Map View", value: "map" },
+          ]}
+          onChange={viewModeChange}
+        />
+        <Select
+          inverted
+          id="view-mode"
+          options={[
+            { label: "List View", value: "list" },
+            { label: "Map View", value: "map" },
+          ]}
+          onChange={viewModeChange}
+        />
+        <div className="form-ext-control">
+          <label className="form-ext-toggle__label">
             <span>{isMapView ? `Map` : `List`} view</span>
-            <div className='form-ext-toggle'>
+            <div className="form-ext-toggle">
               <input
-                name='toggleCheckbox'
-                type='checkbox'
-                className='form-ext-input'
+                name="toggleCheckbox"
+                type="checkbox"
+                className="form-ext-input"
                 onChange={() => setIsMapView(!isMapView)}
                 checked={isMapView}
               />
-              <div className='form-ext-toggle__toggler'>
+              <div className="form-ext-toggle__toggler">
                 <i></i>
               </div>
             </div>
           </label>
         </div>
-        <div className='form-ext-control'>
-          <label className='form-ext-toggle__label'>
+        <div className="form-ext-control">
+          <label className="form-ext-toggle__label">
             <span>{useGlobal ? `Global` : `My`} spots</span>
-            <div className='form-ext-toggle'>
+            <div className="form-ext-toggle">
               <input
-                name='toggleCheckbox'
-                type='checkbox'
-                className='form-ext-input'
+                name="toggleCheckbox"
+                type="checkbox"
+                className="form-ext-input"
                 onChange={() => setUseGlobal(!useGlobal)}
                 checked={useGlobal}
               />
-              <div className='form-ext-toggle__toggler'>
+              <div className="form-ext-toggle__toggler">
                 <i></i>
               </div>
             </div>

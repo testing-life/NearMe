@@ -1,4 +1,6 @@
 :root {
+  --white: #fff;
+  --black: #000;
   --bg-sphere-1: #79529d;
   --bg-sphere-2: #a5fbff99;
   --bg-sphere-3: #a5fbff4d;
@@ -14,8 +16,8 @@
   --valid: #00b7b7;
   --invalid: #ff7d7d;
   --light-invalid: #ffa6a6;
-  --text-colour: #fff;
-  --text-colour-inverted: #000;
+  --text-colour: var(--white);
+  --text-colour-inverted: var(--black);
   --text-size-default: 2rem;
   --text-size-small: 1.4rem;
   --tag-gradient-1: #171620;

@@ -1,0 +1,31 @@
+.select {
+  --select-background: var(--white);
+  --select-text-colour: var(--text-colour-inverted);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 12px;
+  background: var(--select-background);
+  color: var(--select-text-colour);
+}
+
+.select::after {
+  content: url("../../Assets/Icons/chevron-d.svg");
+  display: block;
+  line-height: 1;
+  margin-inline-start: -40px;
+  margin-inline-end: 10px;
+  pointer-events: none;
+  color: var(--select-text-colour);
+}
+
+.select > select {
+  padding: 10px 34px 10px 18px;
+}
+
+.select.-is-inverted {
+  --select-background: var(--black);
+  --select-text-colour: var(--text-colour);
+  border: 1px solid var(--white);
+}
