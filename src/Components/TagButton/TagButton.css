@@ -17,9 +17,9 @@
       padding-box,
     linear-gradient(
         91deg,
-        var(--btn-gradient-1) -4.37%,
-        var(--btn-gradient-2) 53.69%,
-        var(--btn-gradient-3) 100%
+        var(--gradient-1) -4.37%,
+        var(--gradient-2) 53.69%,
+        var(--gradient-3) 100%
       )
       border-box;
   border: 2px solid transparent;
@@ -35,9 +35,9 @@
 .tag__tag-label {
   background: linear-gradient(
     91deg,
-    var(--btn-gradient-1) -4.37%,
-    var(--btn-gradient-2) 53.69%,
-    var(--btn-gradient-3) 100%
+    var(--gradient-1) -4.37%,
+    var(--gradient-2) 53.69%,
+    var(--gradient-3) 100%
   );
   -webkit-background-clip: text;
   color: rgba(0, 0, 0, 0);
@@ -54,7 +54,27 @@
   height: 22px;
 }
 
-.tag__tag-icon > svg {
+:where(.tag__tag-icon) > svg {
   width: 18px;
   height: 18px;
+}
+
+.-is-selected.tag {
+  border: 3px solid transparent;
+  padding: 9px;
+}
+
+.-is-selected .tag__tag-icon {
+  color: var(--icon-bg);
+  background: radial-gradient(
+      ellipse at left,
+      var(--highlight-gradient-1),
+      transparent
+    ),
+    radial-gradient(ellipse at bottom, var(--highlight-gradient-2), transparent);
+}
+
+.--icon-large {
+  width: 24px;
+  height: 24px;
 }

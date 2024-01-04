@@ -2,9 +2,9 @@
   border-radius: 12px;
   background: linear-gradient(
     91deg,
-    var(--btn-gradient-1) -4.37%,
-    var(--btn-gradient-2) 53.69%,
-    var(--btn-gradient-3) 100%
+    var(--gradient-1) -4.37%,
+    var(--gradient-2) 53.69%,
+    var(--gradient-3) 100%
   );
   border: none;
   padding: 18px 22px;
@@ -17,9 +17,9 @@
   cursor: pointer;
   background: linear-gradient(
     272deg,
-    var(--btn-gradient-1) -4.37%,
-    var(--btn-gradient-2) 53.69%,
-    var(--btn-gradient-3) 100%
+    var(--gradient-1) -4.37%,
+    var(--gradient-2) 53.69%,
+    var(--gradient-3) 100%
   );
 }
 
@@ -30,8 +30,8 @@
 .-is-highlight {
   background: linear-gradient(
     91deg,
-    var(--btn-highlight-gradient-1) -5.74%,
-    var(--btn-highlight-gradient-2) 100%
+    var(--highlight-gradient-1) -5.74%,
+    var(--highlight-gradient-2) 100%
   );
 }
 
@@ -39,7 +39,7 @@
 .-is-highlight:focus {
   background: linear-gradient(
     91deg,
-    var(--btn-highlight-gradient-2) -5.74%,
-    var(--btn-highlight-gradient-1) 100%
+    var(--highlight-gradient-2) -5.74%,
+    var(--highlight-gradient-1) 100%
   );
 }

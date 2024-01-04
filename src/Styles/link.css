@@ -1,9 +1,9 @@
 a {
   background: linear-gradient(
     91deg,
-    var(--btn-gradient-1) -4.37%,
-    var(--btn-gradient-2) 53.69%,
-    var(--btn-gradient-3) 100%
+    var(--gradient-1) -4.37%,
+    var(--gradient-2) 53.69%,
+    var(--gradient-3) 100%
   );
   -webkit-background-clip: text;
   color: rgba(0, 0, 0, 0);
@@ -12,7 +12,7 @@ a {
 
 a:hover,
 a:focus {
-  box-shadow: 0px 2px 0px 0px var(--btn-gradient-3);
+  box-shadow: 0px 2px 0px 0px var(--gradient-3);
 }
 
 :where(button) a {
