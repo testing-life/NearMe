@@ -7,3 +7,11 @@
 .filter-container .custom-tag {
   margin-block-end: 19px;
 }
+
+.row {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+}

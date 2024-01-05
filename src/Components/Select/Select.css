@@ -6,17 +6,8 @@
   align-items: center;
   gap: 10px;
   border-radius: 12px;
-  background: var(--select-background);
-  color: var(--select-text-colour);
-}
-
-.select::after {
-  content: url("../../Assets/Icons/chevron-d.svg");
-  display: block;
-  line-height: 1;
-  margin-inline-start: -40px;
-  margin-inline-end: 10px;
-  pointer-events: none;
+  background: url('../../Assets/Icons/chevron-d.svg') no-repeat 91% center
+    var(--select-background);
   color: var(--select-text-colour);
 }
 
@@ -28,4 +19,6 @@
   --select-background: var(--black);
   --select-text-colour: var(--text-colour);
   border: 1px solid var(--white);
+  background: url('../../Assets/Icons/chevron-white-d.svg') no-repeat 91% center
+    var(--select-background);
 }

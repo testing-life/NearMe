@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { ADD } from "../Consts/Routes";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { auth, db, spotConverter } from "../Firebase/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ADD } from '../Consts/Routes';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { auth, db, spotConverter } from '../Firebase/Firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import {
   DocumentReference,
   arrayUnion,
@@ -11,33 +11,43 @@ import {
   doc,
   query,
   setDoc,
-  where,
-} from "firebase/firestore";
-import { ISpot } from "../Models/spot";
-import Header from "../Components/Header/Header";
-import "./HomePage.css";
-import TagFilter from "../Components/TagFilter/TagFilter";
-import { filterByArray } from "../Utils/array";
-import ListView from "../Components/ListView/ListView";
-import MapView from "../Components/MapView/MapView";
-import { spotsInRadius } from "../Utils/geo";
-import useGeolocation from "../Hooks/useGeolocation";
-import { spotsCollectionRef } from "../Consts/SpotsRef";
-import CustomTag from "../Components/CustomTag/CustomTag";
-import Button from "../Components/Button/Button";
-import Select from "../Components/Select/Select";
+  where
+} from 'firebase/firestore';
+import { ISpot } from '../Models/spot';
+import Header from '../Components/Header/Header';
+import './HomePage.css';
+import TagFilter from '../Components/TagFilter/TagFilter';
+import { filterByArray } from '../Utils/array';
+import ListView from '../Components/ListView/ListView';
+import MapView from '../Components/MapView/MapView';
+import { spotsInRadius } from '../Utils/geo';
+import useGeolocation from '../Hooks/useGeolocation';
+import { spotsCollectionRef } from '../Consts/SpotsRef';
+import CustomTag from '../Components/CustomTag/CustomTag';
+import Button from '../Components/Button/Button';
+import Select from '../Components/Select/Select';
+
+export enum ViewMode {
+  List = 'list',
+  Map = 'map'
+}
+
+export enum DataType {
+  Global = 'global',
+  Local = 'local'
+}
 
 const HomePage = () => {
   const [user] = useAuthState(auth);
   const { location, getLocation } = useGeolocation();
   const [data, setData] = useState<ISpot[]>();
-  const [useGlobal, setUseGlobal] = useState(false);
   const [globalData, setGlobalData] = useState<ISpot[]>();
   const [filteredData, setFilteredData] = useState<ISpot[]>();
-  const [isMapView, setIsMapView] = useState(false);
+  const [dataType, setDataType] = useState<DataType>(DataType.Local);
+  const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.List);
   const ref = query(
     spotsCollectionRef(db),
-    where("userId", "==", user?.uid)
+    where('userId', '==', user?.uid)
   ).withConverter(spotConverter);
 
   const [value, loading, error] = useCollectionData(ref);
@@ -50,24 +60,24 @@ const HomePage = () => {
   }, [value]);
 
   useEffect(() => {
-    if (useGlobal) {
+    if (dataType === DataType.Global) {
       getLocation();
     }
-    if (!useGlobal) {
+    if (dataType === DataType.Local) {
       setFilteredData(value);
     }
-  }, [useGlobal]);
+  }, [dataType]);
 
   useEffect(() => {
     const getSpots = async () => {
       const globalData = await spotsInRadius(
         [location.latitude, location.longitude],
         db
-      ).catch((e) => console.log("e", e));
+      ).catch((e) => console.log('e', e));
       setGlobalData(globalData as ISpot[]);
       setFilteredData(globalData as ISpot[]);
     };
-    if (useGlobal && location.latitude) {
+    if (dataType === DataType.Global && location.latitude) {
       getSpots();
     }
   }, [location]);
@@ -79,88 +89,63 @@ const HomePage = () => {
   };
 
   const filterHandler = (filterList: string[]) => {
-    const filteredData = filterByArray(data as ISpot[], filterList, "tags");
+    const filteredData = filterByArray(data as ISpot[], filterList, 'tags');
     setFilteredData(filteredData);
   };
 
   const addTagHandler = async (tag: string) => {
     await setDoc(
-      doc(db, "users", user!.uid),
+      doc(db, 'users', user!.uid),
       {
-        tags: arrayUnion(tag),
+        tags: arrayUnion(tag)
       },
       { merge: true }
     ).catch((error: Error) => console.error(error.message));
   };
-  const viewModeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log("e.target.value", e.target.value);
+
+  const viewModeChange = (mode: ViewMode) => {
+    if (mode) {
+      setViewMode(mode);
+    }
+  };
+
+  const dataTypeChange = (type: DataType) => {
+    if (type) {
+      setDataType(type);
+    }
   };
 
   return (
     <>
       <Header auth={auth} />
-      <Button variant="highlight">
+      <Button variant='highlight'>
         <Link to={ADD}>Add Spot</Link>
       </Button>
-      <div className="filter-container">
+      <div className='filter-container'>
         <CustomTag tagHandler={addTagHandler} />
         <TagFilter clickHandler={filterHandler} />
       </div>
-      <div className="row">
+      <div className='row space-between'>
         <Select
-          id="view-mode"
+          id='view-mode'
           options={[
-            { label: "List View", value: "list" },
-            { label: "Map View", value: "map" },
+            { label: 'List View', value: 'list' },
+            { label: 'Map View', value: 'map' }
           ]}
-          onChange={viewModeChange}
+          onChange={(val: string) => viewModeChange(val as ViewMode)}
         />
         <Select
           inverted
-          id="view-mode"
+          id='data-mode'
           options={[
-            { label: "List View", value: "list" },
-            { label: "Map View", value: "map" },
+            { label: 'Local spots', value: 'local' },
+            { label: 'Global spots', value: 'global' }
           ]}
-          onChange={viewModeChange}
+          onChange={(val: string) => dataTypeChange(val as DataType)}
         />
-        <div className="form-ext-control">
-          <label className="form-ext-toggle__label">
-            <span>{isMapView ? `Map` : `List`} view</span>
-            <div className="form-ext-toggle">
-              <input
-                name="toggleCheckbox"
-                type="checkbox"
-                className="form-ext-input"
-                onChange={() => setIsMapView(!isMapView)}
-                checked={isMapView}
-              />
-              <div className="form-ext-toggle__toggler">
-                <i></i>
-              </div>
-            </div>
-          </label>
-        </div>
-        <div className="form-ext-control">
-          <label className="form-ext-toggle__label">
-            <span>{useGlobal ? `Global` : `My`} spots</span>
-            <div className="form-ext-toggle">
-              <input
-                name="toggleCheckbox"
-                type="checkbox"
-                className="form-ext-input"
-                onChange={() => setUseGlobal(!useGlobal)}
-                checked={useGlobal}
-              />
-              <div className="form-ext-toggle__toggler">
-                <i></i>
-              </div>
-            </div>
-          </label>
-        </div>
       </div>
       {filteredData ? (
-        isMapView ? (
+        viewMode === ViewMode.Map ? (
           <MapView filteredData={filteredData} />
         ) : (
           <ListView filteredData={filteredData} deleteHandler={deleteHandler} />
@@ -171,7 +156,7 @@ const HomePage = () => {
       {loading && <p>Loading data...</p>}
       {error && <p>{error.message}</p>}
       {!data && <p>You haven't added any spots yet.</p>}
-      {useGlobal && !filteredData?.length && (
+      {dataType === DataType.Global && !filteredData?.length && (
         <p>It seems there are no spots within 10km from your location.</p>
       )}
     </>

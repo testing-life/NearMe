@@ -1,5 +1,6 @@
-import React, { ChangeEvent, FC } from "react";
-import "./Select.css";
+import React, { ChangeEvent, FC } from 'react';
+import './Select.css';
+import { ViewMode } from '../../Pages/HomePage';
 
 interface Option {
   label: string;
@@ -8,7 +9,7 @@ interface Option {
 
 interface Props {
   options: Option[];
-  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (value: string) => void;
   id: string;
   name?: string;
   inverted?: boolean;
@@ -16,8 +17,8 @@ interface Props {
 
 const Select: FC<Props> = ({ options, onChange, id, name, inverted }) => {
   return (
-    <div className={`select ${inverted ? "-is-inverted" : ""}`}>
-      <label className="invisible" htmlFor={id}>
+    <div className={`select ${inverted ? '-is-inverted' : ''}`}>
+      <label className='invisible' htmlFor={id}>
         Choose a view mode:
       </label>
 
@@ -25,8 +26,9 @@ const Select: FC<Props> = ({ options, onChange, id, name, inverted }) => {
         name={name}
         id={id}
         defaultValue={options[0].value}
-        onChange={onChange}
-      >
+        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+          onChange(e.target.value)
+        }>
         {options?.map((option: Option, index: number) => (
           <option key={`${option}${index}`} value={option.value}>
             {option.label}
