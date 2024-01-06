@@ -44,6 +44,7 @@ html {
     ),
     radial-gradient(at bottom left, var(--bg-sphere-4), transparent 357px),
     url(./Assets/lotsOfDots.png), var(--bg);
+  background-repeat: no-repeat;
 }
 
 body {

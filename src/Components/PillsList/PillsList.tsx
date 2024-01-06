@@ -19,16 +19,13 @@ const PillsList: FC<Props> = ({ labels }) => {
       const needsTrimming = getOverflow(pillsRef.current);
       if (needsTrimming) {
         setIsOverflown(getOverflow(pillsRef.current));
-        setData(labels.slice(0, getIndexToTrimTo(pillsRef.current, 100)));
+        setData(labels.slice(0, getIndexToTrimTo(pillsRef.current, 10, 50)));
       }
     }
   }, []);
 
   return (
-    <ul
-      ref={pillsRef}
-      className={`pills-list ${isOverflown ? "-is-overflown" : ""}`}
-    >
+    <ul ref={pillsRef} className={`pills-list `}>
       {data?.map((label: string, index: number) => (
         <li className="pills-list__item" key={`${label}${index}`}>
           <Pill label={label} />

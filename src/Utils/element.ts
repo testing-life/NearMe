@@ -1,5 +1,6 @@
 export const getIndexToTrimTo = (
   container: HTMLElement,
+  elementMargin: number = 0,
   negativeOffset: number = 0
 ) => {
   let currentWidth = 0;
@@ -7,7 +8,8 @@ export const getIndexToTrimTo = (
   const listItems = container.children;
 
   for (let i = 0; i < listItems.length; i++) {
-    const listItemWidth = (listItems[i] as HTMLElement).offsetWidth;
+    const listItemWidth =
+      (listItems[i] as HTMLElement).offsetWidth + elementMargin;
     currentWidth += listItemWidth;
 
     if (currentWidth > container.offsetWidth - negativeOffset) {

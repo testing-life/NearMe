@@ -7,7 +7,3 @@
 .pills-list__item {
   flex-shrink: 0;
 }
-
-.-is-overflown {
-  outline: 2px solid red;
-}
