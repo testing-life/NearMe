@@ -1,6 +1,7 @@
 import React, { FC, ReactNode } from "react";
 import { ISpot } from "../../Models/spot";
 import "./Spot.css";
+import PillsList from "../PillsList/PillsList";
 interface Props {
   spot: ISpot;
   children?: ReactNode;
@@ -35,6 +36,7 @@ const Spot: FC<Props> = ({ spot, children }) => {
       <div className="card__footer">
         <div className="u-text-center">
           <ul className="ml-0 p-1 u-flex u-gap-1 u-flex-wrap tag-container">
+            <PillsList labels={spot.tags} />
             {spot.tags
               ? spot.tags.map((tag: string, index: number) => (
                   <li className="u-inline" key={`${tag}${index}`}>
