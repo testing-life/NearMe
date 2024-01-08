@@ -7,15 +7,28 @@
 .spot__overlay {
   position: absolute;
   bottom: 0;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+  right: 0;
+  left: 0;
 }
 
 .spot__tools {
   position: absolute;
   top: 0;
 }
-/* 
+
+.spot__image-wrapper {
+  backdrop-filter: blur(10px);
+}
+
 .spot__image {
-  grid-row: 1/4;
+  backdrop-filter: blur(0.1px);
+}
+
+.-has-default {
+  opacity: 0.3;
 }
 
 .spot__tags {
@@ -23,9 +36,10 @@
 }
 
 .spot__details {
-  align-self: end;
-  background: green;
-} */
+  /* padding: 10px;
+  background-color: rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px); */
+}
 
 .image-cover {
   object-fit: cover;

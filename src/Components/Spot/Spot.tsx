@@ -12,10 +12,11 @@ const Spot: FC<Props> = ({ spot, children }) => {
   return (
     <article className='spot'>
       <div className='spot__tools'>{children}</div>
-      <div className='spot__image'>
+      <div className='spot__image-wrapper'>
         <img
+          className={`${!spot.poster.url ? '-has-default' : ''} spot__image`}
           src={spot.poster.url ? spot.poster.url : noImage}
-          alt='No image available'
+          alt=''
         />
       </div>
       <div className='spot__overlay'>
