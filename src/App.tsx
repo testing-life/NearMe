@@ -11,11 +11,14 @@ import AddSpotPage from './Pages/AddSpotPage';
 import UpdateCredentialsPage from './Pages/UpdateCredentialsPage';
 import ResetPasswordPage from './Pages/ResetPasswordPage';
 import EditSpotPage from './Pages/EditSpotPage';
+import Drawer from './Components/Drawer/Drawer';
+import useDrawerStore from './Stores/drawerStore';
 
 function App() {
+  const drawerOpen = useDrawerStore((state) => state.isOpen);
   return (
     <div className='wrapper'>
-      <div>issa drawer</div>
+      <Drawer isOpen={drawerOpen} />
       <Routes>
         <Route
           path='/'
