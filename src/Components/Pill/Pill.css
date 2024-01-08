@@ -1,0 +1,12 @@
+.pill {
+  border-radius: 7px;
+  padding: 4px 12px 5px;
+  background: linear-gradient(
+    91deg,
+    var(--gradient-1) -4.37%,
+    var(--gradient-2) 53.69%,
+    var(--gradient-3) 100%
+  );
+  color: var(--text-colour-inverted);
+  font-size: 1.6rem;
+}
