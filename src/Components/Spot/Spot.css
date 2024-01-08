@@ -7,8 +7,6 @@
 .spot__overlay {
   position: absolute;
   bottom: 0;
-  min-height: 200px;
-  background: red;
 }
 
 .spot__tools {
