@@ -4,6 +4,7 @@ import { useSignOut } from 'react-firebase-hooks/auth';
 import { Link } from 'react-router-dom';
 import { UPDATE } from '../../Consts/Routes';
 import useDrawerStore from '../../Stores/drawerStore';
+import DrawerButton from '../DrawerButton/DrawerButton';
 
 interface Props {
   auth: Auth;
@@ -20,9 +21,7 @@ const Header: FC<Props> = ({ auth }) => {
           <button onClick={async () => await signOut()}>Log out</button>
         </li>
         <li>
-          <button type='button' onClick={() => toggleDrawer(drawerOpen)}>
-            toggledrawer
-          </button>
+          <DrawerButton onClick={() => toggleDrawer(drawerOpen)} />
         </li>
         <li>
           <Link className='text-light' to={UPDATE}>
