@@ -12,9 +12,9 @@ interface Props {
 
 const ListView: FC<Props> = ({ filteredData, deleteHandler }) => {
   return (
-    <ul className='ml-0 p-0 spots-list'>
+    <ul className='spots-list'>
       {filteredData.map((spot: ISpot) => (
-        <li key={spot.id}>
+        <li className='spots-list__item' key={spot.id}>
           <Spot spot={spot}>
             {spot?.id && (
               <Link

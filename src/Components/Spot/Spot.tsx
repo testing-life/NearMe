@@ -24,7 +24,7 @@ const Spot: FC<Props> = ({ spot, children }) => {
           <PillsList labels={spot.tags} />
         </div>
         <div className='spot__details'>
-          <p className='title'>{spot.name}</p>
+          <p className='spot__title'>{spot.name}</p>
           <span className='subtitle'>{spot.address}</span>
         </div>
         {spot.notes ? (
