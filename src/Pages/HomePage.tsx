@@ -118,9 +118,6 @@ const HomePage = () => {
   return (
     <>
       <Header auth={auth} />
-      <Button variant='highlight'>
-        <Link to={ADD}>Add Spot</Link>
-      </Button>
       <div className='filter-container'>
         <CustomTag tagHandler={addTagHandler} />
         <TagFilter clickHandler={filterHandler} />

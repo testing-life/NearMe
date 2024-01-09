@@ -8,7 +8,7 @@ interface Props {
 
 const FormLayout: FC<Props> = ({ children, onSubmit }) => {
   return (
-    <form onSubmit={onSubmit}>
+    <form className='form-layout' onSubmit={onSubmit}>
       {Children.map(children, (child) => (
         <div className='form-layout__child'>{child}</div>
       ))}

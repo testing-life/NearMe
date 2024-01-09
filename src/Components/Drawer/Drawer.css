@@ -1,0 +1,35 @@
+.drawer {
+  position: fixed;
+  width: 75%;
+  inset-inline-end: -100%;
+  height: 100vh;
+  background: green;
+  z-index: 9;
+  top: 0;
+  padding: 10px;
+}
+
+.drawer.-is-open:before {
+  content: '';
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  inset-block-end: 0;
+  position: fixed;
+  background: blue;
+}
+
+.drawer.-is-open:after {
+  content: '';
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  inset-block-start: -35%;
+  inset-block-end: 0;
+  z-index: -1;
+  position: fixed;
+  backdrop-filter: blur(4px);
+}
+
+.drawer.-is-open {
+  right: 0;
+}

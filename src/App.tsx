@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import * as ROUTES from './Consts/Routes';
 import SignupPage from './Pages/SignupPage';
 import HomePage from './Pages/HomePage';
@@ -13,12 +13,28 @@ import ResetPasswordPage from './Pages/ResetPasswordPage';
 import EditSpotPage from './Pages/EditSpotPage';
 import Drawer from './Components/Drawer/Drawer';
 import useDrawerStore from './Stores/drawerStore';
+import { useSignOut } from 'react-firebase-hooks/auth';
+import { auth } from './Firebase/Firebase';
 
 function App() {
   const drawerOpen = useDrawerStore((state) => state.isOpen);
+  const [signOut, loading, error] = useSignOut(auth);
   return (
     <div className='wrapper'>
-      <Drawer isOpen={drawerOpen} />
+      <Drawer isOpen={drawerOpen}>
+        <nav>
+          <ul>
+            <li>
+              <button onClick={async () => await signOut()}>Log out</button>
+            </li>
+            <li>
+              <Link className='text-light' to={ROUTES.UPDATE}>
+                Update Details
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      </Drawer>
       <Routes>
         <Route
           path='/'

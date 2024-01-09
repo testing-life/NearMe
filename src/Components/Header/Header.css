@@ -1,0 +1,8 @@
+.header {
+  display: flex;
+  gap: 16px;
+}
+
+.header__item:first-child {
+  margin-inline-end: auto;
+}

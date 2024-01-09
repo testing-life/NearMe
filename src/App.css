@@ -51,10 +51,10 @@ body {
   backdrop-filter: blur(4px);
 }
 
-html,
+/* html,
 body {
   height: 100%;
-}
+} */
 
 .wrapper {
   padding: 16px;

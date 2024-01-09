@@ -1,3 +1,7 @@
+.form-layout {
+  width: 100%;
+}
+
 .form-layout__child:not(:last-child) {
   margin-block-end: 32px;
 }
