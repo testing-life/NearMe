@@ -1,6 +1,9 @@
 .header {
   display: flex;
   gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 8;
 }
 
 .header__item:first-child {

@@ -47,15 +47,6 @@ html {
   background-repeat: no-repeat;
 }
 
-body {
-  backdrop-filter: blur(4px);
-}
-
-/* html,
-body {
-  height: 100%;
-} */
-
 .wrapper {
   padding: 16px;
   font-size: var(--text-size-default);

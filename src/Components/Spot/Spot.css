@@ -19,10 +19,6 @@
   top: 0;
 }
 
-.spot__image-wrapper {
-  backdrop-filter: blur(10px);
-}
-
 .spot__image {
   backdrop-filter: blur(0.1px);
 }
