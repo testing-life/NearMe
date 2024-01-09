@@ -1,6 +1,7 @@
 :root {
   --white: #fff;
   --black: #000;
+  --grey-1: #ffffff26;
   --bg-sphere-1: #79529d;
   --bg-sphere-2: #a5fbff99;
   --bg-sphere-3: #a5fbff4d;
@@ -12,7 +13,7 @@
   --highlight-gradient-1: #b0f1ff;
   --highlight-gradient-2: #28b086;
   --input-bg: #18182080;
-  --input-stroke: #ffffff26;
+  --input-stroke: var(--grey-1);
   --valid: #00b7b7;
   --invalid: #ff7d7d;
   --light-invalid: #ffa6a6;

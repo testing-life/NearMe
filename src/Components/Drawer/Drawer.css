@@ -7,27 +7,21 @@
   top: 0;
   display: flex;
   justify-content: flex-end;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(0px);
+  transition: inset-inline-end 0.05s ease-in-out,
+    backdrop-filter 0.1s ease-in-out;
 }
 
 .drawer {
   padding: 10px;
   width: 75%;
-  background: blue;
+  background: var(--black);
+  border-inline-start: 4px solid var(--grey-1);
 }
 
 .drawer__wrapper.-is-open {
   inset-inline-end: 0;
+  backdrop-filter: blur(2px);
+  transition: inset-inline-end 0.25s ease-in-out,
+    backdrop-filter 0.75s ease-in-out;
 }
-
-/* 
-.drawer__overlay {
-  inset-inline-start: 0;
-  inset-inline-end: -100%;
-  inset-block-start: 0;
-  inset-block-end: 0;
-  height: 100%;
-  z-index: 1;
-  position: absolute;
-  backdrop-filter: blur(4px);
-} */
