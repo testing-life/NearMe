@@ -11,3 +11,20 @@
 .-full-width {
   width: 100%;
 }
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.-is-centred-v {
+  align-items: center;
+}
+
+.-is-centred-h {
+  justify-content: center;
+}
+
+.-space-bottom {
+  margin-block-end: 24px;
+}

@@ -2,25 +2,8 @@
   margin-block-end: 32px;
 }
 
-.login-page .column {
-  display: flex;
-  flex-direction: column;
-}
-
 .-has-spearator {
   padding-block-end: 32px;
   margin-block-end: 32px;
   border-block-end: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.-is-centred-v {
-  align-items: center;
-}
-
-.-is-centred-h {
-  justify-content: center;
-}
-
-.-space-bottom {
-  margin-block-end: 24px;
 }

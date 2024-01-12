@@ -26,6 +26,7 @@ import { spotsCollectionRef } from '../Consts/SpotsRef';
 import CustomTag from '../Components/CustomTag/CustomTag';
 import Button from '../Components/Button/Button';
 import Select from '../Components/Select/Select';
+import Spinner from '../Components/Spinner/Spinner';
 
 export enum ViewMode {
   List = 'list',
@@ -141,20 +142,19 @@ const HomePage = () => {
           onChange={(val: string) => dataTypeChange(val as DataType)}
         />
       </div>
-      {filteredData ? (
+      {error && <p className='-is-error'>{error.message}</p>}
+      {!loading && !data && <p>You haven't added any spots yet.</p>}
+      {dataType === DataType.Global && !filteredData?.length && (
+        <p>It seems there are no spots within 10km from your location.</p>
+      )}
+      {!loading && filteredData ? (
         viewMode === ViewMode.Map ? (
           <MapView filteredData={filteredData} />
         ) : (
           <ListView filteredData={filteredData} deleteHandler={deleteHandler} />
         )
       ) : (
-        <p>No data to display</p>
-      )}
-      {loading && <p>Loading data...</p>}
-      {error && <p className='-is-error'>{error.message}</p>}
-      {!data && <p>You haven't added any spots yet.</p>}
-      {dataType === DataType.Global && !filteredData?.length && (
-        <p>It seems there are no spots within 10km from your location.</p>
+        <Spinner label='Loading spots' />
       )}
     </>
   );
@@ -163,5 +163,4 @@ const HomePage = () => {
 export default HomePage;
 
 // TODO edit global
-// TODO toggles to another component
 // TODO spot operations to a service?
