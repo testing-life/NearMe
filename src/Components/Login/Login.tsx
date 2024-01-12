@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
+import React, { FC, FormEvent, useState } from 'react';
 import Input from '../Input/Input';
 import FormLayout from '../FormLayout/FormLayout';
 import Button from '../Button/Button';

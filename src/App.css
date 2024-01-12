@@ -25,6 +25,8 @@
   --tag-gradient-2: #161820;
   --tag-gradient-3: #0e171f;
   --icon-bg: #333a40;
+  --spinner-bg-1: var(--white);
+  --spinner-bg-2: var(--highlight-gradient-2);
 }
 
 html {

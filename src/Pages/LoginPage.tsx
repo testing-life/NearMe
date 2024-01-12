@@ -6,6 +6,7 @@ import Login from '../Components/Login/Login';
 import { HOME, RESET, SIGN_UP } from '../Consts/Routes';
 import { auth } from '../Firebase/Firebase';
 import './LoginPage.css';
+import Spinner from '../Components/Spinner/Spinner';
 
 const LoginPage = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
@@ -25,27 +26,33 @@ const LoginPage = () => {
 
   return (
     <div className='login-page'>
-      <div className='row'>
-        <Login submitHandler={onSubmit} />
-        {error && <p>{error.message}</p>}
+      <div className='column -space-bottom'>
+        <div className='-space-bottom'>
+          <Login submitHandler={onSubmit} />
+        </div>
+        {error && <p className='-is-error'>{error.message}</p>}
       </div>
       {loading && (
-        <div className='row'>
-          <p>Signing in...</p>
+        <div className='row -is-centred-h'>
+          <Spinner label='Signing in' />
         </div>
       )}
-      <div className='column -is-centred-column -has-spearator'>
-        <p>No account?</p>
-        <Link className='' to={SIGN_UP}>
-          Sign up
-        </Link>
-      </div>
-      <div className='column -is-centred-column'>
-        <p>Forgot your password ?</p>
-        <Link className='' to={RESET}>
-          Reset password
-        </Link>
-      </div>
+      {!loading && (
+        <>
+          <div className='column -is-centred-v -has-spearator'>
+            <p>No account?</p>
+            <Link className='' to={SIGN_UP}>
+              Sign up
+            </Link>
+          </div>
+          <div className='column -is-centred-v'>
+            <p>Forgot your password ?</p>
+            <Link className='' to={RESET}>
+              Reset password
+            </Link>
+          </div>
+        </>
+      )}
     </div>
   );
 };
