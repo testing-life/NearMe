@@ -44,7 +44,9 @@ const TagFilter: FC<Props> = ({ clickHandler }) => {
       className='tag-filter'
       style={{ '--n': tags.length } as React.CSSProperties}>
       {loading && <p>Loading tags...</p>}
-      {error && <p>Couldn't load tags. {error.message}</p>}
+      {error && (
+        <p className='-is-error'>Couldn't load tags. {error.message}</p>
+      )}
       <ul className='tag-filter__tags'>
         {tags.map((tag: (typeof tags)[number], index: number) => {
           return (

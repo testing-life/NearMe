@@ -151,7 +151,7 @@ const HomePage = () => {
         <p>No data to display</p>
       )}
       {loading && <p>Loading data...</p>}
-      {error && <p>{error.message}</p>}
+      {error && <p className='-is-error'>{error.message}</p>}
       {!data && <p>You haven't added any spots yet.</p>}
       {dataType === DataType.Global && !filteredData?.length && (
         <p>It seems there are no spots within 10km from your location.</p>
