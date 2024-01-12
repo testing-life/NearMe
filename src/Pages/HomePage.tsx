@@ -122,7 +122,7 @@ const HomePage = () => {
         <CustomTag tagHandler={addTagHandler} />
         <TagFilter clickHandler={filterHandler} />
       </div>
-      <div className='row space-between'>
+      <div className='views-container row space-between'>
         <Select
           id='view-mode'
           options={[

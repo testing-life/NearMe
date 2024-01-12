@@ -26,7 +26,7 @@
     backdrop-filter 0.75s ease-in-out;
 }
 
-.drawer-trigger {
+.drawer .drawer-trigger {
   margin-block-end: 32px;
 }
 

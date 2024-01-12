@@ -4,7 +4,8 @@
 }
 
 .filter-container,
-.filter-container .custom-tag {
+.filter-container .custom-tag,
+.views-container {
   margin-block-end: 19px;
 }
 
