@@ -25,3 +25,13 @@
   transition: inset-inline-end 0.25s ease-in-out,
     backdrop-filter 0.75s ease-in-out;
 }
+
+.drawer-trigger {
+  margin-block-end: 32px;
+}
+
+.nav-list a,
+.nav-list .asLink {
+  padding: 20px 0;
+  display: block;
+}

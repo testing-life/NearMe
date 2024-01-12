@@ -1,11 +1,11 @@
-import React, { FC, ReactNode } from "react";
-import "./Drawer.css";
-import DrawerButton from "../DrawerButton/DrawerButton";
-import useDrawerStore from "../../Stores/drawerStore";
-import { Auth, signOut } from "firebase/auth";
-import { Link } from "react-router-dom";
-import * as ROUTES from "./../../Consts/Routes";
-import { useSignOut } from "react-firebase-hooks/auth";
+import React, { FC, ReactNode } from 'react';
+import './Drawer.css';
+import DrawerButton from '../DrawerButton/DrawerButton';
+import useDrawerStore from '../../Stores/drawerStore';
+import { Auth, signOut } from 'firebase/auth';
+import { Link } from 'react-router-dom';
+import * as ROUTES from './../../Consts/Routes';
+import { useSignOut } from 'react-firebase-hooks/auth';
 
 interface Props {
   isOpen: boolean;
@@ -16,23 +16,26 @@ const Drawer: FC<Props> = ({ isOpen, user }) => {
   const toggleDrawer = useDrawerStore((state) => state.toggleDrawer);
   const [signOut, loading, error] = useSignOut(user);
   return (
-    <div className={`drawer__wrapper ${isOpen ? "-is-open" : ""}`}>
-      <div className="drawer ">
+    <div className={`drawer__wrapper ${isOpen ? '-is-open' : ''}`}>
+      <div className='drawer '>
         <DrawerButton isClose onClick={() => toggleDrawer(true)} />
-        <nav className="-sticky-top">
+        <nav className='nav-list -full-width -sticky-top'>
           <ul>
             <li>
-              <button onClick={async () => await signOut()}>Log out</button>
+              <button
+                className='asLink -full-width'
+                onClick={async () => await signOut()}>
+                Log out
+              </button>
             </li>
             <li>
-              <Link className="text-light" to={ROUTES.UPDATE}>
+              <Link className='-full-width' to={ROUTES.UPDATE}>
                 Update Details
               </Link>
             </li>
           </ul>
         </nav>
       </div>
-      {/* <div className="drawer__overlay"></div> */}
     </div>
   );
 };

@@ -48,6 +48,11 @@ html {
   background-repeat: no-repeat;
 }
 
+html,
+body {
+  height: 100vh;
+}
+
 .wrapper {
   padding: 16px;
   font-size: var(--text-size-default);
