@@ -46,6 +46,7 @@ html {
       transparent calc(1vw + 229px)
     ),
     radial-gradient(at bottom left, var(--bg-sphere-4), transparent 357px),
+    radial-gradient(ellipse at bottom center, var(--bg), transparent 157px),
     url(./Assets/lotsOfDots.png), var(--bg);
   background-repeat: no-repeat;
 }
