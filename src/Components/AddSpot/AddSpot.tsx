@@ -1,16 +1,16 @@
-import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
-import useGeolocation from '../../Hooks/useGeolocation';
-import useReverseGeocode from '../../Hooks/useReverseGeocode';
-import { Spot } from '../../Models/spot';
-import { GeoPoint } from 'firebase/firestore';
-import { Tags } from '../../Consts/Tags';
-import Input from '../Input/Input';
-import TagButton from '../TagButton/TagButton';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { auth, storage } from '../../Firebase/Firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import TakePhoto from '../TakePhoto/TakePhoto';
-import * as geofire from 'geofire-common';
+import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
+import useGeolocation from "../../Hooks/useGeolocation";
+import useReverseGeocode from "../../Hooks/useReverseGeocode";
+import { Spot } from "../../Models/spot";
+import { GeoPoint } from "firebase/firestore";
+import { Tags } from "../../Consts/Tags";
+import Input from "../Input/Input";
+import TagButton from "../TagButton/TagButton";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { auth, storage } from "../../Firebase/Firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import TakePhoto from "../TakePhoto/TakePhoto";
+import * as geofire from "geofire-common";
 
 interface Props {
   submitHandler: (spot: Spot) => void;
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
-  const [uploadError, setUploadError] = useState('');
+  const [uploadError, setUploadError] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [spot, setSpot] = useState(Spot.create());
   const [image, setImage] = useState<File | null>(null);
@@ -43,7 +43,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
       const geopoint = new GeoPoint(location.latitude, location.longitude);
       const hash = geofire.geohashForLocation([
         location.latitude,
-        location.longitude
+        location.longitude,
       ]);
       setSpot({ ...spot, location: geopoint, geohash: hash });
       getAddress(location);
@@ -63,10 +63,10 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   };
 
   const storageUpload = (data: File) => {
-    const storageRef = ref(storage, `${user?.uid || 'img'}/${data.name}`);
+    const storageRef = ref(storage, `${user?.uid || "img"}/${data.name}`);
     const uploadTask = uploadBytesResumable(storageRef, data);
     uploadTask.on(
-      'state_changed',
+      "state_changed",
       (snapshot) => {
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
@@ -81,7 +81,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
         if (downloadUrl) {
           const imagedSpot = {
             ...spot,
-            poster: { ...spot.poster, url: downloadUrl }
+            poster: { ...spot.poster, url: downloadUrl },
           };
           // TODO split this
           // BUG submits spot immediately after img upload
@@ -108,30 +108,30 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     <>
       <TakePhoto captureHandler={captureHandler} />
       <form onSubmit={onSubmit}>
-        <ul className='p-0 m-0'>
-          <li className='mb-3'>
-            <input type='file' onChange={uploadHandler} />
+        <ul className="p-0 m-0">
+          <li className="mb-3">
+            <input type="file" onChange={uploadHandler} />
             {uploadProgress && uploadProgress !== 100 && !spot.poster.url ? (
               <>
                 {uploadProgress} <progress value={uploadProgress}></progress>
               </>
             ) : null}
-            {uploadError && <p className='text-orange-600'>t{uploadError}</p>}
+            {uploadError && <p className="-is-error">t{uploadError}</p>}
           </li>
-          <li className='mb-3'>
+          <li className="mb-3">
             <Input
-              id='place'
+              id="place"
               required
-              label='Name'
-              type='text'
-              placeholder='place'
+              label="Name"
+              type="text"
+              placeholder="place"
               value={spot.name}
               onChange={(value: string) => setSpot({ ...spot, name: value })}
             />
           </li>
-          <li className='mb-3'>
+          <li className="mb-3">
             <span>Tags:</span>
-            <ul className='u-flex u-flex-wrap u-gap-1'>
+            <ul className="u-flex u-flex-wrap u-gap-1">
               {Tags.map((tag: (typeof Tags)[number], index: number) => {
                 return !spot.tags.includes(tag) ? (
                   <li>
@@ -153,7 +153,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
                       clickHandler={() =>
                         setSpot({
                           ...spot,
-                          tags: spot.tags.filter((t) => t !== tag)
+                          tags: spot.tags.filter((t) => t !== tag),
                         })
                       }
                     />
@@ -162,36 +162,36 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
               })}
             </ul>
           </li>
-          <li className='row u-items-flex-end u-gap-2'>
-            <div className='col p-0'>
+          <li className="row u-items-flex-end u-gap-2">
+            <div className="col p-0">
               <Input
-                id='address'
+                id="address"
                 required
-                label='Address'
-                type='text'
-                placeholder='address'
+                label="Address"
+                type="text"
+                placeholder="address"
                 value={spot.address}
                 onChange={(value: string) =>
                   setSpot({ ...spot, address: value })
                 }
               />
             </div>
-            <div className='col p-0'>
-              <button type='button' onClick={guessAddress}>
+            <div className="col p-0">
+              <button type="button" onClick={guessAddress}>
                 Guess address
               </button>
               {locationError && <p>{locationError.message}</p>}
               {addressError && (
-                <p className='text-orange-600'>{addressError.message}</p>
+                <p className="text-orange-600">{addressError.message}</p>
               )}
             </div>
           </li>
-          <li className='mb-3'>
-            <label htmlFor='notes'>Notes</label>
+          <li className="mb-3">
+            <label htmlFor="notes">Notes</label>
             <textarea
-              id='notes'
-              className='bg-light'
-              placeholder='Notes'
+              id="notes"
+              className="bg-light"
+              placeholder="Notes"
               value={spot.notes}
               onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                 setSpot({ ...spot, notes: e.target.value })
@@ -200,8 +200,9 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
           </li>
           <li>
             <button
-              className='bg-primary lg border-red-800 text-light'
-              type='submit'>
+              className="bg-primary lg border-red-800 text-light"
+              type="submit"
+            >
               Add
             </button>
           </li>

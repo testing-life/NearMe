@@ -1,0 +1,13 @@
+.take-photo {
+  border: 1px solid var(--grey-1);
+  background: var(--grey-2);
+  border-radius: 12px;
+}
+
+.take-photo__video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+}
+
+/* icon opacity 0.15 */

@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useUserMedia } from "../../Hooks/useUserMedia";
+import { ReactComponent as Camera } from "../../Assets/Icons/camera.svg";
+import "./TakePhoto.css";
 
 const TakePhoto = ({
   captureHandler,
@@ -56,21 +58,31 @@ const TakePhoto = ({
 
   return (
     <>
-      <div>
-        <video className="" ref={video} autoPlay></video>
+      <div className="take-photo">
+        <div className="take-photo__cta">
+          <Camera />
+        </div>
+        <div className="take-photo__video-container">
+          <video
+            hidden={captured}
+            className="take-photo__video"
+            ref={video}
+            autoPlay
+          ></video>
+          <canvas
+            hidden={!captured}
+            className="w-100p"
+            ref={canvas}
+            height="430"
+            width="600"
+          />
+        </div>
         <button className="u-basis-max-content" onClick={capture}>
           Capture
         </button>
         <button className="u-basis-max-content" onClick={clearCanvas}>
           Clear
         </button>
-        <canvas
-          hidden={!captured}
-          className="w-100p"
-          ref={canvas}
-          height="430"
-          width="600"
-        />
       </div>
     </>
   );
