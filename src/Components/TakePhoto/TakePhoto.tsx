@@ -1,17 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useUserMedia } from "../../Hooks/useUserMedia";
-import { ReactComponent as Camera } from "../../Assets/Icons/camera.svg";
-import "./TakePhoto.css";
+import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
+import { useUserMedia } from '../../Hooks/useUserMedia';
+import { ReactComponent as Camera } from '../../Assets/Icons/camera.svg';
+import './TakePhoto.css';
 
-const TakePhoto = ({
-  captureHandler,
-}: {
+interface Props {
   captureHandler: (data: File | null) => void;
+  uploadHandler: (e: ChangeEvent) => void;
+  error: string;
+  uploadProgress: number;
+}
+
+const TakePhoto: FC<Props> = ({
+  captureHandler,
+  uploadHandler,
+  error,
+  uploadProgress
 }) => {
   const canvas = useRef<HTMLCanvasElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const mediaStream = useUserMedia({
-    video: { facingMode: "environment" },
+    video: { facingMode: 'environment' }
   });
   const [captured, setCaptured] = useState(false);
 
@@ -28,7 +36,7 @@ const TakePhoto = ({
 
   const capture = () => {
     setCaptured(true);
-    const context = canvas.current!.getContext("2d");
+    const context = canvas.current!.getContext('2d');
     context!.drawImage(
       video.current!,
       0,
@@ -38,13 +46,13 @@ const TakePhoto = ({
     );
     canvas.current!.toBlob((blob) => {
       const formData = new FormData();
-      formData.append("photoCapture", blob as Blob, `${Date.now()}-capture`);
-      captureHandler(formData.get("photoCapture") as File);
+      formData.append('photoCapture', blob as Blob, `${Date.now()}-capture`);
+      captureHandler(formData.get('photoCapture') as File);
     });
   };
 
   const clearCanvas = () => {
-    const context = canvas.current!.getContext("2d");
+    const context = canvas.current!.getContext('2d');
     context!.drawImage(
       video.current!,
       0,
@@ -58,31 +66,42 @@ const TakePhoto = ({
 
   return (
     <>
-      <div className="take-photo">
-        <div className="take-photo__cta">
-          <Camera />
-        </div>
-        <div className="take-photo__video-container">
+      <div className='take-photo'>
+        <div className='take-photo__video-container'>
           <video
             hidden={captured}
-            className="take-photo__video"
+            className='take-photo__video'
             ref={video}
-            autoPlay
-          ></video>
+            autoPlay></video>
           <canvas
             hidden={!captured}
-            className="w-100p"
+            className='w-100p'
             ref={canvas}
-            height="430"
-            width="600"
+            height='430'
+            width='600'
           />
         </div>
-        <button className="u-basis-max-content" onClick={capture}>
+        <button className='u-basis-max-content' onClick={capture}>
           Capture
         </button>
-        <button className="u-basis-max-content" onClick={clearCanvas}>
+        <button className='u-basis-max-content' onClick={clearCanvas}>
           Clear
         </button>
+        <div>
+          <label htmlFor='photoUpload' className='asLink'>
+            Upload a photo
+          </label>
+          <input hidden id='photoUpload' type='file' onChange={uploadHandler} />
+          {uploadProgress && uploadProgress !== 100 ? (
+            <>
+              {uploadProgress} <progress value={uploadProgress}></progress>
+            </>
+          ) : null}
+          {error && <p className='-is-error'>{error}</p>}
+        </div>
+        <div className='take-photo__cta'>
+          <Camera />
+        </div>
       </div>
     </>
   );

@@ -43,3 +43,12 @@
     var(--highlight-gradient-1) 100%
   );
 }
+
+.btn:has(a) {
+  padding: 0;
+}
+
+.btn > a {
+  padding: 18px 22px;
+  display: block;
+}
