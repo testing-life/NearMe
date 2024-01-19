@@ -11,3 +11,13 @@
   left: 0;
   width: 100%;
   h */
+
+.add-spot__locate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-spot__locate-btn > svg {
+  width: 20px;
+}
