@@ -35,6 +35,17 @@
   );
 }
 
+.-is-text {
+  background: transparent;
+  color: inherit;
+}
+
+.-is-text:hover,
+.-is-text:focus {
+  background: transparent;
+  color: var(--text-colour-inverted);
+}
+
 .-is-highlight:hover,
 .-is-highlight:focus {
   background: linear-gradient(

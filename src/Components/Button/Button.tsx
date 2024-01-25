@@ -6,7 +6,7 @@ interface Props {
   fullWidth?: boolean;
   classes?: string;
   type?: "button" | "submit" | "reset" | undefined;
-  variant?: undefined | "highlight";
+  variant?: undefined | "highlight" | "text";
   clickHandler?: () => void;
 }
 
@@ -16,15 +16,15 @@ const Button: FC<Props> = ({
   type = "button",
   variant,
   clickHandler,
-  classes,
+  classes = "",
 }) => {
   return (
     <button
       onClick={clickHandler}
       type={type}
-      className={`btn ${classes} ${fullWidth ? "-full-width" : ""} ${
-        variant ? "-is-highlight" : ""
-      }`}
+      className={`btn ${classes ? classes : ""} ${
+        fullWidth ? "-full-width" : ""
+      } ${variant ? `-is-${variant}` : ""}`}
     >
       {children}
     </button>

@@ -1,29 +1,54 @@
 .take-photo {
-  border: 1px solid var(--grey-1);
-  background: var(--grey-2);
-  border-radius: 12px;
-  position: relative;
+  /* position: relative; */
 }
 
 .take-photo__video {
   width: 100%;
   height: auto;
-  aspect-ratio: 16/9;
+  border-radius: 12px;
+  box-shadow: 0 0 15px var(--bg);
+  margin-bottom: 20px;
 }
 
 /* icon opacity 0.15 */
+
+.take-photo__video-container {
+  border: 1px solid var(--grey-1);
+  background: var(--grey-2);
+  border-radius: 12px;
+  min-height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--icon-bg);
+}
+
+.take-photo__cta:hover,
+.take-photo__cta:focus {
+  cursor: pointer;
+}
 
 .take-photo__cta {
   /* display: flex; */
   /* justify-content: center; */
   /* align-items: center; */
   /* height: 100%; */
-  background: url('../../Assets/Icons/camera.svg') no-repeat center center;
-  position: absolute;
-  left: 0;
-  right: 0;
+}
+
+.take-photo__video-feed:not([hidden]) {
+  /* position: fixed; */
   top: 0;
-  bottom: 0;
-  border-radius: inherit;
-  pointer-events: none;
+  z-index: 9;
+  height: 100vh;
+  outline: 1px solid green;
+  width: 100%;
+  display: block;
+  left: 0;
+  padding: 8px;
+  background: linear-gradient(
+    -25deg,
+    var(--bg-sphere-1) 25%,
+    var(--bg-sphere-3) 70%
+  );
+  backdrop-filter: blur(4px);
 }
