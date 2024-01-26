@@ -84,6 +84,21 @@ const TakePhoto: FC<Props> = ({
             <Camera />
             <PlusCircle className='take-photo__cta-secondary-icon' />
           </button>
+          <p>
+            Tap to take a photo or{' '}
+            <label htmlFor='photoUpload' className='asLink'>
+              Upload a photo
+            </label>{' '}
+          </p>
+          <input hidden id='photoUpload' type='file' onChange={uploadHandler} />
+        </div>
+        <div>
+          {uploadProgress && uploadProgress !== 100 ? (
+            <>
+              {uploadProgress} <progress value={uploadProgress}></progress>
+            </>
+          ) : null}
+          {error && <p className='-is-error'>{error}</p>}
         </div>
         <div className='take-photo__video-feed' hidden={!showFeed}>
           <video
@@ -118,18 +133,6 @@ const TakePhoto: FC<Props> = ({
         <button className='u-basis-max-content' onClick={clearCanvas}>
           Clear
         </button>
-        <div>
-          <label htmlFor='photoUpload' className='asLink'>
-            Upload a photo
-          </label>
-          <input hidden id='photoUpload' type='file' onChange={uploadHandler} />
-          {uploadProgress && uploadProgress !== 100 ? (
-            <>
-              {uploadProgress} <progress value={uploadProgress}></progress>
-            </>
-          ) : null}
-          {error && <p className='-is-error'>{error}</p>}
-        </div>
       </div>
     </>
   );
