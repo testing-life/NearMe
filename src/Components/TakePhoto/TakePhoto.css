@@ -32,10 +32,13 @@
 }
 
 .take-photo__cta {
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
-  /* height: 100%; */
+  position: relative;
+}
+
+.take-photo__cta-secondary-icon {
+  position: absolute;
+  right: 5px;
+  bottom: -5px;
 }
 
 .take-photo__video-feed:not([hidden]) {

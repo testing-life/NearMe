@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import { useUserMedia } from '../../Hooks/useUserMedia';
 import { ReactComponent as Camera } from '../../Assets/Icons/camera.svg';
+import { ReactComponent as PlusCircle } from '../../Assets/Icons/add-circle.svg';
 import './TakePhoto.css';
 import Button from '../Button/Button';
 
@@ -81,6 +82,7 @@ const TakePhoto: FC<Props> = ({
         <div className='take-photo__video-container'>
           <button className='take-photo__cta' onClick={getFeed}>
             <Camera />
+            <PlusCircle className='take-photo__cta-secondary-icon' />
           </button>
         </div>
         <div className='take-photo__video-feed' hidden={!showFeed}>
