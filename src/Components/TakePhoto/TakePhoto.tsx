@@ -48,6 +48,7 @@ const TakePhoto: FC<Props> = ({
 
   const capture = () => {
     setCaptured(true);
+    setShowFeed(false);
     const context = canvas.current!.getContext('2d');
     context!.drawImage(
       video.current!,
@@ -114,22 +115,8 @@ const TakePhoto: FC<Props> = ({
           </Button>
         </div>
         <div className='take-photo__photos' hidden={!captured}>
-          <canvas
-            // hidden={!captured}
-            ref={canvas}
-            height='430'
-            width='600'
-          />
+          <canvas hidden={!captured} ref={canvas} height='58' width='82' />
         </div>
-        {/* <div className="take-photo__video-container">
-          <video
-            hidden={captured}
-            className="take-photo__video"
-            ref={video}
-            autoPlay
-          ></video>
-  
-        </div> */}
         <button className='u-basis-max-content' onClick={clearCanvas}>
           Clear
         </button>

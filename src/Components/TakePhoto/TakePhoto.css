@@ -23,6 +23,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-block-end: 16px;
 }
 
 .take-photo__cta:hover,
@@ -38,19 +39,19 @@
 
 .take-photo__cta-secondary-icon {
   position: absolute;
-  right: 5px;
-  bottom: -5px;
+  inset-inline-end: 5px;
+  inset-block-end: -5px;
 }
 
 .take-photo__video-feed:not([hidden]) {
   position: fixed;
-  top: 0;
+  inset-block-start: 0;
   z-index: 9;
   height: 100vh;
   outline: 1px solid green;
   width: 100%;
   display: block;
-  left: 0;
+  inset-inline-end: 0;
   padding: 8px;
   background: linear-gradient(
     -25deg,
@@ -129,4 +130,10 @@ progress[value]::-webkit-progress-value {
   100% {
     background-position: 0% 50%;
   }
+}
+
+canvas {
+  border-radius: 12px;
+  width: clamp(58px, 25%, 100px);
+  outline: 1px solid red;
 }
