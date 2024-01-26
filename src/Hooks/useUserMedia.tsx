@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-
-interface Props {}
+import { useState, useEffect } from 'react';
 
 export const useUserMedia = (requestedMedia: object) => {
   const [mediaStream, setMediaStream] = useState<MediaStream>();
@@ -10,7 +8,7 @@ export const useUserMedia = (requestedMedia: object) => {
       const stream = await navigator.mediaDevices.getUserMedia(requestedMedia);
       setMediaStream(stream as MediaStream);
     } catch (e) {
-      console.error("user media error", e);
+      console.error('user media error', e);
     }
   };
 
@@ -30,10 +28,7 @@ export const useUserMedia = (requestedMedia: object) => {
     if (!mediaStream) {
       enableStream();
     }
-    return () => {
-      stopStream();
-    };
   }, [mediaStream, requestedMedia]);
 
-  return { mediaStream, restartStream, stopStream };
+  return { mediaStream, restartStream, stopStream, enableStream };
 };

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="matrix(1, 0, 0, 1, -54, -39)" style="transform-origin: 54px 39px;">
+    <circle id="Ellipse 6" cx="72" cy="57" r="18" fill="url(#paint0_linear_139_174)"/>
+    <path id="Vector 8" d="M65 57H79" stroke="currentcolor" stroke-width="3" stroke-linecap="round"/>
+    <path id="Vector 9" d="M72 50L72 64" stroke="currentcolor" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear_139_174" x1="52.2402" y1="27.1071" x2="91.4486" y2="28.3239" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B0F1FF"/>
+      <stop offset="1" stop-color="#28B086"/>
+    </linearGradient>
+  </defs>
+</svg>

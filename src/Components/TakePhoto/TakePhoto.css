@@ -10,6 +10,9 @@
   margin-bottom: 20px;
 }
 
+.-is-visible {
+  display: block;
+}
 /* icon opacity 0.15 */
 
 .take-photo__video-container {
@@ -36,7 +39,7 @@
 }
 
 .take-photo__video-feed:not([hidden]) {
-  /* position: fixed; */
+  position: fixed;
   top: 0;
   z-index: 9;
   height: 100vh;
@@ -51,4 +54,14 @@
     var(--bg-sphere-3) 70%
   );
   backdrop-filter: blur(4px);
+}
+
+.take-photo__cta:hover {
+  cursor: pointer;
+}
+
+.take-photo__plus-icon {
+  color: var(--text-colour-inverted);
+  position: absolute;
+  transform: translate(28px, 28px);
 }
