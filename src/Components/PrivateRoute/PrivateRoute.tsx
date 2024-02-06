@@ -3,6 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../Firebase/Firebase";
 import * as ROUTES from "../../Consts/Routes";
 import { Navigate, useLocation } from "react-router-dom";
+import Spinner from "../Spinner/Spinner";
 
 const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
   const [user, loading] = useAuthState(auth);
@@ -13,7 +14,7 @@ const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
   }
 
   if (loading) {
-    return <p>loading...</p>;
+    return <Spinner label="Warming Up" />;
   }
 
   return <>{children}</>;
