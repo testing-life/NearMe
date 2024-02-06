@@ -71,6 +71,33 @@
   transform: translate(28px, 28px);
 }
 
+.take-photo__desc {
+  padding: 0 20px;
+  text-align: center;
+}
+
+.take-photo__photos {
+  min-block-size: 250px;
+}
+
+.take-photo__clear-canvas-wrapper {
+  position: relative;
+}
+
+.take-photo__clear-canvas {
+  position: absolute;
+  inset-block-start: -10px;
+  inset-inline-end: -4px;
+}
+
+.take-photo__clear-canvas:hover,
+.take-photo__clear-canvas:active {
+  cursor: pointer;
+}
+
+.take-photo__cta-tertiary-icon {
+}
+
 progress[value] {
   --d: 200px;
   --angle: 45deg;
@@ -80,6 +107,7 @@ progress[value] {
   border: none;
   border-radius: 12px;
   animation: gradient 15s ease infinite;
+  background: var(--bg-sphere-4);
   background-repeat: repeat-x;
   animation-duration: 15s;
   width: 100%;
@@ -135,5 +163,6 @@ progress[value]::-webkit-progress-value {
 canvas {
   border-radius: 12px;
   width: clamp(58px, 25%, 100px);
-  outline: 1px solid red;
+  width: 100%;
+  height: auto;
 }

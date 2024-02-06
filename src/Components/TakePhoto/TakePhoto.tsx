@@ -1,9 +1,10 @@
-import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
-import { useUserMedia } from '../../Hooks/useUserMedia';
-import { ReactComponent as Camera } from '../../Assets/Icons/camera.svg';
-import { ReactComponent as PlusCircle } from '../../Assets/Icons/add-circle.svg';
-import './TakePhoto.css';
-import Button from '../Button/Button';
+import React, { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+import { useUserMedia } from "../../Hooks/useUserMedia";
+import { ReactComponent as Camera } from "../../Assets/Icons/camera.svg";
+import { ReactComponent as PlusCircle } from "../../Assets/Icons/add-circle.svg";
+import { ReactComponent as RemoveCircle } from "../../Assets/Icons/remove-circle.svg";
+import "./TakePhoto.css";
+import Button from "../Button/Button";
 
 interface Props {
   captureHandler: (data: File | null) => void;
@@ -16,12 +17,12 @@ const TakePhoto: FC<Props> = ({
   captureHandler,
   uploadHandler,
   error,
-  uploadProgress
+  uploadProgress,
 }) => {
   const canvas = useRef<HTMLCanvasElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const { mediaStream, stopStream } = useUserMedia({
-    video: { facingMode: 'environment' }
+    video: { facingMode: "environment" },
   });
   const [captured, setCaptured] = useState(false);
   const [showFeed, setShowFeed] = useState(false);
@@ -49,7 +50,7 @@ const TakePhoto: FC<Props> = ({
   const capture = () => {
     setCaptured(true);
     setShowFeed(false);
-    const context = canvas.current!.getContext('2d');
+    const context = canvas.current!.getContext("2d");
     context!.drawImage(
       video.current!,
       0,
@@ -59,13 +60,13 @@ const TakePhoto: FC<Props> = ({
     );
     canvas.current!.toBlob((blob) => {
       const formData = new FormData();
-      formData.append('photoCapture', blob as Blob, `${Date.now()}-capture`);
-      captureHandler(formData.get('photoCapture') as File);
+      formData.append("photoCapture", blob as Blob, `${Date.now()}-capture`);
+      captureHandler(formData.get("photoCapture") as File);
     });
   };
 
   const clearCanvas = () => {
-    const context = canvas.current!.getContext('2d');
+    const context = canvas.current!.getContext("2d");
     context!.drawImage(
       video.current!,
       0,
@@ -79,47 +80,51 @@ const TakePhoto: FC<Props> = ({
 
   return (
     <>
-      <div className='take-photo'>
-        <div className='take-photo__video-container'>
-          <button className='take-photo__cta' onClick={getFeed}>
+      <div className="take-photo">
+        <div className="take-photo__video-container">
+          <button className="take-photo__cta" onClick={getFeed}>
             <Camera />
-            <PlusCircle className='take-photo__cta-secondary-icon' />
+            <PlusCircle className="take-photo__cta-secondary-icon" />
           </button>
-          <p>
-            Tap to take a photo or{' '}
-            <label htmlFor='photoUpload' className='asLink'>
+          <p className="take-photo__desc">
+            Tap to take a photo or{" "}
+            <label htmlFor="photoUpload" className="asLink">
               Upload a photo
-            </label>{' '}
+            </label>{" "}
           </p>
-          <input hidden id='photoUpload' type='file' onChange={uploadHandler} />
+          <input hidden id="photoUpload" type="file" onChange={uploadHandler} />
         </div>
         <div>
           {uploadProgress && uploadProgress !== 100 ? (
             <>
-              {uploadProgress} <progress value={uploadProgress}></progress>
+              {uploadProgress}{" "}
+              <progress max="100" value={uploadProgress}></progress>
             </>
           ) : null}
-          {error && <p className='-is-error'>{error}</p>}
+          {error && <p className="-is-error">{error}</p>}
         </div>
-        <div className='take-photo__video-feed' hidden={!showFeed}>
+        <div className="take-photo__video-feed" hidden={!showFeed}>
           <video
-            className='take-photo__video'
+            className="take-photo__video"
             ref={video}
             autoPlay
-            muted></video>
-          <Button variant='highlight' fullWidth clickHandler={capture}>
+            muted
+          ></video>
+          <Button variant="highlight" fullWidth clickHandler={capture}>
             Capture
           </Button>
-          <Button variant='text' fullWidth clickHandler={stopFeed}>
+          <Button variant="text" fullWidth clickHandler={stopFeed}>
             Cancel
           </Button>
         </div>
-        <div className='take-photo__photos' hidden={!captured}>
-          <canvas hidden={!captured} ref={canvas} height='58' width='82' />
+        <div className="take-photo__photos" hidden={!captured}>
+          <div className="take-photo__clear-canvas-wrapper">
+            <button className="take-photo__clear-canvas" onClick={clearCanvas}>
+              <RemoveCircle className="take-photo__cta-tertiary-icon" />
+            </button>
+            <canvas hidden={!captured} ref={canvas} height="58" width="82" />
+          </div>
         </div>
-        <button className='u-basis-max-content' onClick={clearCanvas}>
-          Clear
-        </button>
       </div>
     </>
   );
