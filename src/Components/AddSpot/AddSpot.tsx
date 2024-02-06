@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import useGeolocation from "../../Hooks/useGeolocation";
 import useReverseGeocode from "../../Hooks/useReverseGeocode";
-import { Spot } from "../../Models/spot";
+import { ISpot, Spot } from "../../Models/spot";
 import { GeoPoint } from "firebase/firestore";
 import { Tags } from "../../Consts/Tags";
 import Input from "../Input/Input";
@@ -35,7 +35,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     e.preventDefault();
     const newSpot = { ...spot, userId: user!.uid };
     if (image) {
-      storageUpload(image);
+      storageUpload(image, newSpot as ISpot);
     } else {
       submitHandler(newSpot);
     }
@@ -65,7 +65,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     getLocation();
   };
 
-  const storageUpload = (data: File) => {
+  const storageUpload = (data: File, spotWithId: ISpot) => {
     const storageRef = ref(storage, `${user?.uid || "img"}/${data.name}`);
     const uploadTask = uploadBytesResumable(storageRef, data);
     uploadTask.on(
@@ -83,8 +83,8 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
         const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
         if (downloadUrl) {
           const imagedSpot = {
-            ...spot,
-            poster: { ...spot.poster, url: downloadUrl },
+            ...spotWithId,
+            poster: { ...spotWithId.poster, url: downloadUrl },
           };
           // TODO split this
           // BUG submits spot immediately after img upload
@@ -100,7 +100,8 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     if (!file) {
       return;
     }
-    storageUpload(file);
+    // TODO ugly fix for upload
+    storageUpload(file, {} as ISpot);
   };
 
   const captureHandler = (data: File | null) => {
