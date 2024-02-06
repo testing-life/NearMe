@@ -107,6 +107,8 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     setImage(data);
   };
   // TODO  almost same form as edit - look into reusing
+  // TODO reuse tags filter setup, for layout
+  // TODO refactor global utility classes like mb
   return (
     <>
       <TakePhoto
@@ -116,17 +118,8 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
         uploadProgress={uploadProgress}
       />
       <form onSubmit={onSubmit}>
-        <ul className="p-0 m-0">
-          <li className="mb-3">
-            {/* <input type='file' onChange={uploadHandler} />
-            {uploadProgress && uploadProgress !== 100 && !spot.poster.url ? (
-              <>
-                {uploadProgress} <progress value={uploadProgress}></progress>
-              </>
-            ) : null}
-            {uploadError && <p className='-is-error'>t{uploadError}</p>} */}
-          </li>
-          <li className="mb-3">
+        <ul>
+          <li className="mb-32">
             <Input
               id="place"
               required
@@ -137,9 +130,11 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
               onChange={(value: string) => setSpot({ ...spot, name: value })}
             />
           </li>
-          <li>
-            <span>Tags:</span>
-            <ul className="u-flex u-flex-wrap u-gap-1">
+          <li className="add-tag mb-32">
+            <ul
+              className="add-tag__list"
+              style={{ "--n": Tags.length } as React.CSSProperties}
+            >
               {Tags.map((tag: (typeof Tags)[number], index: number) => {
                 return !spot.tags.includes(tag) ? (
                   <li>
@@ -170,8 +165,8 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
               })}
             </ul>
           </li>
-          <li className="row u-items-flex-end u-gap-2">
-            <div className="col p-0">
+          <li className="row mb-32 locate-container">
+            <div>
               <Input
                 id="address"
                 required
@@ -184,7 +179,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
                 }
               />
             </div>
-            <div className="col p-0">
+            <div>
               <Button
                 classes="add-spot__locate-btn"
                 type="button"
@@ -201,7 +196,8 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
               )}
             </div>
           </li>
-          <li className="mb-3">
+          {/* really needed ? */}
+          {/* <li className="mb-3">
             <label htmlFor="notes">Notes</label>
             <textarea
               id="notes"
@@ -212,7 +208,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
                 setSpot({ ...spot, notes: e.target.value })
               }
             />
-          </li>
+          </li> */}
           <li>
             <Button fullWidth variant="highlight" type="submit">
               Add spot

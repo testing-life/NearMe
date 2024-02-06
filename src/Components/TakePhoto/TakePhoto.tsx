@@ -122,7 +122,7 @@ const TakePhoto: FC<Props> = ({
             <button className="take-photo__clear-canvas" onClick={clearCanvas}>
               <RemoveCircle className="take-photo__cta-tertiary-icon" />
             </button>
-            <canvas hidden={!captured} ref={canvas} height="58" width="82" />
+            <canvas hidden={!captured} ref={canvas} />
           </div>
         </div>
       </div>
