@@ -33,7 +33,7 @@ const TakePhoto: FC<Props> = ({
           preview.current!.src = (dataUrl as string) || '';
         };
         reader.readAsDataURL(file);
-        // captureHandler(file);
+        captureHandler(file);
       }
     } catch (error) {
       throw new Error('Error with acquiring the image');
@@ -47,6 +47,8 @@ const TakePhoto: FC<Props> = ({
 
   return (
     <>
+      {console.log('uploadProgress', uploadProgress)}
+
       <div className='take-photo'>
         {!captured && (
           <div className='take-photo__video-container'>
@@ -55,8 +57,8 @@ const TakePhoto: FC<Props> = ({
                 <Camera />
                 <PlusCircle className='take-photo__cta-secondary-icon' />
               </div>
-              <p className='take-photo__desc'>Tap to take a photo</p>
             </label>{' '}
+            <p className='take-photo__desc'>Tap to take a photo</p>
             {/* <input hidden id='photoUpload' type='file' onChange={uploadHandler} /> */}
             <input
               hidden
