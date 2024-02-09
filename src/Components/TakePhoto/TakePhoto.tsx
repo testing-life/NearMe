@@ -58,11 +58,42 @@ const TakePhoto: FC<Props> = ({
       canvas.current!.width,
       canvas.current!.height
     );
+
     canvas.current!.toBlob((blob) => {
+      console.log("blob", blob);
       const formData = new FormData();
       formData.append("photoCapture", blob as Blob, `${Date.now()}-capture`);
       captureHandler(formData.get("photoCapture") as File);
     });
+  };
+
+  const capture2 = (e: any) => {
+    setCaptured(true);
+    setShowFeed(false);
+    const context = canvas.current!.getContext("2d");
+    // context!.drawImage(
+    //   video.current!,
+    //   0,
+    //   0,
+    //   canvas.current!.width,
+    //   canvas.current!.height
+    // );
+    createImageBitmap(e.target.files[0]).then((imageBitmap) => {
+      console.log(imageBitmap);
+      context!.drawImage(
+        imageBitmap,
+        0,
+        0,
+        canvas.current!.width,
+        canvas.current!.height
+      );
+    });
+    captureHandler(e.target.files[0]);
+    // canvas.current!.toBlob((blob) => {
+    //   console.log("blob", blob);
+    //   const formData = new FormData();
+    //   formData.append("photoCapture", blob as Blob, `${Date.now()}-capture`);
+    // });
   };
 
   const clearCanvas = () => {
@@ -93,6 +124,14 @@ const TakePhoto: FC<Props> = ({
             </label>{" "}
           </p>
           <input hidden id="photoUpload" type="file" onChange={uploadHandler} />
+          <label htmlFor="test">Take photo</label>
+          <input
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={capture2}
+            id="test"
+          />
         </div>
         <div>
           {uploadProgress && uploadProgress !== 100 ? (
