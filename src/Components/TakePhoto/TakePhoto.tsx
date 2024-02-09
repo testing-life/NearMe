@@ -1,14 +1,14 @@
-import React, { ChangeEvent, FC, useEffect, useRef, useState } from "react";
-import { useUserMedia } from "../../Hooks/useUserMedia";
-import { ReactComponent as Camera } from "../../Assets/Icons/camera.svg";
-import { ReactComponent as PlusCircle } from "../../Assets/Icons/add-circle.svg";
-import { ReactComponent as RemoveCircle } from "../../Assets/Icons/remove-circle.svg";
-import "./TakePhoto.css";
-import Button from "../Button/Button";
+import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
+import { useUserMedia } from '../../Hooks/useUserMedia';
+import { ReactComponent as Camera } from '../../Assets/Icons/camera.svg';
+import { ReactComponent as PlusCircle } from '../../Assets/Icons/add-circle.svg';
+import { ReactComponent as RemoveCircle } from '../../Assets/Icons/remove-circle.svg';
+import './TakePhoto.css';
+import Button from '../Button/Button';
 
 interface Props {
   captureHandler: (data: File | null) => void;
-  uploadHandler: (e: ChangeEvent) => void;
+  uploadHandler?: (e: ChangeEvent) => void;
   error: string;
   uploadProgress: number;
 }
@@ -17,152 +17,82 @@ const TakePhoto: FC<Props> = ({
   captureHandler,
   uploadHandler,
   error,
-  uploadProgress,
+  uploadProgress
 }) => {
-  const canvas = useRef<HTMLCanvasElement>(null);
-  const video = useRef<HTMLVideoElement>(null);
-  const { mediaStream, stopStream } = useUserMedia({
-    video: { facingMode: "environment" },
-  });
+  const preview = useRef<HTMLImageElement>(null);
   const [captured, setCaptured] = useState(false);
-  const [showFeed, setShowFeed] = useState(false);
 
-  useEffect(() => {
-    return () => {
-      stopStream();
-    };
-  }, []);
-
-  const getFeed = async () => {
-    if (mediaStream && video.current) {
-      video.current.srcObject = mediaStream;
-      setShowFeed(true);
-    }
-  };
-
-  const stopFeed = () => {
-    if (mediaStream && video.current) {
-      video.current.srcObject = null;
-      setShowFeed(false);
-    }
-  };
-
-  const capture = () => {
+  const capture = (e: ChangeEvent<HTMLInputElement>) => {
     setCaptured(true);
-    setShowFeed(false);
-    const context = canvas.current!.getContext("2d");
-    context!.drawImage(
-      video.current!,
-      0,
-      0,
-      canvas.current!.width,
-      canvas.current!.height
-    );
-
-    canvas.current!.toBlob((blob) => {
-      console.log("blob", blob);
-      const formData = new FormData();
-      formData.append("photoCapture", blob as Blob, `${Date.now()}-capture`);
-      captureHandler(formData.get("photoCapture") as File);
-    });
-  };
-
-  const capture2 = (e: any) => {
-    setCaptured(true);
-    setShowFeed(false);
-    const context = canvas.current!.getContext("2d");
-    // context!.drawImage(
-    //   video.current!,
-    //   0,
-    //   0,
-    //   canvas.current!.width,
-    //   canvas.current!.height
-    // );
-    createImageBitmap(e.target.files[0]).then((imageBitmap) => {
-      console.log(imageBitmap);
-      context!.drawImage(
-        imageBitmap,
-        0,
-        0,
-        canvas.current!.width,
-        canvas.current!.height
-      );
-    });
-    captureHandler(e.target.files[0]);
-    // canvas.current!.toBlob((blob) => {
-    //   console.log("blob", blob);
-    //   const formData = new FormData();
-    //   formData.append("photoCapture", blob as Blob, `${Date.now()}-capture`);
-    // });
+    const file = e?.target?.files?.[0];
+    const reader = new FileReader();
+    try {
+      if (file) {
+        reader.onload = () => {
+          const dataUrl = reader.result;
+          preview.current!.src = (dataUrl as string) || '';
+        };
+        reader.readAsDataURL(file);
+        // captureHandler(file);
+      }
+    } catch (error) {
+      throw new Error('Error with acquiring the image');
+    }
   };
 
   const clearCanvas = () => {
-    const context = canvas.current!.getContext("2d");
-    context!.drawImage(
-      video.current!,
-      0,
-      0,
-      canvas.current!.width,
-      canvas.current!.height
-    );
     captureHandler(null);
     setCaptured(false);
   };
 
   return (
     <>
-      <div className="take-photo">
-        <div className="take-photo__video-container">
-          <button className="take-photo__cta" onClick={getFeed}>
-            <Camera />
-            <PlusCircle className="take-photo__cta-secondary-icon" />
-          </button>
-          <p className="take-photo__desc">
-            Tap to take a photo or{" "}
-            <label htmlFor="photoUpload" className="asLink">
-              Upload a photo
-            </label>{" "}
-          </p>
-          <input hidden id="photoUpload" type="file" onChange={uploadHandler} />
-          <label htmlFor="test">Take photo</label>
-          <input
-            type="file"
-            accept="image/*"
-            capture="environment"
-            onChange={capture2}
-            id="test"
-          />
-        </div>
+      <div className='take-photo'>
+        {!captured && (
+          <div className='take-photo__video-container'>
+            <label htmlFor='photoUpload'>
+              <div className='take-photo__cta'>
+                <Camera />
+                <PlusCircle className='take-photo__cta-secondary-icon' />
+              </div>
+              <p className='take-photo__desc'>Tap to take a photo</p>
+            </label>{' '}
+            {/* <input hidden id='photoUpload' type='file' onChange={uploadHandler} /> */}
+            <input
+              hidden
+              type='file'
+              accept='image/*'
+              capture='environment'
+              onChange={capture}
+              id='photoUpload'
+            />
+          </div>
+        )}
+        {captured && (
+          <div className='take-photo__photos'>
+            <div className='take-photo__preview-wrapper'>
+              <button
+                className='take-photo__clear-preview'
+                onClick={clearCanvas}>
+                <RemoveCircle className='take-photo__cta-tertiary-icon' />
+              </button>
+              <img
+                src=''
+                className='take-photo__preview'
+                ref={preview}
+                alt=''
+              />
+            </div>
+          </div>
+        )}
         <div>
           {uploadProgress && uploadProgress !== 100 ? (
             <>
-              {uploadProgress}{" "}
-              <progress max="100" value={uploadProgress}></progress>
+              {uploadProgress}{' '}
+              <progress max='100' value={uploadProgress}></progress>
             </>
           ) : null}
-          {error && <p className="-is-error">{error}</p>}
-        </div>
-        <div className="take-photo__video-feed" hidden={!showFeed}>
-          <video
-            className="take-photo__video"
-            ref={video}
-            autoPlay
-            muted
-          ></video>
-          <Button variant="highlight" fullWidth clickHandler={capture}>
-            Capture
-          </Button>
-          <Button variant="text" fullWidth clickHandler={stopFeed}>
-            Cancel
-          </Button>
-        </div>
-        <div className="take-photo__photos" hidden={!captured}>
-          <div className="take-photo__clear-canvas-wrapper">
-            <button className="take-photo__clear-canvas" onClick={clearCanvas}>
-              <RemoveCircle className="take-photo__cta-tertiary-icon" />
-            </button>
-            <canvas hidden={!captured} ref={canvas} />
-          </div>
+          {error && <p className='-is-error'>{error}</p>}
         </div>
       </div>
     </>

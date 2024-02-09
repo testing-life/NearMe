@@ -75,19 +75,24 @@
 .take-photo__photos {
 }
 
-.take-photo__clear-canvas-wrapper {
+.take-photo__preview-wrapper {
   position: relative;
+  padding-block-start: 16px;
 }
 
-.take-photo__clear-canvas {
+.take-photo__clear-preview {
   position: absolute;
-  inset-block-start: -10px;
+  inset-block-start: 10px;
   inset-inline-end: -4px;
 }
 
-.take-photo__clear-canvas:hover,
-.take-photo__clear-canvas:active {
+.take-photo__clear-preview:hover,
+.take-photo__clear-preview:active {
   cursor: pointer;
+}
+
+.take-photo__preview {
+  border-radius: 12px;
 }
 
 progress[value] {
@@ -150,10 +155,4 @@ progress[value]::-webkit-progress-value {
   100% {
     background-position: 0% 50%;
   }
-}
-
-canvas {
-  border-radius: 12px;
-  width: 100%;
-  height: auto;
 }
