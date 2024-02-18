@@ -24,6 +24,26 @@ const PillsList: FC<Props> = ({ labels }) => {
     }
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (
+        pillsRef.current &&
+        (pillsRef.current as HTMLElement).children.length
+      ) {
+        const needsTrimming = getOverflow(pillsRef.current);
+        if (needsTrimming) {
+          setIsOverflown(getOverflow(pillsRef.current));
+          setData(labels.slice(0, getIndexToTrimTo(pillsRef.current, 10, 50)));
+        }
+      }
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <ul ref={pillsRef} className={`pills-list `}>
       {data?.map((label: string, index: number) => (
