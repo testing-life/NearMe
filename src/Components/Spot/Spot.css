@@ -17,7 +17,13 @@
 .spot__tools {
   position: absolute;
   top: 0;
-  display: none; /* dev  */
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  background: linear-gradient(to right, transparent, var(--tools-bg));
+  opacity: 0.75;
+  gap: 15px;
 }
 
 .spot__image {
@@ -47,4 +53,19 @@
 .notes-max-hight {
   max-height: 107px;
   overflow: hidden;
+}
+
+.spot__delete,
+.spot__edit {
+  padding: 8px;
+  line-height: 1;
+  color: var(--text-colour);
+}
+
+.spot__delete:hover,
+.spot__delete:focus,
+.spot__edit:hover,
+.spot__edit:focus {
+  cursor: pointer;
+  box-shadow: none;
 }

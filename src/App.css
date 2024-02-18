@@ -28,6 +28,7 @@
   --icon-bg: #333a40;
   --spinner-bg-1: var(--white);
   --spinner-bg-2: var(--highlight-gradient-2);
+  --tools-bg: var(--bg-sphere-1);
 }
 
 html {
