@@ -95,7 +95,7 @@ const HomePage = () => {
       await deleteDoc(docRef).catch((e: Error) => console.error(e));
       if (imageUrl) {
         deleteObject(imageRef as StorageReference)
-          .then((e: any) => console.log("success", e))
+          .then(() => console.log("Successfully deleted"))
           .catch((e: Error) => console.error(e));
       }
     }
