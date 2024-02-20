@@ -21,14 +21,19 @@ const Input: FC<Props> = ({
   onChange
 }) => {
   const [error, setError] = useState('');
+
   const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value);
+  };
+
+  const blurHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (required && e.target.validationMessage) {
       setError(e.target.validationMessage);
     } else {
       setError('');
     }
-    onChange(e.target.value);
   };
+
   return (
     <div className='input-wrapper'>
       <label className='invisible' htmlFor={id}>
@@ -41,6 +46,7 @@ const Input: FC<Props> = ({
         type={type}
         placeholder={label}
         value={value}
+        onBlur={blurHandler}
         onChange={changeHandler}
       />
       {error ? <p className='input-error'>{error}</p> : null}

@@ -1,12 +1,11 @@
-import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
+import React, { FC, FormEvent, useEffect, useState } from 'react';
 import useGeolocation from '../../Hooks/useGeolocation';
 import useReverseGeocode from '../../Hooks/useReverseGeocode';
-import { ISpot, Spot } from '../../Models/spot';
+import { Spot } from '../../Models/spot';
 import { GeoPoint } from 'firebase/firestore';
 import { Tags } from '../../Consts/Tags';
 import Input from '../Input/Input';
 import TagButton from '../TagButton/TagButton';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { auth, storage } from '../../Firebase/Firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import TakePhoto from '../TakePhoto/TakePhoto';
@@ -14,6 +13,9 @@ import * as geofire from 'geofire-common';
 import Button from '../Button/Button';
 import { ReactComponent as Locate } from '../../Assets/Icons/locate.svg';
 import './AddSpot.css';
+import { Link } from 'react-router-dom';
+import { HOME } from '../../Consts/Routes';
+import { useAddImage } from '../../Hooks/useAddImage';
 
 interface Props {
   submitHandler: (spot: Spot) => void;
@@ -21,21 +23,21 @@ interface Props {
 }
 
 const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
-  const [uploadError, setUploadError] = useState('');
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [spot, setSpot] = useState(Spot.create());
   const [image, setImage] = useState<File | null>(null);
   const { location, locationError, getLocation } = useGeolocation();
   const [user] = useAuthState(auth);
   const { address, getAddress, addressError } = useReverseGeocode();
+  const { uploadProgress, downloadUrl, uploadError, storageUploadHook } =
+    useAddImage();
   // TODO look into making this common - existing hook ?
   const [isSearching, setIsSearching] = useState(false);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const newSpot = { ...spot, userId: user!.uid };
-    if (image) {
-      storageUpload(image, newSpot as ISpot);
+    if (image && user) {
+      storageUploadHook(user, storage, image);
     } else {
       submitHandler(newSpot);
     }
@@ -60,48 +62,22 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     }
   }, [address]);
 
+  useEffect(() => {
+    if (image && downloadUrl) {
+      const newSpot = {
+        ...spot,
+        poster: { ...spot.poster, url: downloadUrl },
+        userId: user!.uid
+      };
+      submitHandler(newSpot);
+      // TODO split this
+      // BUG submits spot immediately after img upload
+    }
+  }, [downloadUrl]);
+
   const guessAddress = (): void => {
     setIsSearching(true);
     getLocation();
-  };
-
-  const storageUpload = (data: File, spotWithId: ISpot) => {
-    const storageRef = ref(storage, `${user?.uid || 'img'}/${data.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, data);
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setUploadProgress(progress);
-      },
-      (error) => {
-        setUploadError(`${error.cause} ${error.message}`);
-      },
-      async () => {
-        const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-        if (downloadUrl) {
-          const imagedSpot = {
-            ...spotWithId,
-            poster: { ...spotWithId.poster, url: downloadUrl }
-          };
-          // TODO split this
-          // BUG submits spot immediately after img upload
-          submitHandler(imagedSpot);
-        }
-      }
-    );
-  };
-
-  const uploadHandler = (e: ChangeEvent) => {
-    e.preventDefault();
-    const file = (e.target as HTMLInputElement).files?.[0];
-    if (!file) {
-      return;
-    }
-    // TODO ugly fix for upload
-    storageUpload(file, {} as ISpot);
   };
 
   const captureHandler = (data: File | null) => {
@@ -215,6 +191,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
           </li>
         </ul>
       </form>
+      <Link to={HOME}>Cancel</Link>
     </>
   );
 };
