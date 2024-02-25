@@ -51,21 +51,24 @@ export const spotsInRadius = async (
     promises.push(getDocs(q));
   }
 
-  const snapshots = await Promise.all(promises);
+  const snapshots = await Promise.all(promises).catch((e) =>
+    console.error('Error retrieving data in bounds', e)
+  );
 
   const matchingDocs = [];
+  if (snapshots) {
+    for (const snap of snapshots) {
+      for (const doc of snap.docs) {
+        const location = doc.get('location');
 
-  for (const snap of snapshots) {
-    for (const doc of snap.docs) {
-      const location = doc.get('location');
-
-      const distanceInKm = geofire.distanceBetween(
-        [location._lat, location._long],
-        centre
-      );
-      const distanceInM = distanceInKm * 1000;
-      if (distanceInM <= radiusInM) {
-        matchingDocs.push(doc.data());
+        const distanceInKm = geofire.distanceBetween(
+          [location._lat, location._long],
+          centre
+        );
+        const distanceInM = distanceInKm * 1000;
+        if (distanceInM <= radiusInM) {
+          matchingDocs.push(doc.data());
+        }
       }
     }
   }

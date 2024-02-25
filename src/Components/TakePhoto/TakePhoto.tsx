@@ -46,58 +46,46 @@ const TakePhoto: FC<Props> = ({
   };
 
   return (
-    <>
-      {console.log('uploadProgress', uploadProgress)}
-
-      <div className='take-photo'>
-        {!captured && (
-          <div className='take-photo__video-container'>
-            <label htmlFor='photoUpload'>
-              <div className='take-photo__cta'>
-                <Camera />
-                <PlusCircle className='take-photo__cta-secondary-icon' />
-              </div>
-            </label>{' '}
-            <p className='take-photo__desc'>Tap to take a photo</p>
-            {/* <input hidden id='photoUpload' type='file' onChange={uploadHandler} /> */}
-            <input
-              hidden
-              type='file'
-              accept='image/*'
-              capture='environment'
-              onChange={capture}
-              id='photoUpload'
-            />
-          </div>
-        )}
-        {captured && (
-          <div className='take-photo__photos'>
-            <div className='take-photo__preview-wrapper'>
-              <button
-                className='take-photo__clear-preview'
-                onClick={clearCanvas}>
-                <RemoveCircle className='take-photo__cta-tertiary-icon' />
-              </button>
-              <img
-                src=''
-                className='take-photo__preview'
-                ref={preview}
-                alt=''
-              />
+    <div className='take-photo'>
+      {!captured && (
+        <div className='take-photo__video-container'>
+          <label htmlFor='photoUpload'>
+            <div className='take-photo__cta'>
+              <Camera />
+              <PlusCircle className='take-photo__cta-secondary-icon' />
             </div>
-          </div>
-        )}
-        <div>
-          {uploadProgress && uploadProgress !== 100 ? (
-            <>
-              {uploadProgress}{' '}
-              <progress max='100' value={uploadProgress}></progress>
-            </>
-          ) : null}
-          {error && <p className='-is-error'>{error}</p>}
+          </label>{' '}
+          <p className='take-photo__desc'>Tap to take a photo</p>
+          <input
+            hidden
+            type='file'
+            accept='image/*'
+            capture='environment'
+            onChange={capture}
+            id='photoUpload'
+          />
         </div>
+      )}
+      {captured && (
+        <div className='take-photo__photos'>
+          <div className='take-photo__preview-wrapper'>
+            <button className='take-photo__clear-preview' onClick={clearCanvas}>
+              <RemoveCircle className='take-photo__cta-tertiary-icon' />
+            </button>
+            <img src='' className='take-photo__preview' ref={preview} alt='' />
+          </div>
+        </div>
+      )}
+      <div>
+        {uploadProgress && uploadProgress !== 100 ? (
+          <>
+            {uploadProgress}{' '}
+            <progress max='100' value={uploadProgress}></progress>
+          </>
+        ) : null}
+        {error && <p className='-is-error'>{error}</p>}
       </div>
-    </>
+    </div>
   );
 };
 
