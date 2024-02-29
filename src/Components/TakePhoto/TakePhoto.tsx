@@ -1,10 +1,8 @@
-import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
-import { useUserMedia } from '../../Hooks/useUserMedia';
+import React, { ChangeEvent, FC, useRef, useState } from 'react';
 import { ReactComponent as Camera } from '../../Assets/Icons/camera.svg';
 import { ReactComponent as PlusCircle } from '../../Assets/Icons/add-circle.svg';
 import { ReactComponent as RemoveCircle } from '../../Assets/Icons/remove-circle.svg';
 import './TakePhoto.css';
-import Button from '../Button/Button';
 
 interface Props {
   captureHandler: (data: File | null) => void;
@@ -13,12 +11,7 @@ interface Props {
   uploadProgress: number;
 }
 
-const TakePhoto: FC<Props> = ({
-  captureHandler,
-  uploadHandler,
-  error,
-  uploadProgress
-}) => {
+const TakePhoto: FC<Props> = ({ captureHandler, error, uploadProgress }) => {
   const preview = useRef<HTMLImageElement>(null);
   const [captured, setCaptured] = useState(false);
 

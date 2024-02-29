@@ -69,6 +69,7 @@ const HomePage = () => {
     }
     if (dataType === DataType.Local) {
       setFilteredData(value);
+      setGlobalData(undefined);
     }
   }, [dataType]);
 
@@ -76,13 +77,15 @@ const HomePage = () => {
     const getSpots = async () => {
       const globalData = await spotsInRadius(
         [location.latitude, location.longitude],
-        db
+        db,
+        1000000000
       ).catch((e) => console.log('e', e));
       setGlobalData(globalData as ISpot[]);
-      setFilteredData([
+      const combinedSpots = [
         ...(globalData as ISpot[]),
         ...(filteredData as ISpot[])
-      ]);
+      ];
+      setFilteredData(combinedSpots);
     };
     if (dataType === DataType.Global && location.latitude) {
       getSpots();
@@ -158,6 +161,11 @@ const HomePage = () => {
         />
       </div>
       {error && <p className='-is-error'>{error.message}</p>}
+      {dataType === DataType.Global && globalData && !globalData?.length ? (
+        <p className='-space-bottom'>
+          It seems there are no spots from others around you (within 10km)
+        </p>
+      ) : null}
       {!loading && !data?.length && <p>You haven't added any spots yet.</p>}
       {dataType === DataType.Global && !filteredData?.length && (
         <p>It seems there are no spots within 10km from your location.</p>

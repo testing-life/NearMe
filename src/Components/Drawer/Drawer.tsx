@@ -1,8 +1,8 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 import './Drawer.css';
 import DrawerButton from '../DrawerButton/DrawerButton';
 import useDrawerStore from '../../Stores/drawerStore';
-import { Auth, signOut } from 'firebase/auth';
+import { Auth } from 'firebase/auth';
 import { Link } from 'react-router-dom';
 import * as ROUTES from './../../Consts/Routes';
 import { useSignOut } from 'react-firebase-hooks/auth';
@@ -24,7 +24,10 @@ const Drawer: FC<Props> = ({ isOpen, user }) => {
             <li>
               <button
                 className='asLink -full-width'
-                onClick={async () => await signOut()}>
+                onClick={async () => {
+                  toggleDrawer(false);
+                  await signOut();
+                }}>
                 Log out
               </button>
             </li>
