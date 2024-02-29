@@ -24,6 +24,7 @@ interface Props {
 
 const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   const [spot, setSpot] = useState(Spot.create());
+  const [locationMissing, setLocationMissing] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const { location, locationError, getLocation } = useGeolocation();
   const [user] = useAuthState(auth);
@@ -35,6 +36,10 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!spot.location.latitude && !spot.location.longitude) {
+      setLocationMissing(true);
+      return;
+    }
     const newSpot = { ...spot, userId: user!.uid };
     if (image && user) {
       storageUploadHook(user, storage, image);
@@ -52,6 +57,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
       ]);
       setSpot({ ...spot, location: geopoint, geohash: hash });
       getAddress(location);
+      setLocationMissing(false);
     }
   }, [location]);
 
@@ -90,7 +96,6 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     <>
       <TakePhoto
         captureHandler={captureHandler}
-        // uploadHandler={uploadHandler}
         error={uploadError}
         uploadProgress={uploadProgress}
       />
@@ -148,7 +153,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
                 required
                 label='Address'
                 type='text'
-                placeholder='Add address or locate me'
+                placeholder='Locate me'
                 value={spot.address}
                 onChange={(value: string) =>
                   setSpot({ ...spot, address: value })
@@ -162,7 +167,11 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
                 clickHandler={guessAddress}>
                 <Locate />
               </Button>
-
+            </div>
+            <div>
+              {locationMissing && (
+                <p className='-is-error'>You need to add a location</p>
+              )}
               {locationError && (
                 <p className='-is-serror'>{locationError.message}</p>
               )}

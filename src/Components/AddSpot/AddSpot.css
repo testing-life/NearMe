@@ -26,6 +26,8 @@
 }
 
 .locate-container {
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: repeat(2, auto);
   line-height: 1;
 }

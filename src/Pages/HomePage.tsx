@@ -75,14 +75,16 @@ const HomePage = () => {
 
   useEffect(() => {
     const getSpots = async () => {
-      const globalData = await spotsInRadius(
+      const globalDataRes = await spotsInRadius(
         [location.latitude, location.longitude],
-        db,
-        1000000000
+        db
       ).catch((e) => console.log('e', e));
-      setGlobalData(globalData as ISpot[]);
+      const toRemovedMine = globalDataRes?.filter(
+        (doc: ISpot) => doc.userId !== user?.uid
+      );
+      setGlobalData(toRemovedMine as ISpot[]);
       const combinedSpots = [
-        ...(globalData as ISpot[]),
+        ...(toRemovedMine as ISpot[]),
         ...(filteredData as ISpot[])
       ];
       setFilteredData(combinedSpots);
