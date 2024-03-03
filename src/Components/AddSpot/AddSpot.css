@@ -31,3 +31,9 @@
   grid-template-rows: repeat(2, auto);
   line-height: 1;
 }
+
+.add-spot__cancel {
+  display: block;
+  text-align: center;
+  margin-block-start: 32px;
+}

@@ -89,6 +89,8 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   const captureHandler = (data: File | null) => {
     setImage(data);
   };
+
+  const isDefaultLocation = location.latitude === 0 && location.longitude === 0;
   // TODO  almost same form as edit - look into reusing
   // TODO reuse tags filter setup, for layout
   // TODO refactor global utility classes like mb
@@ -173,10 +175,15 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
                 <p className='-is-error'>You need to add a location</p>
               )}
               {locationError && (
-                <p className='-is-serror'>{locationError.message}</p>
+                <p className='-is-error'>{locationError.message}</p>
+              )}
+              {isDefaultLocation && (
+                <p className='-is-warning'>
+                  You may need to enable Location Services of your device.
+                </p>
               )}
               {addressError && (
-                <p className='-is-serror'>{addressError.message}</p>
+                <p className='-is-error'>{addressError.message}</p>
               )}
             </div>
           </li>
@@ -200,7 +207,9 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
           </li>
         </ul>
       </form>
-      <Link to={HOME}>Cancel</Link>
+      <Link className='add-spot__cancel' to={HOME}>
+        Cancel
+      </Link>
     </>
   );
 };

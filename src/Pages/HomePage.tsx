@@ -77,12 +77,14 @@ const HomePage = () => {
     const getSpots = async () => {
       const globalDataRes = await spotsInRadius(
         [location.latitude, location.longitude],
-        db
+        db,
+        1000
       ).catch((e) => console.log('e', e));
       const toRemovedMine = globalDataRes?.filter(
         (doc: ISpot) => doc.userId !== user?.uid
       );
       setGlobalData(toRemovedMine as ISpot[]);
+      console.log('toRemovedMine', filteredData, toRemovedMine);
       const combinedSpots = [
         ...(toRemovedMine as ISpot[]),
         ...(filteredData as ISpot[])
