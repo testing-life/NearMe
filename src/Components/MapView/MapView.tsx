@@ -9,13 +9,15 @@ import {
 } from 'react-leaflet';
 import { ISpot } from '../../Models/spot';
 import useGeolocation, { Ilocation } from '../../Hooks/useGeolocation';
-import { distanceMetres } from '../../Utils/geo';
+import { distanceMetres, spotsInRadius } from '../../Utils/geo';
 import SetNavigation from '../Navigating/Navigating';
-import { Handler } from 'leaflet';
+import { db } from '../../Firebase/Firebase';
+
 declare let L: any;
 
 interface Props {
   filteredData: ISpot[];
+  radiusHandler: (radiusInM: number) => void;
 }
 
 const SetView = ({
@@ -30,7 +32,7 @@ const SetView = ({
   return null;
 };
 
-const MapView: FC<Props> = ({ filteredData }) => {
+const MapView: FC<Props> = ({ filteredData, radiusHandler }) => {
   const { location, locationError, getLocation } = useGeolocation();
   const [radiusMetres, setRadiusMetres] = useState(500);
   const [destination, setDestination] = useState<Ilocation>();
@@ -50,9 +52,16 @@ const MapView: FC<Props> = ({ filteredData }) => {
         step='1'
         max='5000'
         min='5'
-        onChange={(e: ChangeEvent) =>
-          setRadiusMetres(parseInt((e.target as HTMLInputElement).value))
-        }
+        onChange={async (e: ChangeEvent) => {
+          setRadiusMetres(Number((e.target as HTMLInputElement).value));
+          radiusHandler(Number((e.target as HTMLInputElement).value || 500));
+          // const globalDataRes = await spotsInRadius(
+          //   [location.latitude, location.longitude],
+          //   db,
+          //   Number((e.target as HTMLInputElement).value)
+          // ).catch((e) => console.log('e', e));
+          // console.log('global', globalDataRes);
+        }}
       />
       <button onClick={() => setDestination(undefined)}>Clear route</button>
       {locationError && <p className='-is-error'>{locationError.message}</p>}
@@ -84,18 +93,19 @@ const MapView: FC<Props> = ({ filteredData }) => {
           <Popup>That's you.</Popup>
         </Marker>
         {filteredData
-          .filter((spot: ISpot) => {
-            const range = distanceMetres(
-              location.latitude,
-              location.latitude,
-              spot.location.latitude,
-              spot.location.latitude
-            );
-            // TODO fix range & metres, make more precise
-            if (Math.floor(range) <= radiusMetres) {
-              return spot;
-            }
-          })
+          // .filter((spot: ISpot) => {
+          //   const range = distanceMetres(
+          //     location.latitude,
+          //     location.latitude,
+          //     spot.location.latitude,
+          //     spot.location.latitude
+          //   );
+          //   // TODO fix range & metres, make more precise
+          //   console.log('Math.floor(range), radiusMetres', range, radiusMetres);
+          //   if (Math.floor(range) <= radiusMetres) {
+          //     return spot;
+          //   }
+          // })
           .map((spot: ISpot, index: number) => {
             return (
               <Marker
@@ -115,11 +125,13 @@ const MapView: FC<Props> = ({ filteredData }) => {
             );
           })}
         {location.latitude !== 0 && (
-          <Circle
-            center={[location.latitude, location.longitude]}
-            pathOptions={fillBlueOptions}
-            radius={radiusMetres}
-          />
+          <>
+            <Circle
+              center={[location.latitude, location.longitude]}
+              pathOptions={fillBlueOptions}
+              radius={radiusMetres}
+            />
+          </>
         )}
       </MapContainer>
     </>

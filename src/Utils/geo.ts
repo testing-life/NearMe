@@ -12,26 +12,29 @@ import {
 import { spotConverter } from '../Firebase/Firebase';
 import { spotsCollectionRef } from '../Consts/SpotsRef';
 
-export const distanceMetres = (
+export function distanceMetres(
   lat1: number,
   lon1: number,
   lat2: number,
   lon2: number
-): number => {
-  const r = 6371; // km
-  const p = Math.PI / 180;
-
+) {
+  const R = 6371; // Radius of the Earth in kilometers
+  const dLat = deg2rad(lat2 - lat1); // deg2rad below
+  const dLon = deg2rad(lon2 - lon1);
   const a =
-    0.5 -
-    Math.cos((lat2 - lat1) * p) / 2 +
-    (Math.cos(lat1 * p) *
-      Math.cos(lat2 * p) *
-      (1 - Math.cos((lon2 - lon1) * p))) /
-      2;
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) *
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c; // Distance in kilometers
+  return distance * 1000;
+}
 
-  const result = 2 * r * Math.asin(Math.sqrt(a));
-  return result * 1000;
-};
+function deg2rad(deg: number) {
+  return deg * (Math.PI / 180);
+}
 
 export const spotsInRadius = async (
   centre: geofire.Geopoint,
@@ -66,6 +69,7 @@ export const spotsInRadius = async (
           centre
         );
         const distanceInM = distanceInKm * 1000;
+        console.log('radiusInM, disatnceInM', radiusInM, distanceInM);
         if (distanceInM <= radiusInM) {
           matchingDocs.push(doc.data());
         }

@@ -49,6 +49,7 @@ const HomePage = () => {
   const [filteredData, setFilteredData] = useState<ISpot[]>();
   const [dataType, setDataType] = useState<DataType>(DataType.Local);
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.List);
+  const [filterList, setFilterList] = useState<string[]>([]);
   const docRef = query(
     spotsCollectionRef(db),
     where('userId', '==', user?.uid)
@@ -96,6 +97,13 @@ const HomePage = () => {
     }
   }, [location]);
 
+  useEffect(() => {
+    if (filterList.length && data?.length) {
+      const filteredData = filterByArray(data as ISpot[], filterList, 'tags');
+      setFilteredData(filteredData);
+    }
+  }, [filterList]);
+
   const deleteHandler = async (
     docRef: DocumentReference,
     imageUrl: string = ''
@@ -112,8 +120,9 @@ const HomePage = () => {
   };
 
   const filterHandler = (filterList: string[]) => {
-    const filteredData = filterByArray(data as ISpot[], filterList, 'tags');
-    setFilteredData(filteredData);
+    setFilterList(filterList);
+    // const filteredData = filterByArray(data as ISpot[], filterList, 'tags');
+    // setFilteredData(filteredData);
   };
 
   const addTagHandler = async (tag: string) => {
@@ -136,6 +145,19 @@ const HomePage = () => {
     if (type) {
       setDataType(type);
     }
+  };
+
+  const radiusHandler = async (radiusInM: number) => {
+    spotsInRadius([location.latitude, location.longitude], db, radiusInM)
+      .then((res) => console.log('res', res))
+      .catch((e) => console.log('e', e));
+    if (filterList.length && data?.length) {
+      const filteredData = filterByArray(data as ISpot[], filterList, 'tags');
+      setFilteredData(filteredData);
+    } else {
+      setFilteredData(data as ISpot[]);
+    }
+    console.log('filterList', filteredData, data);
   };
 
   return (
@@ -176,7 +198,7 @@ const HomePage = () => {
       )}
       {!loading && filteredData ? (
         viewMode === ViewMode.Map ? (
-          <MapView filteredData={filteredData} />
+          <MapView filteredData={filteredData} radiusHandler={radiusHandler} />
         ) : (
           <ListView filteredData={filteredData} deleteHandler={deleteHandler} />
         )
