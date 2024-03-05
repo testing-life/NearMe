@@ -11,6 +11,7 @@ import { ISpot } from '../../Models/spot';
 import useGeolocation, { Ilocation } from '../../Hooks/useGeolocation';
 import { distanceMetres } from '../../Utils/geo';
 import SetNavigation from '../Navigating/Navigating';
+import { Handler } from 'leaflet';
 declare let L: any;
 
 interface Props {
@@ -54,7 +55,11 @@ const MapView: FC<Props> = ({ filteredData }) => {
         }
       />
       <button onClick={() => setDestination(undefined)}>Clear route</button>
+      {locationError && <p className='-is-error'>{locationError.message}</p>}
+
       <MapContainer
+        dragging={false}
+        touchZoom={true}
         zoom={zoom}
         center={{ lat: location.latitude, lng: location.longitude }}
         scrollWheelZoom={true}
@@ -117,7 +122,6 @@ const MapView: FC<Props> = ({ filteredData }) => {
           />
         )}
       </MapContainer>
-      {locationError && <p>{locationError.message}</p>}
     </>
   );
 };

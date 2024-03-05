@@ -77,8 +77,7 @@ const HomePage = () => {
     const getSpots = async () => {
       const globalDataRes = await spotsInRadius(
         [location.latitude, location.longitude],
-        db,
-        1000
+        db
       ).catch((e) => console.log('e', e));
       const toRemovedMine = globalDataRes?.filter(
         (doc: ISpot) => doc.userId !== user?.uid
@@ -90,6 +89,7 @@ const HomePage = () => {
         ...(filteredData as ISpot[])
       ];
       setFilteredData(combinedSpots);
+      console.log('combinedSpots', combinedSpots);
     };
     if (dataType === DataType.Global && location.latitude) {
       getSpots();

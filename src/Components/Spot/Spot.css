@@ -9,7 +9,6 @@
   bottom: 0;
   padding: 8px 16px;
   background-color: rgba(0, 0, 0, 0.05);
-  transform: translate3d(0, 0, 0);
   backdrop-filter: blur(10px);
   right: 0;
   left: 0;
