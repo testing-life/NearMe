@@ -1,4 +1,7 @@
-import { browserSessionPersistence } from 'firebase/auth';
+import {
+  browserSessionPersistence,
+  browserLocalPersistence
+} from 'firebase/auth';
 import React, { useEffect } from 'react';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Link, useNavigate } from 'react-router-dom';
@@ -20,7 +23,7 @@ const LoginPage = () => {
   }, [user]);
 
   const onSubmit = async (email: string, password: string) => {
-    await auth.setPersistence(browserSessionPersistence);
+    await auth.setPersistence(browserLocalPersistence);
     signInWithEmailAndPassword(email, password);
   };
 
