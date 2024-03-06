@@ -30,6 +30,7 @@ import { spotsCollectionRef } from '../Consts/SpotsRef';
 import CustomTag from '../Components/CustomTag/CustomTag';
 import Select from '../Components/Select/Select';
 import Spinner from '../Components/Spinner/Spinner';
+import { debounce } from '../Utils/events';
 
 export enum ViewMode {
   List = 'list',
@@ -121,8 +122,6 @@ const HomePage = () => {
 
   const filterHandler = (filterList: string[]) => {
     setFilterList(filterList);
-    // const filteredData = filterByArray(data as ISpot[], filterList, 'tags');
-    // setFilteredData(filteredData);
   };
 
   const addTagHandler = async (tag: string) => {
@@ -147,7 +146,7 @@ const HomePage = () => {
     }
   };
 
-  const radiusHandler = async (radiusInM: number) => {
+  const radiusHandler = debounce<Promise<void>>(async (radiusInM: number) => {
     spotsInRadius([location.latitude, location.longitude], db, radiusInM)
       .then((res) => console.log('res', res))
       .catch((e) => console.log('e', e));
@@ -158,7 +157,7 @@ const HomePage = () => {
       setFilteredData(data as ISpot[]);
     }
     console.log('filterList', filteredData, data);
-  };
+  }, 1000);
 
   return (
     <>
@@ -213,3 +212,8 @@ export default HomePage;
 
 // TODO edit global
 // TODO spot operations to a service?
+
+// 1. init
+//    get data
+//    set data
+//    set data as filtereddata
