@@ -3,6 +3,9 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import { ISpot } from '../../Models/spot';
 import useGeolocation, { Ilocation } from '../../Hooks/useGeolocation';
 import SetNavigation from '../Navigating/Navigating';
+import Pin from '../../Assets/pin.svg';
+import YouPin from '../../Assets/youPin.svg';
+import { Icon } from 'leaflet';
 
 declare let L: any;
 
@@ -26,6 +29,20 @@ const MapView: FC<Props> = ({ filteredData }) => {
   const { location, locationError, getLocation } = useGeolocation();
   const [destination, setDestination] = useState<Ilocation>();
 
+  const spotIcon = new Icon({
+    iconUrl: Pin,
+    iconSize: [32, 38], 
+    iconAnchor: [32, 38], 
+    popupAnchor: [-3, -76] 
+  });
+
+  const youIcon = new Icon({
+    iconUrl: YouPin,
+    iconSize: [37, 43], 
+    iconAnchor: [37, 43], 
+    popupAnchor: [-3, -76] 
+  });
+
   useEffect(() => {
     getLocation();
   }, []);
@@ -39,7 +56,6 @@ const MapView: FC<Props> = ({ filteredData }) => {
           {locationError.message} {locationError.code}
         </p>
       )}
-
       <MapContainer
         dragging={false}
         touchZoom={true}
@@ -63,13 +79,16 @@ const MapView: FC<Props> = ({ filteredData }) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
-        <Marker position={{ lat: location.latitude, lng: location.longitude }}>
+        <Marker
+          icon={youIcon}
+          position={{ lat: location.latitude, lng: location.longitude }}>
           <Popup>That's you.</Popup>
         </Marker>
         {filteredData.map((spot: ISpot, index: number) => {
           return (
             <Marker
               key={`${spot.name}${index}`}
+              icon={spotIcon}
               position={{
                 lat: spot.location.latitude,
                 lng: spot.location.longitude
