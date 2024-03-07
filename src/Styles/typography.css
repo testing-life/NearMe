@@ -1,0 +1,28 @@
+html,
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 62.5%;
+  line-height: 27px;
+}
+
+.-is-error {
+  background: linear-gradient(
+    91deg,
+    var(--invalid) -4.37%,
+    var(--light-invalid) 53.69%
+  );
+  -webkit-background-clip: text;
+  color: rgba(0, 0, 0, 0);
+  background-clip: text;
+}
+
+.-is-warning {
+  background: linear-gradient(
+    91deg,
+    var(--gradient-3) -4.37%,
+    var(--gradient-2) 53.69%
+  );
+  -webkit-background-clip: text;
+  color: rgba(0, 0, 0, 0);
+  background-clip: text;
+}

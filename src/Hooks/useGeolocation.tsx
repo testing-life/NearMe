@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 export interface Ilocation {
   latitude: number;
@@ -13,7 +13,7 @@ interface Ihook {
 
 const useGeolocation = (): Ihook => {
   const [location, setLocation] = useState<
-    Pick<GeolocationCoordinates, "latitude" | "longitude">
+    Pick<GeolocationCoordinates, 'latitude' | 'longitude'>
   >({ latitude: 0, longitude: 0 });
   const [locationError, setLocationError] = useState<GeolocationPositionError>(
     {} as GeolocationPositionError
@@ -23,7 +23,7 @@ const useGeolocation = (): Ihook => {
     if (coords) {
       setLocation({
         latitude: coords.latitude,
-        longitude: coords.longitude,
+        longitude: coords.longitude
       });
     }
   };
@@ -31,7 +31,9 @@ const useGeolocation = (): Ihook => {
   const onError = (error: GeolocationPositionError) => setLocationError(error);
 
   const getLocation = () =>
-    navigator.geolocation.getCurrentPosition(onChange, onError);
+    navigator.geolocation.getCurrentPosition(onChange, onError, {
+      enableHighAccuracy: true
+    });
 
   return { location, getLocation, locationError };
 };

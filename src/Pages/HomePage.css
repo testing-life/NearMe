@@ -1,4 +1,18 @@
 .spots-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.filter-container,
+.filter-container .custom-tag,
+.views-container {
+  margin-block-end: 19px;
+}
+
+.row {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
 }

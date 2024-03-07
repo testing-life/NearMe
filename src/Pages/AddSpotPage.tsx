@@ -26,7 +26,6 @@ const AddSpotPage = () => {
       <Header auth={auth} />
       <div className='p-2 max-w-sm u-center'>
         {user ? <AddSpot submitHandler={addSpot} userId={user.uid} /> : null}
-        <Link to={HOME}>Cancel</Link>
       </div>
     </>
   );

@@ -3,8 +3,8 @@ import useGeolocation from '../../Hooks/useGeolocation';
 import useReverseGeocode from '../../Hooks/useReverseGeocode';
 import { ISpot } from '../../Models/spot';
 import { GeoPoint } from 'firebase/firestore';
-import { Tags } from '../../Consts/Tags';
 import TagButton from '../TagButton/TagButton';
+import useTagsStore from '../../Stores/tagsStore';
 
 interface Props {
   editHandler: (spot: ISpot) => void;
@@ -17,6 +17,8 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
   const { location, locationError, getLocation } = useGeolocation();
   const { address, getAddress, addressError } = useReverseGeocode();
   const [isSearching, setIsSearching] = useState(false);
+  const tags = useTagsStore((state) => state.tags);
+
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     editHandler(spot);
@@ -58,7 +60,8 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
         <div>
           <>
             <div>Tags:</div>
-            {Tags.map((tag: (typeof Tags)[number], index: number) => {
+            {/* TODO fix tag adding/removing */}
+            {tags.map((tag: (typeof tags)[number], index: number) => {
               return !spot.tags.includes(tag) ? (
                 <TagButton
                   tagLabel={tag}
@@ -74,7 +77,10 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
                   tagLabel={tag}
                   key={`${tag}${index}`}
                   clickHandler={() =>
-                    setSpot({ ...spot, tags: [...spot.tags, tag] })
+                    setSpot({
+                      ...spot,
+                      tags: spot.tags.filter((t) => t !== tag)
+                    })
                   }
                 />
               );

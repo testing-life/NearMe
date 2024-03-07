@@ -1,0 +1,39 @@
+.add-spot__locate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-spot__locate-btn > svg {
+  width: 20px;
+}
+
+.add-tag {
+  touch-action: pan-x;
+  overflow-x: scroll;
+}
+
+.add-tag__list {
+  --n: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: calc(calc(var(--n) / 2) * 32vw);
+}
+
+.mb-32 {
+  margin-block-end: 32px;
+}
+
+.locate-container {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: repeat(2, auto);
+  line-height: 1;
+}
+
+.add-spot__cancel {
+  display: block;
+  text-align: center;
+  margin-block-start: 32px;
+}

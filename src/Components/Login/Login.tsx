@@ -1,47 +1,47 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from "react";
-import Input from "../Input/Input";
+import React, { FC, FormEvent, useState } from 'react';
+import Input from '../Input/Input';
+import FormLayout from '../FormLayout/FormLayout';
+import Button from '../Button/Button';
 
 interface Props {
   submitHandler: (email: string, password: string) => void;
 }
 
 const Login: FC<Props> = ({ submitHandler }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    submitHandler(email, password);
+    if (email && password) {
+      submitHandler(email, password);
+    }
   };
 
   return (
-    <>
-      <form onSubmit={onSubmit}>
-        <Input
-          id="email"
-          required
-          label="Email"
-          type="email"
-          placeholder="email"
-          value={email}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setEmail(e.target.value)
-          }
-        />
-        <Input
-          id="password"
-          required
-          label="Password"
-          type="password"
-          placeholder="password"
-          value={password}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setPassword(e.target.value)
-          }
-        />
-        <button type="submit">Log In</button>
-      </form>
-    </>
+    <FormLayout onSubmit={onSubmit}>
+      <Input
+        id='email'
+        required
+        label='Email'
+        type='email'
+        placeholder='email'
+        value={email}
+        onChange={(value: string) => setEmail(value)}
+      />
+      <Input
+        id='password'
+        required
+        label='Password'
+        type='password'
+        placeholder='password'
+        value={password}
+        onChange={(value: string) => setPassword(value)}
+      />
+      <Button fullWidth type='submit'>
+        Log In
+      </Button>
+    </FormLayout>
   );
 };
 

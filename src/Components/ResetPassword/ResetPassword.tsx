@@ -1,12 +1,12 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from "react";
-import Input from "../Input/Input";
+import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
+import Input from '../Input/Input';
 
 interface Props {
   submitHandler: (email: string) => void;
 }
 
 const ResetPassword: FC<Props> = ({ submitHandler }) => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,17 +18,15 @@ const ResetPassword: FC<Props> = ({ submitHandler }) => {
       <form onSubmit={onSubmit}>
         <p>Enter an email address to receive a reset password request.</p>
         <Input
-          id="email"
+          id='email'
           required
-          label="Email"
-          type="email"
-          placeholder="email"
+          label='Email'
+          type='email'
+          placeholder='email'
           value={email}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setEmail(e.target.value)
-          }
+          onChange={(value: string) => setEmail(value)}
         />
-        <button type="submit">Reset password</button>
+        <button type='submit'>Reset password</button>
       </form>
     </>
   );

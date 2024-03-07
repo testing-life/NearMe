@@ -1,20 +1,26 @@
 import React from "react";
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import * as ROUTES from "./Consts/Routes";
 import SignupPage from "./Pages/SignupPage";
 import HomePage from "./Pages/HomePage";
 import LoginPage from "./Pages/LoginPage";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import AddSpotPage from "./Pages/AddSpotPage";
-import "cirrus-ui";
+// import "cirrus-ui";
 import UpdateCredentialsPage from "./Pages/UpdateCredentialsPage";
 import ResetPasswordPage from "./Pages/ResetPasswordPage";
 import EditSpotPage from "./Pages/EditSpotPage";
+import Drawer from "./Components/Drawer/Drawer";
+import useDrawerStore from "./Stores/drawerStore";
+import { auth } from "./Firebase/Firebase";
 
 function App() {
+  const drawerOpen = useDrawerStore((state) => state.isOpen);
+
   return (
-    <div className="bg-blue-300 h-screen">
+    <div className="wrapper">
+      <Drawer isOpen={drawerOpen} user={auth} />
       <Routes>
         <Route
           path="/"

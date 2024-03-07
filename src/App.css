@@ -1,38 +1,65 @@
-.App {
-  text-align: center;
+:root {
+  --white: #fff;
+  --black: #000;
+  --grey-1: #ffffff26;
+  --grey-2: #12121880;
+  --bg-sphere-1: #79529d;
+  --bg-sphere-2: #a5fbff99;
+  --bg-sphere-3: #a5fbff4d;
+  --bg-sphere-4: #a4379e33;
+  --bg: #0c0d12;
+  --gradient-1: #b0a5ff;
+  --gradient-2: #a6b3ff;
+  --gradient-3: #4cabef;
+  --highlight-gradient-1: #b0f1ff;
+  --highlight-gradient-2: #28b086;
+  --input-bg: #18182080;
+  --input-stroke: var(--grey-1);
+  --valid: #00b7b7;
+  --invalid: #ff7d7d;
+  --light-invalid: #ffa6a6;
+  --text-colour: var(--white);
+  --text-colour-inverted: var(--black);
+  --text-size-default: 2rem;
+  --text-size-small: 1.4rem;
+  --tag-gradient-1: #171620;
+  --tag-gradient-2: #161820;
+  --tag-gradient-3: #0e171f;
+  --icon-bg: #333a40;
+  --spinner-bg-1: var(--white);
+  --spinner-bg-2: var(--highlight-gradient-2);
+  --tools-bg: var(--bg-sphere-1);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html {
+  background: radial-gradient(
+      circle at center -300px,
+      var(--bg-sphere-1),
+      transparent calc(1vw + 564px)
+    ),
+    radial-gradient(
+      circle at calc(2vw + 125px) -190px,
+      var(--bg-sphere-2),
+      transparent calc(1vw + 321px)
+    ),
+    radial-gradient(
+      circle at calc(120vw - 10vw) 65%,
+      var(--bg-sphere-3),
+      transparent calc(1vw + 229px)
+    ),
+    radial-gradient(at bottom left, var(--bg-sphere-4), transparent 357px),
+    radial-gradient(ellipse at bottom center, var(--bg), transparent 157px),
+    url(./Assets/lotsOfDots.png), var(--bg);
+  background-repeat: no-repeat;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+html,
+body {
+  height: 100vh;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.wrapper {
+  padding: 16px;
+  font-size: var(--text-size-default);
+  color: var(--text-colour);
 }

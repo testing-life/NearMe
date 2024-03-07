@@ -1,0 +1,29 @@
+a,
+.asLink {
+  background: linear-gradient(
+    91deg,
+    var(--gradient-1) -4.37%,
+    var(--gradient-2) 53.69%,
+    var(--gradient-3) 100%
+  );
+  -webkit-background-clip: text;
+  color: rgba(0, 0, 0, 0);
+  background-clip: text;
+}
+
+a:hover,
+.asLink:hover,
+a:focus,
+.asLink:focus {
+  box-shadow: 0px 2px 0px 0px var(--gradient-3);
+}
+
+:where(button) a {
+  color: inherit;
+  background: transparent;
+}
+
+:where(button) a:hover,
+:where(button) a:focus {
+  box-shadow: none;
+}

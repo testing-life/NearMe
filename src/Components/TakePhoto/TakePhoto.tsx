@@ -1,78 +1,84 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useUserMedia } from "../../Hooks/useUserMedia";
+import React, { ChangeEvent, FC, useRef, useState } from 'react';
+import { ReactComponent as Camera } from '../../Assets/Icons/camera.svg';
+import { ReactComponent as PlusCircle } from '../../Assets/Icons/add-circle.svg';
+import { ReactComponent as RemoveCircle } from '../../Assets/Icons/remove-circle.svg';
+import './TakePhoto.css';
 
-const TakePhoto = ({
-  captureHandler,
-}: {
+interface Props {
   captureHandler: (data: File | null) => void;
-}) => {
-  const canvas = useRef<HTMLCanvasElement>(null);
-  const video = useRef<HTMLVideoElement>(null);
-  const mediaStream = useUserMedia({
-    video: { facingMode: "environment" },
-  });
+  uploadHandler?: (e: ChangeEvent) => void;
+  error: string;
+  uploadProgress: number;
+}
+
+const TakePhoto: FC<Props> = ({ captureHandler, error, uploadProgress }) => {
+  const preview = useRef<HTMLImageElement>(null);
   const [captured, setCaptured] = useState(false);
 
-  useEffect(() => {
-    if (mediaStream && video.current && !video.current.srcObject) {
-      video.current.srcObject = mediaStream;
-      startCamera();
-    }
-  }, [mediaStream]);
-
-  const startCamera = () => {
-    video.current?.play();
-  };
-
-  const capture = () => {
+  const capture = (e: ChangeEvent<HTMLInputElement>) => {
     setCaptured(true);
-    const context = canvas.current!.getContext("2d");
-    context!.drawImage(
-      video.current!,
-      0,
-      0,
-      canvas.current!.width,
-      canvas.current!.height
-    );
-    canvas.current!.toBlob((blob) => {
-      const formData = new FormData();
-      formData.append("photoCapture", blob as Blob, `${Date.now()}-capture`);
-      captureHandler(formData.get("photoCapture") as File);
-    });
+    const file = e?.target?.files?.[0];
+    const reader = new FileReader();
+    try {
+      if (file) {
+        reader.onload = () => {
+          const dataUrl = reader.result;
+          preview.current!.src = (dataUrl as string) || '';
+        };
+        reader.readAsDataURL(file);
+        captureHandler(file);
+      }
+    } catch (error) {
+      throw new Error('Error with acquiring the image');
+    }
   };
 
   const clearCanvas = () => {
-    const context = canvas.current!.getContext("2d");
-    context!.drawImage(
-      video.current!,
-      0,
-      0,
-      canvas.current!.width,
-      canvas.current!.height
-    );
     captureHandler(null);
     setCaptured(false);
   };
 
   return (
-    <>
+    <div className='take-photo'>
+      {!captured && (
+        <div className='take-photo__video-container'>
+          <label htmlFor='photoUpload'>
+            <div className='take-photo__cta'>
+              <Camera />
+              <PlusCircle className='take-photo__cta-secondary-icon' />
+            </div>
+          </label>{' '}
+          <p className='take-photo__desc'>Tap to take a photo</p>
+          <input
+            hidden
+            type='file'
+            accept='image/*'
+            capture='environment'
+            onChange={capture}
+            id='photoUpload'
+          />
+        </div>
+      )}
+      {captured && (
+        <div className='take-photo__photos'>
+          <div className='take-photo__preview-wrapper'>
+            <button className='take-photo__clear-preview' onClick={clearCanvas}>
+              <RemoveCircle className='take-photo__cta-tertiary-icon' />
+            </button>
+            <img src='' className='take-photo__preview' ref={preview} alt='' />
+          </div>
+        </div>
+      )}
       <div>
-        <video className="" ref={video} autoPlay></video>
-        <button className="u-basis-max-content" onClick={capture}>
-          Capture
-        </button>
-        <button className="u-basis-max-content" onClick={clearCanvas}>
-          Clear
-        </button>
-        <canvas
-          hidden={!captured}
-          className="w-100p"
-          ref={canvas}
-          height="430"
-          width="600"
-        />
+        {uploadProgress && uploadProgress !== 100 ? (
+          <>
+            {uploadProgress}{' '}
+            <progress max='100' value={uploadProgress}></progress>
+          </>
+        ) : null}
+        {error && <p className='-is-error'>{error}</p>}
       </div>
-    </>
+    </div>
   );
 };
 
