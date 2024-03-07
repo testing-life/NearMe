@@ -19,7 +19,6 @@ const TagFilter: FC<Props> = ({ clickHandler }) => {
   const updateTags = useTagsStore((state) => state.updateTags);
 
   useEffect(() => {
-    console.log('filterList', filterList);
     clickHandler(filterList);
   }, [filterList]);
 

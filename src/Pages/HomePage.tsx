@@ -31,7 +31,6 @@ import { spotsCollectionRef } from '../Consts/SpotsRef';
 import CustomTag from '../Components/CustomTag/CustomTag';
 import Select from '../Components/Select/Select';
 import Spinner from '../Components/Spinner/Spinner';
-import { debounce } from '../Utils/events';
 import { User } from 'firebase/auth';
 
 export enum ViewMode {
@@ -47,8 +46,6 @@ export enum DataType {
 const HomePage = () => {
   const [user] = useAuthState(auth);
   const { location, getLocation } = useGeolocation();
-  const [pristineData, setPristineData] = useState<ISpot[]>();
-  const [globalData, setGlobalData] = useState<ISpot[]>();
   const [filteredData, setFilteredData] = useState<ISpot[]>();
   const [dataType, setDataType] = useState<DataType>(DataType.Local);
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.List);
@@ -66,10 +63,8 @@ const HomePage = () => {
     }
   }, [location, getLocation]);
 
-  //  first load, list view, my spots
   useEffect(() => {
     if (!error && !loading && value) {
-      // setPristineData(value);
       setFilteredData(value);
     }
   }, [value, error, loading]);
@@ -77,12 +72,9 @@ const HomePage = () => {
   useEffect(() => {
     if (dataType === DataType.Local) {
       if (viewMode === ViewMode.List) {
-        // set all mine
-        // setPristineData(value);
         setFilteredData(value);
       }
       if (viewMode === ViewMode.Map) {
-        // set all mine in radius
         getSpotsInRadius(location, db, 25000, user).then((res) => {
           if (res) {
             if (filterList.length) {
@@ -101,8 +93,6 @@ const HomePage = () => {
     }
     if (dataType === DataType.Global) {
       if (viewMode === ViewMode.List) {
-        // set all other in radius
-        console.log('global,list');
         getSpotsInRadius(location, db, 25000).then((res) => {
           if (res) {
             if (filterList.length) {
@@ -119,8 +109,6 @@ const HomePage = () => {
         });
       }
       if (viewMode === ViewMode.Map) {
-        // set all other in radius
-        console.log('global,map');
         getSpotsInRadius(location, db, 25000).then((res) => {
           if (res) {
             if (filterList.length) {
@@ -158,7 +146,7 @@ const HomePage = () => {
       const filteredData = filterByArray(value as ISpot[], filterList, 'tags');
       setFilteredData(filteredData);
     }
-  }, [filterList]);
+  }, [filterList, value]);
 
   const deleteHandler = async (
     docRef: DocumentReference,
@@ -228,15 +216,12 @@ const HomePage = () => {
         />
       </div>
       {error && <p className='-is-error'>{error.message}</p>}
-      {dataType === DataType.Global && globalData && !globalData?.length ? (
+      {dataType === DataType.Global && !filteredData?.length ? (
         <p className='-space-bottom'>
-          It seems there are no spots from others around you (within 10km)
+          It seems there are no spots from others around you (within 25km)
         </p>
       ) : null}
       {!loading && !value?.length && <p>You haven't added any spots yet.</p>}
-      {dataType === DataType.Global && !filteredData?.length && (
-        <p>It seems there are no spots within 25km from your location.</p>
-      )}
       {filteredData ? (
         viewMode === ViewMode.Map ? (
           <MapView filteredData={filteredData} />
@@ -254,14 +239,3 @@ export default HomePage;
 
 // TODO edit global
 // TODO spot operations to a service?
-
-//                           list view               map view
-// # my spots                load all                load all within 25km radius
-
-// # others spots            load all within         load all within 25km radius
-// #                         25km radius
-// #                         dont mix with mine
-
-// 1. load
-// 2. if filters, then filter
-// 3. set as filtered
