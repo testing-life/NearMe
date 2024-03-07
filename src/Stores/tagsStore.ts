@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { Tags } from '../Consts/Tags';
 
 type State = {
   tags: string[];
@@ -8,7 +9,7 @@ type Action = {
 };
 
 const useTagsStore = create<State & Action>((set) => ({
-  tags: [],
+  tags: [...Tags],
   updateTags: (newTags: string[]) => set(() => ({ tags: newTags }))
 }));
 

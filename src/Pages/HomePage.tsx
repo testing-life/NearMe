@@ -69,7 +69,7 @@ const HomePage = () => {
   //  first load, list view, my spots
   useEffect(() => {
     if (!error && !loading && value) {
-      setPristineData(value);
+      // setPristineData(value);
       setFilteredData(value);
     }
   }, [value, error, loading]);
@@ -78,18 +78,23 @@ const HomePage = () => {
     if (dataType === DataType.Local) {
       if (viewMode === ViewMode.List) {
         // set all mine
-        console.log('local,list');
-        console.log('pristine', pristineData, filteredData, value);
-        setPristineData(value);
+        // setPristineData(value);
         setFilteredData(value);
       }
       if (viewMode === ViewMode.Map) {
         // set all mine in radius
-        console.log('local,map');
         getSpotsInRadius(location, db, 25000, user).then((res) => {
           if (res) {
-            console.log('res', res);
-            setFilteredData(res);
+            if (filterList.length) {
+              const filteredData = filterByArray(
+                res as ISpot[],
+                filterList,
+                'tags'
+              );
+              setFilteredData(filteredData);
+            } else {
+              setFilteredData(res);
+            }
           }
         });
       }
@@ -100,8 +105,16 @@ const HomePage = () => {
         console.log('global,list');
         getSpotsInRadius(location, db, 25000).then((res) => {
           if (res) {
-            console.log('res', res);
-            setFilteredData(res);
+            if (filterList.length) {
+              const filteredData = filterByArray(
+                res as ISpot[],
+                filterList,
+                'tags'
+              );
+              setFilteredData(filteredData);
+            } else {
+              setFilteredData(res);
+            }
           }
         });
       }
@@ -110,13 +123,21 @@ const HomePage = () => {
         console.log('global,map');
         getSpotsInRadius(location, db, 25000).then((res) => {
           if (res) {
-            console.log('res', res);
-            setFilteredData(res);
+            if (filterList.length) {
+              const filteredData = filterByArray(
+                res as ISpot[],
+                filterList,
+                'tags'
+              );
+              setFilteredData(filteredData);
+            } else {
+              setFilteredData(res);
+            }
           }
         });
       }
     }
-  }, [dataType, viewMode, value, location]);
+  }, [dataType, viewMode, value, location, filterList, user]);
 
   const getSpotsInRadius = async (
     location: Ilocation,
@@ -133,12 +154,8 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    if (filterList.length && pristineData?.length) {
-      const filteredData = filterByArray(
-        pristineData as ISpot[],
-        filterList,
-        'tags'
-      );
+    if (filterList.length) {
+      const filteredData = filterByArray(value as ISpot[], filterList, 'tags');
       setFilteredData(filteredData);
     }
   }, [filterList]);
@@ -210,15 +227,15 @@ const HomePage = () => {
           onChange={(val: string) => dataTypeChange(val as DataType)}
         />
       </div>
-      {/* {error && <p className='-is-error'>{error.message}</p>} */}
+      {error && <p className='-is-error'>{error.message}</p>}
       {dataType === DataType.Global && globalData && !globalData?.length ? (
         <p className='-space-bottom'>
           It seems there are no spots from others around you (within 10km)
         </p>
       ) : null}
-      {/* {!loading && !data?.length && <p>You haven't added any spots yet.</p>} */}
+      {!loading && !value?.length && <p>You haven't added any spots yet.</p>}
       {dataType === DataType.Global && !filteredData?.length && (
-        <p>It seems there are no spots within 10km from your location.</p>
+        <p>It seems there are no spots within 25km from your location.</p>
       )}
       {filteredData ? (
         viewMode === ViewMode.Map ? (

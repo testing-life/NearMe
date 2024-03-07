@@ -19,13 +19,14 @@ const TagFilter: FC<Props> = ({ clickHandler }) => {
   const updateTags = useTagsStore((state) => state.updateTags);
 
   useEffect(() => {
-    // clickHandler(filterList);
+    console.log('filterList', filterList);
+    clickHandler(filterList);
   }, [filterList]);
 
   useEffect(() => {
     const newTags: string[] = customTags?.data()?.tags;
     if (newTags?.length) {
-      updateTags([...newTags, ...Tags]);
+      updateTags([...tags, ...newTags]);
     }
   }, [customTags]);
 
@@ -36,8 +37,7 @@ const TagFilter: FC<Props> = ({ clickHandler }) => {
     } else {
       newFilters = [...filterList, tag];
     }
-    // setFilterList(newFilters);
-    clickHandler(newFilters);
+    setFilterList(newFilters);
   };
 
   return (
