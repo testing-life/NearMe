@@ -6,11 +6,13 @@ import {
   startAt,
   endAt,
   getDocs,
-  Firestore
+  Firestore,
+  where
 } from 'firebase/firestore';
 
 import { spotConverter } from '../Firebase/Firebase';
 import { spotsCollectionRef } from '../Consts/SpotsRef';
+import { User } from 'firebase/auth';
 
 export function distanceMetres(
   lat1: number,
@@ -39,17 +41,26 @@ function deg2rad(deg: number) {
 export const spotsInRadius = async (
   centre: geofire.Geopoint,
   db: Firestore,
-  radiusInM: number = 10000
+  radiusInM: number = 10000,
+  user?: User
 ) => {
   const bounds = geofire.geohashQueryBounds(centre, radiusInM);
   const promises = [];
   for (const b of bounds) {
-    const q = query(
-      spotsCollectionRef(db),
-      orderBy('geohash'),
-      startAt(b[0]),
-      endAt(b[1])
-    ).withConverter(spotConverter);
+    const q = user
+      ? query(
+          spotsCollectionRef(db),
+          orderBy('geohash'),
+          where('userId', '==', user?.uid),
+          startAt(b[0]),
+          endAt(b[1])
+        ).withConverter(spotConverter)
+      : query(
+          spotsCollectionRef(db),
+          orderBy('geohash'),
+          startAt(b[0]),
+          endAt(b[1])
+        ).withConverter(spotConverter);
 
     promises.push(getDocs(q));
   }

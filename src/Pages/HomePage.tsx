@@ -51,26 +51,40 @@ const HomePage = () => {
   const [dataType, setDataType] = useState<DataType>(DataType.Local);
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.List);
   const [filterList, setFilterList] = useState<string[]>([]);
-  const docRef = query(
-    spotsCollectionRef(db),
-    where('userId', '==', user?.uid)
-  ).withConverter(spotConverter);
+  // const docRef = query(
+  //   spotsCollectionRef(db),
+  //   where('userId', '==', user?.uid)
+  // ).withConverter(spotConverter);
 
-  const [value, loading, error] = useCollectionData(docRef);
+  // const [value, loading, error] = useCollectionData(docRef);
 
   useEffect(() => {
-    if (value) {
-      setData(value);
-      setFilteredData(value);
+    getLocation();
+  }, [getLocation]);
+
+  useEffect(() => {
+    const getMySpotsInRadius = async () => {
+      const myData = await spotsInRadius(
+        [location.latitude, location.longitude],
+        db,
+        1000
+      ).catch((e) => console.log('e', e));
+      if (myData) {
+        setData(myData);
+        setFilteredData(myData);
+      }
+    };
+    if (location.latitude && location.longitude && !data) {
+      getMySpotsInRadius();
     }
-  }, [value]);
+  }, [location]);
 
   useEffect(() => {
     if (dataType === DataType.Global) {
       getLocation();
     }
     if (dataType === DataType.Local) {
-      setFilteredData(value);
+      setFilteredData(data);
       setGlobalData(undefined);
     }
   }, [dataType]);
@@ -148,14 +162,21 @@ const HomePage = () => {
 
   const radiusHandler = debounce<Promise<void>>(async (radiusInM: number) => {
     spotsInRadius([location.latitude, location.longitude], db, radiusInM)
-      .then((res) => console.log('res', res))
+      .then((res) => {
+        console.log('res', res);
+        if (filterList.length && data?.length) {
+          const filteredData = filterByArray(
+            res as ISpot[],
+            filterList,
+            'tags'
+          );
+          setFilteredData(filteredData);
+        } else {
+          setFilteredData(res as ISpot[]);
+        }
+      })
       .catch((e) => console.log('e', e));
-    if (filterList.length && data?.length) {
-      const filteredData = filterByArray(data as ISpot[], filterList, 'tags');
-      setFilteredData(filteredData);
-    } else {
-      setFilteredData(data as ISpot[]);
-    }
+
     console.log('filterList', filteredData, data);
   }, 1000);
 
@@ -180,22 +201,22 @@ const HomePage = () => {
           id='data-mode'
           options={[
             { label: 'My spots', value: DataType.Local },
-            { label: 'All spots', value: DataType.Global }
+            { label: "Others' spots", value: DataType.Global }
           ]}
           onChange={(val: string) => dataTypeChange(val as DataType)}
         />
       </div>
-      {error && <p className='-is-error'>{error.message}</p>}
+      {/* {error && <p className='-is-error'>{error.message}</p>} */}
       {dataType === DataType.Global && globalData && !globalData?.length ? (
         <p className='-space-bottom'>
           It seems there are no spots from others around you (within 10km)
         </p>
       ) : null}
-      {!loading && !data?.length && <p>You haven't added any spots yet.</p>}
+      {/* {!loading && !data?.length && <p>You haven't added any spots yet.</p>} */}
       {dataType === DataType.Global && !filteredData?.length && (
         <p>It seems there are no spots within 10km from your location.</p>
       )}
-      {!loading && filteredData ? (
+      {filteredData ? (
         viewMode === ViewMode.Map ? (
           <MapView filteredData={filteredData} radiusHandler={radiusHandler} />
         ) : (
@@ -213,7 +234,13 @@ export default HomePage;
 // TODO edit global
 // TODO spot operations to a service?
 
-// 1. init
-//    get data
-//    set data
-//    set data as filtereddata
+//                           list view               map view
+// # my spots                load all                load all within 25km radius
+
+// # others spots            load all within         load all within 25km radius
+// #                         25km radius
+// #                         dont mix with mine
+
+// 1. load
+// 2. if filters, then filter
+// 3. set as filtered

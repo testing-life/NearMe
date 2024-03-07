@@ -34,7 +34,7 @@ const SetView = ({
 
 const MapView: FC<Props> = ({ filteredData, radiusHandler }) => {
   const { location, locationError, getLocation } = useGeolocation();
-  const [radiusMetres, setRadiusMetres] = useState(500);
+  const [radiusMetres, setRadiusMetres] = useState(1000);
   const [destination, setDestination] = useState<Ilocation>();
   const fillBlueOptions = { fillColor: 'blue' };
 
@@ -45,16 +45,17 @@ const MapView: FC<Props> = ({ filteredData, radiusHandler }) => {
   const zoom = 15;
   return (
     <>
-      <label htmlFor='searchRange'>Distance</label>
+      <label htmlFor='searchRange'>Distance: {radiusMetres}m</label>
       <input
         id='searchRange'
         type='range'
         step='1'
         max='5000'
-        min='5'
+        min='100'
+        value={radiusMetres}
         onChange={async (e: ChangeEvent) => {
           setRadiusMetres(Number((e.target as HTMLInputElement).value));
-          radiusHandler(Number((e.target as HTMLInputElement).value || 500));
+          radiusHandler(Number((e.target as HTMLInputElement).value));
           // const globalDataRes = await spotsInRadius(
           //   [location.latitude, location.longitude],
           //   db,
@@ -64,7 +65,11 @@ const MapView: FC<Props> = ({ filteredData, radiusHandler }) => {
         }}
       />
       <button onClick={() => setDestination(undefined)}>Clear route</button>
-      {locationError && <p className='-is-error'>{locationError.message}</p>}
+      {locationError && (
+        <p className='-is-error'>
+          {locationError.message} {locationError.code}
+        </p>
+      )}
 
       <MapContainer
         dragging={false}
