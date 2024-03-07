@@ -92,38 +92,20 @@ const HomePage = () => {
       }
     }
     if (dataType === DataType.Global) {
-      if (viewMode === ViewMode.List) {
-        getSpotsInRadius(location, db, 25000).then((res) => {
-          if (res) {
-            if (filterList.length) {
-              const filteredData = filterByArray(
-                res as ISpot[],
-                filterList,
-                'tags'
-              );
-              setFilteredData(filteredData);
-            } else {
-              setFilteredData(res);
-            }
+      getSpotsInRadius(location, db, 25000).then((res) => {
+        if (res) {
+          if (filterList.length) {
+            const filteredData = filterByArray(
+              res as ISpot[],
+              filterList,
+              'tags'
+            );
+            setFilteredData(filteredData);
+          } else {
+            setFilteredData(res);
           }
-        });
-      }
-      if (viewMode === ViewMode.Map) {
-        getSpotsInRadius(location, db, 25000).then((res) => {
-          if (res) {
-            if (filterList.length) {
-              const filteredData = filterByArray(
-                res as ISpot[],
-                filterList,
-                'tags'
-              );
-              setFilteredData(filteredData);
-            } else {
-              setFilteredData(res);
-            }
-          }
-        });
-      }
+        }
+      });
     }
   }, [dataType, viewMode, value, location, filterList, user]);
 

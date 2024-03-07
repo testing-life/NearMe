@@ -162,7 +162,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
                 }
               />
             </div>
-            <div>
+            <div className='mb-32'>
               <Button
                 classes='add-spot__locate-btn'
                 type='button'
