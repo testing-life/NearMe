@@ -9,6 +9,7 @@ import {
 import { useAuthState } from 'react-firebase-hooks/auth';
 import {
   DocumentReference,
+  Firestore,
   arrayUnion,
   deleteDoc,
   doc,
@@ -25,12 +26,13 @@ import { filterByArray } from '../Utils/array';
 import ListView from '../Components/ListView/ListView';
 import MapView from '../Components/MapView/MapView';
 import { spotsInRadius } from '../Utils/geo';
-import useGeolocation from '../Hooks/useGeolocation';
+import useGeolocation, { Ilocation } from '../Hooks/useGeolocation';
 import { spotsCollectionRef } from '../Consts/SpotsRef';
 import CustomTag from '../Components/CustomTag/CustomTag';
 import Select from '../Components/Select/Select';
 import Spinner from '../Components/Spinner/Spinner';
 import { debounce } from '../Utils/events';
+import { User } from 'firebase/auth';
 
 export enum ViewMode {
   List = 'list',
@@ -45,76 +47,98 @@ export enum DataType {
 const HomePage = () => {
   const [user] = useAuthState(auth);
   const { location, getLocation } = useGeolocation();
-  const [data, setData] = useState<ISpot[]>();
+  const [pristineData, setPristineData] = useState<ISpot[]>();
   const [globalData, setGlobalData] = useState<ISpot[]>();
   const [filteredData, setFilteredData] = useState<ISpot[]>();
   const [dataType, setDataType] = useState<DataType>(DataType.Local);
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.List);
   const [filterList, setFilterList] = useState<string[]>([]);
-  // const docRef = query(
-  //   spotsCollectionRef(db),
-  //   where('userId', '==', user?.uid)
-  // ).withConverter(spotConverter);
+  const docRef = query(
+    spotsCollectionRef(db),
+    where('userId', '==', user?.uid)
+  ).withConverter(spotConverter);
 
-  // const [value, loading, error] = useCollectionData(docRef);
-
-  useEffect(() => {
-    getLocation();
-  }, [getLocation]);
+  const [value, loading, error] = useCollectionData(docRef);
 
   useEffect(() => {
-    const getMySpotsInRadius = async () => {
-      const myData = await spotsInRadius(
-        [location.latitude, location.longitude],
-        db,
-        1000
-      ).catch((e) => console.log('e', e));
-      if (myData) {
-        setData(myData);
-        setFilteredData(myData);
-      }
-    };
-    if (location.latitude && location.longitude && !data) {
-      getMySpotsInRadius();
-    }
-  }, [location]);
-
-  useEffect(() => {
-    if (dataType === DataType.Global) {
+    if (!location.latitude && !location.longitude) {
       getLocation();
     }
+  }, [location, getLocation]);
+
+  //  first load, list view, my spots
+  useEffect(() => {
+    if (!error && !loading && value) {
+      setPristineData(value);
+      setFilteredData(value);
+    }
+  }, [value, error, loading]);
+
+  useEffect(() => {
     if (dataType === DataType.Local) {
-      setFilteredData(data);
-      setGlobalData(undefined);
+      if (viewMode === ViewMode.List) {
+        // set all mine
+        console.log('local,list');
+        console.log('pristine', pristineData, filteredData, value);
+        setPristineData(value);
+        setFilteredData(value);
+      }
+      if (viewMode === ViewMode.Map) {
+        // set all mine in radius
+        console.log('local,map');
+        getSpotsInRadius(location, db, 25000, user).then((res) => {
+          if (res) {
+            console.log('res', res);
+            setFilteredData(res);
+          }
+        });
+      }
     }
-  }, [dataType]);
+    if (dataType === DataType.Global) {
+      if (viewMode === ViewMode.List) {
+        // set all other in radius
+        console.log('global,list');
+        getSpotsInRadius(location, db, 25000).then((res) => {
+          if (res) {
+            console.log('res', res);
+            setFilteredData(res);
+          }
+        });
+      }
+      if (viewMode === ViewMode.Map) {
+        // set all other in radius
+        console.log('global,map');
+        getSpotsInRadius(location, db, 25000).then((res) => {
+          if (res) {
+            console.log('res', res);
+            setFilteredData(res);
+          }
+        });
+      }
+    }
+  }, [dataType, viewMode, value, location]);
+
+  const getSpotsInRadius = async (
+    location: Ilocation,
+    db: Firestore,
+    radiusInM: number,
+    user: User | null = null
+  ) => {
+    return await spotsInRadius(
+      [location.latitude, location.longitude],
+      db,
+      radiusInM,
+      user as User
+    ).catch((e) => console.log('e', e));
+  };
 
   useEffect(() => {
-    const getSpots = async () => {
-      const globalDataRes = await spotsInRadius(
-        [location.latitude, location.longitude],
-        db
-      ).catch((e) => console.log('e', e));
-      const toRemovedMine = globalDataRes?.filter(
-        (doc: ISpot) => doc.userId !== user?.uid
+    if (filterList.length && pristineData?.length) {
+      const filteredData = filterByArray(
+        pristineData as ISpot[],
+        filterList,
+        'tags'
       );
-      setGlobalData(toRemovedMine as ISpot[]);
-      console.log('toRemovedMine', filteredData, toRemovedMine);
-      const combinedSpots = [
-        ...(toRemovedMine as ISpot[]),
-        ...(filteredData as ISpot[])
-      ];
-      setFilteredData(combinedSpots);
-      console.log('combinedSpots', combinedSpots);
-    };
-    if (dataType === DataType.Global && location.latitude) {
-      getSpots();
-    }
-  }, [location]);
-
-  useEffect(() => {
-    if (filterList.length && data?.length) {
-      const filteredData = filterByArray(data as ISpot[], filterList, 'tags');
       setFilteredData(filteredData);
     }
   }, [filterList]);
@@ -160,26 +184,6 @@ const HomePage = () => {
     }
   };
 
-  const radiusHandler = debounce<Promise<void>>(async (radiusInM: number) => {
-    spotsInRadius([location.latitude, location.longitude], db, radiusInM)
-      .then((res) => {
-        console.log('res', res);
-        if (filterList.length && data?.length) {
-          const filteredData = filterByArray(
-            res as ISpot[],
-            filterList,
-            'tags'
-          );
-          setFilteredData(filteredData);
-        } else {
-          setFilteredData(res as ISpot[]);
-        }
-      })
-      .catch((e) => console.log('e', e));
-
-    console.log('filterList', filteredData, data);
-  }, 1000);
-
   return (
     <>
       <Header auth={auth} />
@@ -218,7 +222,7 @@ const HomePage = () => {
       )}
       {filteredData ? (
         viewMode === ViewMode.Map ? (
-          <MapView filteredData={filteredData} radiusHandler={radiusHandler} />
+          <MapView filteredData={filteredData} />
         ) : (
           <ListView filteredData={filteredData} deleteHandler={deleteHandler} />
         )
