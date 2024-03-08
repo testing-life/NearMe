@@ -80,7 +80,6 @@ export const spotsInRadius = async (
           centre
         );
         const distanceInM = distanceInKm * 1000;
-        console.log('radiusInM, disatnceInM', radiusInM, distanceInM);
         if (distanceInM <= radiusInM) {
           matchingDocs.push(doc.data());
         }

@@ -1,0 +1,27 @@
+.map-spot {
+  position: fixed;
+  z-index: 9999;
+  bottom: 0;
+  background: red;
+  width: calc(100% - 32px);
+  border-radius: 20px 20px 0 0;
+  padding: 15px 16px 8px;
+  overflow: hidden;
+  box-shadow: 0 0 5px var(--bg-sphere-1);
+  background: radial-gradient(
+      at bottom left,
+      var(--bg-sphere-3),
+      transparent 957px
+    ),
+    radial-gradient(ellipse at bottom center, var(--bg), transparent 157px),
+    url(./../../Assets/lotsOfDots.png), var(--bg);
+}
+
+.map-spot__poster {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: -50%;
+  left: 0;
+  z-index: -1;
+}

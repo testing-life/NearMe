@@ -6,8 +6,9 @@ import SetNavigation from '../Navigating/Navigating';
 import Pin from '../../Assets/pin.svg';
 import YouPin from '../../Assets/youPin.svg';
 import { Icon } from 'leaflet';
-
-declare let L: any;
+import './MapView.css';
+import PillsList from '../PillsList/PillsList';
+import MapSpot from '../MapSpot/MapSpot';
 
 interface Props {
   filteredData: ISpot[];
@@ -28,19 +29,20 @@ const SetView = ({
 const MapView: FC<Props> = ({ filteredData }) => {
   const { location, locationError, getLocation } = useGeolocation();
   const [destination, setDestination] = useState<Ilocation>();
+  const [openSpot, setOpenSpot] = useState<ISpot>();
 
   const spotIcon = new Icon({
     iconUrl: Pin,
-    iconSize: [32, 38], 
-    iconAnchor: [32, 38], 
-    popupAnchor: [-3, -76] 
+    iconSize: [32, 38],
+    iconAnchor: [32, 38],
+    popupAnchor: [-100, -100]
   });
 
   const youIcon = new Icon({
     iconUrl: YouPin,
-    iconSize: [37, 43], 
-    iconAnchor: [37, 43], 
-    popupAnchor: [-3, -76] 
+    iconSize: [37, 43],
+    iconAnchor: [37, 43],
+    popupAnchor: [-3, -76]
   });
 
   useEffect(() => {
@@ -50,7 +52,6 @@ const MapView: FC<Props> = ({ filteredData }) => {
   const zoom = 15;
   return (
     <>
-      <button onClick={() => setDestination(undefined)}>Clear route</button>
       {locationError && (
         <p className='-is-error'>
           {locationError.message} {locationError.code}
@@ -81,29 +82,43 @@ const MapView: FC<Props> = ({ filteredData }) => {
         />
         <Marker
           icon={youIcon}
-          position={{ lat: location.latitude, lng: location.longitude }}>
-          <Popup>That's you.</Popup>
-        </Marker>
+          position={{
+            lat: location.latitude,
+            lng: location.longitude
+          }}></Marker>
         {filteredData.map((spot: ISpot, index: number) => {
           return (
             <Marker
+              eventHandlers={{
+                click: () => setOpenSpot(spot)
+              }}
               key={`${spot.name}${index}`}
               icon={spotIcon}
               position={{
                 lat: spot.location.latitude,
                 lng: spot.location.longitude
-              }}>
-              <Popup>
-                <p>{spot.name}</p>
-                <p>{spot.address}</p>
-                <button onClick={() => setDestination(spot.location)}>
-                  Show route
-                </button>
-              </Popup>
-            </Marker>
+              }}></Marker>
           );
         })}
       </MapContainer>
+      {openSpot && (
+        <MapSpot
+          spot={openSpot}
+          navigationHandler={(toggle: any) => setDestination(toggle)}
+          closeHandler={() => setOpenSpot(undefined)}
+        />
+        // <div className='popup'>
+        //   <button onClick={() => setOpenSpot(undefined)}>close</button>
+        //   <p>{openSpot.address}</p>
+        //   <button onClick={() => setDestination(openSpot.location)}>
+        //     Show route
+        //   </button>
+        //   <button onClick={() => setDestination(undefined)}>Clear route</button>
+        //   <>{console.log('openSpot', openSpot)}</>
+        //   <PillsList labels={openSpot.tags} />
+        //   <p>{openSpot.name}</p>
+        // </div>
+      )}
     </>
   );
 };
