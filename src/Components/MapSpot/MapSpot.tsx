@@ -4,24 +4,29 @@ import './MapSpot.css';
 import { ISpot } from '../../Models/spot';
 import { Ilocation } from '../../Hooks/useGeolocation';
 import PillsList from '../PillsList/PillsList';
+
 interface Props {
   spot: ISpot;
   closeHandler: () => void;
-  navigationHandler: (location?: Ilocation) => void;
+  navigationHandler?: (location?: Ilocation) => void;
 }
 
-const MapSpot: FC<Props> = ({ spot, closeHandler, navigationHandler }) => {
+const MapSpot: FC<Props> = ({ spot, closeHandler }) => {
   return (
     <div className='map-spot'>
       <button onClick={closeHandler}>close</button>
-      <p>{spot.address}</p>
-      <button onClick={() => navigationHandler(spot.location)}>
+      {/* <button onClick={() => navigationHandler(spot.location)}>
         Show route
-      </button>
-      <button onClick={() => navigationHandler(undefined)}>Clear route</button>
+      </button> */}
+      {/* <button onClick={() => navigationHandler(undefined)}>Clear route</button> */}
       <>{console.log('spot', spot)}</>
-      <PillsList labels={spot.tags} />
-      <p>{spot.name}</p>
+      <div className='mb-12'>
+        <PillsList labels={spot.tags} />
+      </div>
+      <div className='map-spot__details'>
+        <p className='map-spot__name'>{spot.name}</p>
+        <p className='map-spot__address'>{spot.address}</p>
+      </div>
       {spot.poster.url && (
         <img className='map-spot__poster' src={spot.poster.url} alt='' />
       )}
