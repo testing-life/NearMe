@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { ReactComponent as BigClose } from '../../Assets/Icons/big-close.svg';
 import './MapSpot.css';
 
 import { ISpot } from '../../Models/spot';
@@ -14,7 +15,11 @@ interface Props {
 const MapSpot: FC<Props> = ({ spot, closeHandler }) => {
   return (
     <div className='map-spot'>
-      <button onClick={closeHandler}>close</button>
+      <div className='map-spot__utils'>
+        <button className='map-spot__close' onClick={closeHandler}>
+          <BigClose />
+        </button>
+      </div>
       {/* <button onClick={() => navigationHandler(spot.location)}>
         Show route
       </button> */}

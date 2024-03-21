@@ -107,17 +107,6 @@ const MapView: FC<Props> = ({ filteredData }) => {
           navigationHandler={(toggle: any) => setDestination(toggle)}
           closeHandler={() => setOpenSpot(undefined)}
         />
-        // <div className='popup'>
-        //   <button onClick={() => setOpenSpot(undefined)}>close</button>
-        //   <p>{openSpot.address}</p>
-        //   <button onClick={() => setDestination(openSpot.location)}>
-        //     Show route
-        //   </button>
-        //   <button onClick={() => setDestination(undefined)}>Clear route</button>
-        //   <>{console.log('openSpot', openSpot)}</>
-        //   <PillsList labels={openSpot.tags} />
-        //   <p>{openSpot.name}</p>
-        // </div>
       )}
     </>
   );
