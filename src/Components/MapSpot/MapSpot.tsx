@@ -24,7 +24,6 @@ const MapSpot: FC<Props> = ({ spot, closeHandler }) => {
         Show route
       </button> */}
       {/* <button onClick={() => navigationHandler(undefined)}>Clear route</button> */}
-      <>{console.log('spot', spot)}</>
       <div className='mb-12'>
         <PillsList labels={spot.tags} />
       </div>
