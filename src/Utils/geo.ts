@@ -71,7 +71,6 @@ export const spotsInRadius = async (
 
   const matchingDocs = [];
   if (snapshots) {
-    console.log('snapshots', snapshots);
     for (const snap of snapshots) {
       for (const doc of snap.docs) {
         const location = doc.get('location');
