@@ -50,8 +50,8 @@ export const spotsInRadius = async (
     const q = user
       ? query(
           spotsCollectionRef(db),
+          // where('userId', '==', user.uid), // why doesnt this filter work?
           orderBy('geohash'),
-          where('userId', '==', user?.uid),
           startAt(b[0]),
           endAt(b[1])
         ).withConverter(spotConverter)
@@ -71,6 +71,7 @@ export const spotsInRadius = async (
 
   const matchingDocs = [];
   if (snapshots) {
+    console.log('snapshots', snapshots);
     for (const snap of snapshots) {
       for (const doc of snap.docs) {
         const location = doc.get('location');
