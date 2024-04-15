@@ -77,15 +77,18 @@ const HomePage = () => {
       if (viewMode === ViewMode.Map) {
         getSpotsInRadius(location, db, 25000, user).then((res) => {
           if (res) {
+            const onlyMine = res.filter(
+              (item: ISpot) => item.userId === user?.uid
+            );
             if (filterList.length) {
               const filteredData = filterByArray(
-                res as ISpot[],
+                onlyMine as ISpot[],
                 filterList,
                 'tags'
               );
               setFilteredData(filteredData);
             } else {
-              setFilteredData(res);
+              setFilteredData(onlyMine);
             }
           }
         });

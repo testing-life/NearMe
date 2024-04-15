@@ -50,8 +50,8 @@ export const spotsInRadius = async (
     const q = user
       ? query(
           spotsCollectionRef(db),
+          // where('userId', '==', user.uid), // why doesnt this filter work?
           orderBy('geohash'),
-          where('userId', '==', user?.uid),
           startAt(b[0]),
           endAt(b[1])
         ).withConverter(spotConverter)
@@ -80,7 +80,6 @@ export const spotsInRadius = async (
           centre
         );
         const distanceInM = distanceInKm * 1000;
-        console.log('radiusInM, disatnceInM', radiusInM, distanceInM);
         if (distanceInM <= radiusInM) {
           matchingDocs.push(doc.data());
         }

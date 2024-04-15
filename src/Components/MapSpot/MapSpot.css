@@ -1,0 +1,68 @@
+.map-spot {
+  position: fixed;
+  z-index: 9999;
+  bottom: 0;
+  width: calc(100% - 32px);
+  border-radius: 20px 20px 0 0;
+  padding: 15px 16px 0;
+  overflow: hidden;
+  box-shadow: 0 0 5px var(--black);
+  background: radial-gradient(
+      at bottom left,
+      var(--bg-sphere-3),
+      transparent 957px
+    ),
+    radial-gradient(ellipse at bottom center, var(--bg), transparent 157px),
+    url(./../../Assets/lotsOfDots.png), var(--bg);
+}
+
+.map-spot__poster {
+  inline-size: 100%;
+  block-size: auto;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0.25;
+}
+
+.map-spot__details {
+  background-color: var(--black);
+  margin-inline: -16px;
+  padding: 7px 15px;
+}
+
+.map-spot__name {
+  font-weight: 600;
+  font-size: 1.8rem;
+}
+
+.map-spot__address {
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: #ffffff80;
+}
+
+.map-spot__close {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  background: var(--icon-bg);
+  border: 2px solid var(--invalid);
+}
+
+.map-spot__close svg {
+  width: 16px;
+  height: 16px;
+  color: var(--invalid);
+}
+
+.map-spot__utils {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-end: 12px;
+}
