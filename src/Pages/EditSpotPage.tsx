@@ -54,7 +54,6 @@ const EditSpotPage = () => {
           />
         ) : null}
         {updateError && <p>{updateError}</p>}
-        <Link to={HOME}>Cancel</Link>
       </div>
     </>
   );

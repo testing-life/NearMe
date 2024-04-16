@@ -21,14 +21,6 @@
   width: calc(calc(var(--n) / 2) * 32vw);
 }
 
-.mb-32 {
-  margin-block-end: 32px;
-}
-
-.mb-12 {
-  margin-block-end: 12px;
-}
-
 .locate-container {
   display: grid;
   grid-template-columns: 1fr auto;

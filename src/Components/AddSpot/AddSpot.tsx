@@ -16,6 +16,7 @@ import './AddSpot.css';
 import { Link } from 'react-router-dom';
 import { HOME } from '../../Consts/Routes';
 import { useAddImage } from '../../Hooks/useAddImage';
+import { isDefaultLocation } from '../../Utils/geo';
 
 interface Props {
   submitHandler: (spot: Spot) => void;
@@ -90,7 +91,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
     setImage(data);
   };
 
-  const isDefaultLocation = location.latitude === 0 && location.longitude === 0;
+  // const isDefaultLocation = location.latitude === 0 && location.longitude === 0;
   // TODO  almost same form as edit - look into reusing
   // TODO reuse tags filter setup, for layout
   // TODO refactor global utility classes like mb
@@ -177,7 +178,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
               {locationError && (
                 <p className='-is-error'>{locationError.message}</p>
               )}
-              {isDefaultLocation && (
+              {isDefaultLocation(location) && (
                 <p className='-is-warning'>
                   You may need to enable Location Services of your device.
                 </p>
