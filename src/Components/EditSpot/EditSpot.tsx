@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
+import React, { FC, FormEvent, useEffect, useState } from 'react';
 import useGeolocation from '../../Hooks/useGeolocation';
 import useReverseGeocode from '../../Hooks/useReverseGeocode';
 import { ISpot } from '../../Models/spot';
@@ -11,7 +11,9 @@ import { ReactComponent as Locate } from '../../Assets/Icons/locate.svg';
 import { isDefaultLocation } from '../../Utils/geo';
 import { Link } from 'react-router-dom';
 import { HOME } from '../../Consts/Routes';
+import { ReactComponent as Pencil } from '../../Assets/Icons/pen.svg';
 import './EditSpot.css';
+import Textarea from '../Textarea/Textarea';
 
 interface Props {
   editHandler: (spot: ISpot) => void;
@@ -21,6 +23,7 @@ interface Props {
 
 const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
   const [spot, setSpot] = useState(data);
+  const [isEditingAddress, setIsEditingAddress] = useState(false);
   const { location, locationError, getLocation } = useGeolocation();
   const { address, getAddress, addressError } = useReverseGeocode();
   const [isSearching, setIsSearching] = useState(false);
@@ -72,42 +75,52 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
           <li className='mb-32'>
             <TagFilter clickHandler={taggingHandler} />
           </li>
-          <li className='row mb-32 locate-container'>
-            <div>
-              <Input
-                id='address'
-                required
-                label='Address'
-                type='text'
-                placeholder='Locate me'
-                value={spot.address}
-                onChange={(value: string) =>
-                  setSpot({ ...spot, address: value })
-                }
-              />
-            </div>
-            <div className='mb-32'>
+          {!isEditingAddress ? (
+            <li className='row mb-32 edit-spot__address-container'>
+              <p>{spot.address}</p>
               <Button
-                classes='add-spot__locate-btn'
-                type='button'
-                clickHandler={guessAddress}>
-                <Locate />
+                variant='icon'
+                clickHandler={() => setIsEditingAddress(!isEditingAddress)}>
+                <Pencil />
+                <span className='invisible'> Edit address</span>
               </Button>
-            </div>
-            <div>
-              {locationError && (
-                <p className='-is-error'>{locationError.message}</p>
-              )}
-              {isDefaultLocation(location) && (
-                <p className='-is-warning'>
-                  You may need to enable Location Services of your device.
-                </p>
-              )}
-              {addressError && (
-                <p className='-is-error'>{addressError.message}</p>
-              )}
-            </div>
-          </li>
+            </li>
+          ) : (
+            <li className='row mb-32 locate-container'>
+              <div>
+                <Textarea
+                  id='address'
+                  required
+                  label='Address'
+                  value={spot.address}
+                  onChange={(value: string) =>
+                    setSpot({ ...spot, address: value })
+                  }
+                />
+              </div>
+              <div>
+                <Button
+                  variant='icon'
+                  type='button'
+                  clickHandler={guessAddress}>
+                  <Locate />
+                </Button>
+              </div>
+              <div>
+                {locationError && (
+                  <p className='-is-error'>{locationError.message}</p>
+                )}
+                {isDefaultLocation(location) && (
+                  <p className='-is-warning'>
+                    You may need to enable Location Services of your device.
+                  </p>
+                )}
+                {addressError && (
+                  <p className='-is-error'>{addressError.message}</p>
+                )}
+              </div>
+            </li>
+          )}
           {/* <textarea
           placeholder='Notes'
           value={spot.notes}

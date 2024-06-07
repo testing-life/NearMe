@@ -1,0 +1,34 @@
+textarea {
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-stroke);
+  padding: 18px 24px;
+  border-radius: 12px;
+  width: 100%;
+}
+
+.input-wrapper {
+  width: 100%;
+}
+
+.-is-valid {
+  box-shadow: 0 0 0 2px var(--valid);
+  color: var(--valid);
+}
+
+.-is-invalid {
+  box-shadow: 0 0 0 2px var(--invalid);
+  color: var(--invalid);
+}
+
+.input-error {
+  background: linear-gradient(
+    91deg,
+    var(--invalid) 0,
+    var(--light-invalid) 50%
+  );
+  -webkit-background-clip: text;
+  color: rgba(0, 0, 0, 0);
+  background-clip: text;
+  font-size: var(--text-size-small);
+  padding-inline-start: 24px;
+}
