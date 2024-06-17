@@ -3,9 +3,7 @@ import useGeolocation from '../../Hooks/useGeolocation';
 import useReverseGeocode from '../../Hooks/useReverseGeocode';
 import { Spot } from '../../Models/spot';
 import { GeoPoint } from 'firebase/firestore';
-import { Tags } from '../../Consts/Tags';
 import Input from '../Input/Input';
-import TagButton from '../TagButton/TagButton';
 import { auth, storage } from '../../Firebase/Firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import TakePhoto from '../TakePhoto/TakePhoto';
@@ -17,6 +15,8 @@ import { Link } from 'react-router-dom';
 import { HOME } from '../../Consts/Routes';
 import { useAddImage } from '../../Hooks/useAddImage';
 import { isDefaultLocation } from '../../Utils/geo';
+import useTagsStore from '../../Stores/tagsStore';
+import TagFilter from '../TagFilter/TagFilter';
 
 interface Props {
   submitHandler: (spot: Spot) => void;
@@ -32,6 +32,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
   const { address, getAddress, addressError } = useReverseGeocode();
   const { uploadProgress, downloadUrl, uploadError, storageUploadHook } =
     useAddImage();
+  const tags = useTagsStore((state) => state.tags);
   // TODO look into making this common - existing hook ?
   const [isSearching, setIsSearching] = useState(false);
 
@@ -116,38 +117,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
             />
           </li>
           <li className='add-tag mb-32'>
-            <ul
-              className='add-tag__list'
-              style={{ '--n': Tags.length } as React.CSSProperties}>
-              {Tags.map((tag: (typeof Tags)[number], index: number) => {
-                return !spot.tags.includes(tag) ? (
-                  <li>
-                    <TagButton
-                      tagLabel={tag}
-                      key={`${tag}${index}`}
-                      clickHandler={() =>
-                        setSpot({ ...spot, tags: [...spot.tags, tag] })
-                      }
-                    />
-                  </li>
-                ) : (
-                  <li>
-                    <TagButton
-                      remove
-                      isSelected
-                      tagLabel={tag}
-                      key={`${tag}${index}`}
-                      clickHandler={() =>
-                        setSpot({
-                          ...spot,
-                          tags: spot.tags.filter((t) => t !== tag)
-                        })
-                      }
-                    />
-                  </li>
-                );
-              })}
-            </ul>
+            <TagFilter clickHandler={() => setSpot({ ...spot, tags })} />
           </li>
           <li className='row mb-32 locate-container'>
             <div>
@@ -163,10 +133,11 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
                 }
               />
             </div>
-            <div className='mb-32'>
+            <div>
               <Button
                 classes='add-spot__locate-btn'
                 type='button'
+                variant='icon'
                 clickHandler={guessAddress}>
                 <Locate />
               </Button>
