@@ -1,6 +1,5 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 import TagButton from './TagButton';
-import { Tags } from './../../Consts/Tags'; // assuming Tags is imported or defined somewhere
 
 describe('TagButton', () => {
   const clickHandlerMock = jest.fn();

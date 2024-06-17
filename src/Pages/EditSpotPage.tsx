@@ -1,7 +1,7 @@
 import { DocumentSnapshot, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { HOME } from '../Consts/Routes';
 import { auth, db } from '../Firebase/Firebase';
 import { ISpot } from '../Models/spot';
@@ -44,13 +44,16 @@ const EditSpotPage = () => {
 
   return (
     <>
-      <Header auth={auth} />
+      <div className='mb-12'>
+        <Header auth={auth} />
+      </div>
       <div className='p-2 max-w-sm u-center'>
         {user && data?.data() ? (
           <EditSpot
             editHandler={editHandler}
             data={data.data() as ISpot}
             userId={user!.uid}
+            db={db}
           />
         ) : null}
         {updateError && <p>{updateError}</p>}

@@ -2,7 +2,7 @@ import React, { FC, FormEvent, useEffect, useState } from 'react';
 import useGeolocation from '../../Hooks/useGeolocation';
 import useReverseGeocode from '../../Hooks/useReverseGeocode';
 import { ISpot } from '../../Models/spot';
-import { GeoPoint } from 'firebase/firestore';
+import { Firestore, GeoPoint } from 'firebase/firestore';
 import useTagsStore from '../../Stores/tagsStore';
 import TagFilter from '../TagFilter/TagFilter';
 import Button from '../Button/Button';
@@ -14,20 +14,24 @@ import { HOME } from '../../Consts/Routes';
 import { ReactComponent as Pencil } from '../../Assets/Icons/pen.svg';
 import './EditSpot.css';
 import Textarea from '../Textarea/Textarea';
+import CustomTag from '../CustomTag/CustomTag';
+import { saveTagToSpot } from '../../Utils/tags';
 
 interface Props {
   editHandler: (spot: ISpot) => void;
   data: ISpot;
   userId: string;
+  db: Firestore;
 }
 
-const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
+const EditSpot: FC<Props> = ({ editHandler, data, userId, db }) => {
   const [spot, setSpot] = useState(data);
   const [isEditingAddress, setIsEditingAddress] = useState(false);
   const { location, locationError, getLocation } = useGeolocation();
   const { address, getAddress, addressError } = useReverseGeocode();
   const [isSearching, setIsSearching] = useState(false);
   const tags = useTagsStore((state) => state.tags);
+  const updateTags = useTagsStore((state) => state.updateTags);
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -49,6 +53,12 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
     }
   }, [address]);
 
+  useEffect(() => {
+    if (spot.tags.length) {
+      updateTags(spot.tags);
+    }
+  }, []);
+
   const guessAddress = (): void => {
     setIsSearching(true);
     getLocation();
@@ -60,80 +70,89 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId }) => {
 
   return (
     <>
+      <div className='mb-32'>
+        <h2 className='mb-12'>Add new tag</h2>
+        <CustomTag
+          tagHandler={(tag: string) => saveTagToSpot(tag, userId, db)}
+        />
+      </div>
       <form onSubmit={onSubmit}>
-        <ul>
-          <li className='mb-32'>
-            <Input
-              id='place'
-              label='Name'
-              type='text'
-              placeholder='Name'
-              value={spot.name}
-              onChange={(value: string) => setSpot({ ...spot, name: value })}
-            />
-          </li>
-          <li className='mb-32'>
-            <TagFilter clickHandler={taggingHandler} />
-          </li>
-          {!isEditingAddress ? (
-            <li className='row mb-32 edit-spot__address-container'>
-              <p>{spot.address}</p>
-              <Button
-                variant='icon'
-                clickHandler={() => setIsEditingAddress(!isEditingAddress)}>
-                <Pencil />
-                <span className='invisible'> Edit address</span>
-              </Button>
+        <fieldset>
+          <legend className='mb-12'>Edit Spot</legend>
+          <ul>
+            <li className='mb-32'>
+              <Input
+                id='place'
+                label='Name'
+                type='text'
+                placeholder='Name'
+                value={spot.name}
+                onChange={(value: string) => setSpot({ ...spot, name: value })}
+              />
             </li>
-          ) : (
-            <li className='row mb-32 locate-container'>
-              <div>
-                <Textarea
-                  id='address'
-                  required
-                  label='Address'
-                  value={spot.address}
-                  onChange={(value: string) =>
-                    setSpot({ ...spot, address: value })
-                  }
-                />
-              </div>
-              <div>
+            <li className='mb-32'>
+              <TagFilter clickHandler={taggingHandler} />
+            </li>
+            {!isEditingAddress ? (
+              <li className='row mb-32 edit-spot__address-container'>
+                <p>{spot.address}</p>
                 <Button
                   variant='icon'
-                  type='button'
-                  clickHandler={guessAddress}>
-                  <Locate />
+                  clickHandler={() => setIsEditingAddress(!isEditingAddress)}>
+                  <Pencil />
+                  <span className='invisible'> Edit address</span>
                 </Button>
-              </div>
-              <div>
-                {locationError && (
-                  <p className='-is-error'>{locationError.message}</p>
-                )}
-                {isDefaultLocation(location) && (
-                  <p className='-is-warning'>
-                    You may need to enable Location Services of your device.
-                  </p>
-                )}
-                {addressError && (
-                  <p className='-is-error'>{addressError.message}</p>
-                )}
-              </div>
-            </li>
-          )}
-          {/* <textarea
+              </li>
+            ) : (
+              <li className='row mb-32 locate-container'>
+                <div>
+                  <Textarea
+                    id='address'
+                    required
+                    label='Address'
+                    value={spot.address}
+                    onChange={(value: string) =>
+                      setSpot({ ...spot, address: value })
+                    }
+                  />
+                </div>
+                <div>
+                  <Button
+                    variant='icon'
+                    type='button'
+                    clickHandler={guessAddress}>
+                    <Locate />
+                  </Button>
+                </div>
+                <div>
+                  {locationError && (
+                    <p className='-is-error'>{locationError.message}</p>
+                  )}
+                  {isDefaultLocation(location) && (
+                    <p className='-is-warning'>
+                      You may need to enable Location Services of your device.
+                    </p>
+                  )}
+                  {addressError && (
+                    <p className='-is-error'>{addressError.message}</p>
+                  )}
+                </div>
+              </li>
+            )}
+            {/* <textarea
           placeholder='Notes'
           value={spot.notes}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
             setSpot({ ...spot, notes: e.target.value })
           }
         /> */}
-          <li>
-            <Button fullWidth variant='highlight' type='submit'>
-              Add spot
-            </Button>
-          </li>
-        </ul>
+            <li>
+              <Button fullWidth variant='highlight' type='submit'>
+                Edit spot
+              </Button>
+            </li>
+          </ul>
+        </fieldset>
       </form>
       <Link className='edit-spot__cancel' to={HOME}>
         Cancel
