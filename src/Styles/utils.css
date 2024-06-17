@@ -28,3 +28,11 @@
 .-space-bottom {
   margin-block-end: 24px;
 }
+
+.mb-32 {
+  margin-block-end: 32px;
+}
+
+.mb-12 {
+  margin-block-end: 12px;
+}

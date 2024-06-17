@@ -35,6 +35,16 @@
   );
 }
 
+.-is-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.-is-icon > svg {
+  width: 20px;
+}
+
 .-is-text {
   background: transparent;
   color: inherit;

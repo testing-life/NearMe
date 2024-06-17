@@ -13,6 +13,7 @@ import {
 import { spotConverter } from '../Firebase/Firebase';
 import { spotsCollectionRef } from '../Consts/SpotsRef';
 import { User } from 'firebase/auth';
+import { Ilocation } from '../Hooks/useGeolocation';
 
 export function distanceMetres(
   lat1: number,
@@ -89,3 +90,6 @@ export const spotsInRadius = async (
 
   return matchingDocs.length ? matchingDocs : [];
 };
+
+export const isDefaultLocation = (location: Ilocation) =>
+  location.latitude === 0 && location.longitude === 0;

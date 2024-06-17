@@ -10,11 +10,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import {
   DocumentReference,
   Firestore,
-  arrayUnion,
   deleteDoc,
-  doc,
   query,
-  setDoc,
   where
 } from 'firebase/firestore';
 import { ref, deleteObject, StorageReference } from 'firebase/storage';
@@ -28,7 +25,6 @@ import MapView from '../Components/MapView/MapView';
 import { spotsInRadius } from '../Utils/geo';
 import useGeolocation, { Ilocation } from '../Hooks/useGeolocation';
 import { spotsCollectionRef } from '../Consts/SpotsRef';
-import CustomTag from '../Components/CustomTag/CustomTag';
 import Select from '../Components/Select/Select';
 import Spinner from '../Components/Spinner/Spinner';
 import { User } from 'firebase/auth';
@@ -152,16 +148,6 @@ const HomePage = () => {
     setFilterList(filterList);
   };
 
-  const addTagHandler = async (tag: string) => {
-    await setDoc(
-      doc(db, 'users', user!.uid),
-      {
-        tags: arrayUnion(tag)
-      },
-      { merge: true }
-    ).catch((error: Error) => console.error(error.message));
-  };
-
   const viewModeChange = (mode: ViewMode) => {
     if (mode) {
       setViewMode(mode);
@@ -176,9 +162,11 @@ const HomePage = () => {
 
   return (
     <>
-      <Header auth={auth} />
+      <div className='mb-12'>
+        <Header auth={auth} />
+      </div>
       <div className='filter-container'>
-        <CustomTag tagHandler={addTagHandler} />
+        <h2 className='mb-12'>Filter spots:</h2>
         <TagFilter clickHandler={filterHandler} />
       </div>
       <div className='views-container row space-between'>

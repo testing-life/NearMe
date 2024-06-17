@@ -1,0 +1,10 @@
+.edit-spot__cancel {
+  display: block;
+  text-align: center;
+  margin-block-start: 32px;
+}
+
+.edit-spot__address-container {
+  align-items: center;
+  gap: 16px;
+}

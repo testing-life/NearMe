@@ -1,12 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Tags } from '../../Consts/Tags';
 import TagButton from '../TagButton/TagButton';
 import { doc } from 'firebase/firestore';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import { auth, db } from '../../Firebase/Firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import useTagsStore from '../../Stores/tagsStore';
+import { useLocation } from 'react-router-dom';
+import * as ROUTES from '../../Consts/Routes';
 import './TagFilter.css';
+
 interface Props {
   clickHandler: (filterList: string[]) => void;
 }
@@ -16,20 +18,15 @@ const TagFilter: FC<Props> = ({ clickHandler }) => {
   const [user] = useAuthState(auth);
   const [customTags, loading, error] = useDocument(doc(db, 'users', user!.uid));
   const tags = useTagsStore((state) => state.tags);
-  const updateTags = useTagsStore((state) => state.updateTags);
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    clickHandler(filterList);
-  }, [filterList]);
-
-  useEffect(() => {
-    const newTags: string[] = customTags?.data()?.tags;
-    if (newTags?.length) {
-      updateTags([...tags, ...newTags]);
+    if (pathname === ROUTES.EDIT && tags?.length) {
+      setFilterList([...tags]);
     }
-  }, [customTags]);
+  }, [tags]);
 
-  const filterListHandler = (tag: (typeof tags)[number]) => {
+  const filterListHandler = (tag: string) => {
     let newFilters = [];
     if (filterList.includes(tag)) {
       newFilters = filterList.filter((item) => item !== tag);
@@ -37,18 +34,19 @@ const TagFilter: FC<Props> = ({ clickHandler }) => {
       newFilters = [...filterList, tag];
     }
     setFilterList(newFilters);
+    clickHandler(newFilters);
   };
 
   return (
     <div
       className='tag-filter'
-      style={{ '--n': tags.length } as React.CSSProperties}>
+      style={{ '--n': customTags?.data()?.tags.length } as React.CSSProperties}>
       {loading && <p>Loading tags...</p>}
       {error && (
         <p className='-is-error'>Couldn't load tags. {error.message}</p>
       )}
       <ul className='tag-filter__tags'>
-        {tags.map((tag: (typeof tags)[number], index: number) => {
+        {customTags?.data()?.tags.map((tag: string, index: number) => {
           return (
             <li key={`${tag}${index}`}>
               <TagButton
