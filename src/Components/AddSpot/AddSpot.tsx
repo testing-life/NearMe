@@ -2,7 +2,7 @@ import React, { FC, FormEvent, useEffect, useState } from 'react';
 import useGeolocation from '../../Hooks/useGeolocation';
 import useReverseGeocode from '../../Hooks/useReverseGeocode';
 import { Spot } from '../../Models/spot';
-import { GeoPoint } from 'firebase/firestore';
+import { Firestore, GeoPoint } from 'firebase/firestore';
 import Input from '../Input/Input';
 import { auth, storage } from '../../Firebase/Firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -17,13 +17,16 @@ import { useAddImage } from '../../Hooks/useAddImage';
 import { isDefaultLocation } from '../../Utils/geo';
 import useTagsStore from '../../Stores/tagsStore';
 import TagFilter from '../TagFilter/TagFilter';
+import { saveTagToSpot } from '../../Utils/tags';
+import CustomTag from '../CustomTag/CustomTag';
 
 interface Props {
   submitHandler: (spot: Spot) => void;
   userId: string;
+  db: Firestore;
 }
 
-const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
+const AddSpot: FC<Props> = ({ submitHandler, userId, db }) => {
   const [spot, setSpot] = useState(Spot.create());
   const [locationMissing, setLocationMissing] = useState(false);
   const [image, setImage] = useState<File | null>(null);
@@ -79,7 +82,6 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
       };
       submitHandler(newSpot);
       // TODO split this
-      // BUG submits spot immediately after img upload
     }
   }, [downloadUrl]);
 
@@ -103,6 +105,11 @@ const AddSpot: FC<Props> = ({ submitHandler, userId }) => {
         error={uploadError}
         uploadProgress={uploadProgress}
       />
+      <div className='mb-32'>
+        <CustomTag
+          tagHandler={(tag: string) => saveTagToSpot(tag, userId, db)}
+        />
+      </div>
       <form onSubmit={onSubmit}>
         <ul>
           <li className='mb-32'>

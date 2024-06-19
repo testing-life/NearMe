@@ -71,14 +71,12 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId, db }) => {
   return (
     <>
       <div className='mb-32'>
-        <h2 className='mb-12'>Add new tag</h2>
         <CustomTag
           tagHandler={(tag: string) => saveTagToSpot(tag, userId, db)}
         />
       </div>
       <form onSubmit={onSubmit}>
         <fieldset>
-          <legend className='mb-12'>Edit Spot</legend>
           <ul>
             <li className='mb-32'>
               <Input
