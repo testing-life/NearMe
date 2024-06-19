@@ -44,25 +44,32 @@
 }
 
 .map-spot__close {
-  width: 42px;
-  height: 42px;
+  width: 4.2rem;
+  height: 4.2rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 1rem;
   background: var(--icon-bg);
   border: 2px solid var(--invalid);
 }
 
 .map-spot__close svg {
-  width: 16px;
-  height: 16px;
+  width: 1.6rem;
+  height: 1.6rem;
   color: var(--invalid);
+}
+
+.map-spot__nav-btn {
+  padding: 0.7rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
 }
 
 .map-spot__utils {
   display: flex;
-  justify-content: flex-end;
-  margin-block-end: 12px;
+  justify-content: space-between;
+  margin-block-end: 1.2rem;
 }

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
 import { ISpot } from '../../Models/spot';
 import useGeolocation, { Ilocation } from '../../Hooks/useGeolocation';
 import SetNavigation from '../Navigating/Navigating';
@@ -7,7 +7,6 @@ import Pin from '../../Assets/pin.svg';
 import YouPin from '../../Assets/youPin.svg';
 import { Icon } from 'leaflet';
 import './MapView.css';
-import PillsList from '../PillsList/PillsList';
 import MapSpot from '../MapSpot/MapSpot';
 
 interface Props {
