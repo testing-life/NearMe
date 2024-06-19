@@ -9,10 +9,10 @@ import PillsList from '../PillsList/PillsList';
 interface Props {
   spot: ISpot;
   closeHandler: () => void;
-  navigationHandler?: (location?: Ilocation) => void;
+  navigationHandler: (location?: Ilocation) => void;
 }
 
-const MapSpot: FC<Props> = ({ spot, closeHandler }) => {
+const MapSpot: FC<Props> = ({ spot, closeHandler, navigationHandler }) => {
   return (
     <div className='map-spot'>
       <div className='map-spot__utils'>
@@ -20,10 +20,10 @@ const MapSpot: FC<Props> = ({ spot, closeHandler }) => {
           <BigClose />
         </button>
       </div>
-      {/* <button onClick={() => navigationHandler(spot.location)}>
+      <button onClick={() => navigationHandler(spot.location)}>
         Show route
-      </button> */}
-      {/* <button onClick={() => navigationHandler(undefined)}>Clear route</button> */}
+      </button>
+      <button onClick={() => navigationHandler(undefined)}>Clear route</button>
       <div className='mb-12'>
         <PillsList labels={spot.tags} />
       </div>

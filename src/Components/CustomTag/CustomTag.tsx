@@ -13,7 +13,9 @@ const CustomTag: FC<Props> = ({ tagHandler }) => {
 
   const tagSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    tagHandler((e.target as any).tag.value);
+    if ((e.target as any).tag.value) {
+      tagHandler((e.target as any).tag.value);
+    }
   };
 
   return (

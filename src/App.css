@@ -31,7 +31,7 @@
   --tools-bg: var(--bg-sphere-1);
 }
 
-html {
+#root {
   background: radial-gradient(
       circle at center -300px,
       var(--bg-sphere-1),

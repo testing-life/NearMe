@@ -1,7 +1,7 @@
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc } from 'firebase/firestore';
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AddSpot from '../Components/AddSpot/AddSpot';
 import { HOME } from '../Consts/Routes';
 import { auth, db } from '../Firebase/Firebase';
@@ -25,7 +25,9 @@ const AddSpotPage = () => {
     <>
       <Header auth={auth} />
       <div className='p-2 max-w-sm u-center'>
-        {user ? <AddSpot submitHandler={addSpot} userId={user.uid} /> : null}
+        {user ? (
+          <AddSpot submitHandler={addSpot} userId={user.uid} db={db} />
+        ) : null}
       </div>
     </>
   );

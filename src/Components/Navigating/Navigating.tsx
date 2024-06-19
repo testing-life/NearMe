@@ -3,11 +3,12 @@ import { useMap } from 'react-leaflet';
 import 'leaflet';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import 'leaflet-routing-machine';
+
 declare let L: any;
 
 const SetNavigation = ({ source, destination }: any) => {
   const map = useMap();
-
+  console.log('map', map);
   useEffect(() => {
     const routingControl = L.Routing.control({
       waypoints: [
@@ -15,7 +16,8 @@ const SetNavigation = ({ source, destination }: any) => {
         L.latLng(parseFloat(destination.lat), parseFloat(destination.lng))
       ],
       routeWhileDragging: true,
-      show: true,
+      show: false,
+      profile: 'foot-walking',
       addWaypoints: true,
       fitSelectedRoutes: true
     }).addTo(map);
