@@ -1,5 +1,3 @@
-import { Spot } from "./spot";
-
 export interface IProfile {
   username: string;
   email: string;
@@ -7,8 +5,8 @@ export interface IProfile {
 }
 
 export class Profile {
-  username: string = "";
-  email: string = "";
+  username: string = '';
+  email: string = '';
   static create(): Profile {
     return new Profile();
   }

@@ -9,7 +9,7 @@ import {
   getFirestore
 } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import { ISpot, Spot } from '../Models/spot';
+import { ISpot } from '../Models/spot';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
