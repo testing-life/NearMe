@@ -33,6 +33,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId, db }) => {
   const [image, setImage] = useState<File | null>(null);
   const { location, locationError, getLocation } = useGeolocation();
   const [user] = useAuthState(auth);
+  const [compressionError, setCompressionError] = useState('');
   const { address, getAddress, addressError } = useReverseGeocode();
   const { uploadProgress, downloadUrl, uploadError, storageUploadHook } =
     useAddImage();
@@ -54,6 +55,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId, db }) => {
           storageUploadHook(user, storage, compressedImage as File);
         },
         error(error) {
+          setCompressionError(error.message);
           console.error(error.message);
         }
       });
@@ -109,7 +111,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId, db }) => {
     <>
       <TakePhoto
         captureHandler={captureHandler}
-        error={uploadError}
+        error={uploadError || compressionError}
         uploadProgress={uploadProgress}
       />
       <div className='mb-32'>
