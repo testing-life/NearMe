@@ -1,5 +1,7 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
+import React, { FC, FormEvent, useState } from 'react';
 import Input from '../Input/Input';
+import FormLayout from '../FormLayout/FormLayout';
+import Button from '../Button/Button';
 
 interface Props {
   submitHandler: (value: string) => void;
@@ -20,20 +22,20 @@ const UpdateCredentials: FC<Props> = ({
   };
 
   return (
-    <>
-      <form onSubmit={onSubmit}>
-        <Input
-          id={type}
-          required
-          label={`${action} ${type}`}
-          type={type}
-          placeholder={`New ${type}`}
-          value={credential}
-          onChange={(value: string) => setCredential(value)}
-        />
-        <button type='submit'>Update {type}</button>
-      </form>
-    </>
+    <FormLayout onSubmit={onSubmit}>
+      <Input
+        id={type}
+        required
+        label={`New ${type}`}
+        type={type}
+        placeholder={type === 'email' ? `New ${type}` : undefined}
+        value={''}
+        onChange={(value: string) => {
+          setCredential(value);
+        }}
+      />
+      <Button>Update {type}</Button>
+    </FormLayout>
   );
 };
 

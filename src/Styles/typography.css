@@ -26,3 +26,14 @@ body {
   color: rgba(0, 0, 0, 0);
   background-clip: text;
 }
+
+.-is-success {
+  background: linear-gradient(
+    91deg,
+    var(--highlight-gradient-1) -4.37%,
+    var(--valid) 53.69%
+  );
+  -webkit-background-clip: text;
+  color: rgba(0, 0, 0, 0);
+  background-clip: text;
+}

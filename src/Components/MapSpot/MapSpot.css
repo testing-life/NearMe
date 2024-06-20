@@ -44,8 +44,8 @@
 }
 
 .map-spot__close {
-  width: 4.2rem;
-  height: 4.2rem;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -56,20 +56,20 @@
 }
 
 .map-spot__close svg {
-  width: 1.6rem;
-  height: 1.6rem;
+  inline-size: 16px;
+  block-size: 16px;
   color: var(--invalid);
 }
 
 .map-spot__nav-btn {
-  padding: 0.7rem 1.1rem;
+  padding: 7px 11px;
   display: flex;
   align-items: center;
-  gap: 1.6rem;
+  gap: 16px;
 }
 
 .map-spot__utils {
   display: flex;
   justify-content: space-between;
-  margin-block-end: 1.2rem;
+  margin-block-end: 12px;
 }
