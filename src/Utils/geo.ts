@@ -1,13 +1,11 @@
 import * as geofire from 'geofire-common';
 import {
-  collection,
   query,
   orderBy,
   startAt,
   endAt,
   getDocs,
-  Firestore,
-  where
+  Firestore
 } from 'firebase/firestore';
 
 import { spotConverter } from '../Firebase/Firebase';

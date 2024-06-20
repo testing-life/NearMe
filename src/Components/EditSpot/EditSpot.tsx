@@ -1,4 +1,4 @@
-import React, { FC, FormEvent, useEffect, useState } from 'react';
+import { FC, FormEvent, useEffect, useState } from 'react';
 import useGeolocation from '../../Hooks/useGeolocation';
 import useReverseGeocode from '../../Hooks/useReverseGeocode';
 import { ISpot } from '../../Models/spot';
@@ -29,7 +29,6 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId, db }) => {
   const [isEditingAddress, setIsEditingAddress] = useState(false);
   const { location, locationError, getLocation } = useGeolocation();
   const { address, getAddress, addressError } = useReverseGeocode();
-  const [isSearching, setIsSearching] = useState(false);
   const tags = useTagsStore((state) => state.tags);
   const updateTags = useTagsStore((state) => state.updateTags);
 
@@ -49,7 +48,6 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId, db }) => {
   useEffect(() => {
     if (Object.keys(address).length) {
       setSpot({ ...spot, address: address.formatted });
-      setIsSearching(false);
     }
   }, [address]);
 
@@ -60,7 +58,6 @@ const EditSpot: FC<Props> = ({ editHandler, data, userId, db }) => {
   }, []);
 
   const guessAddress = (): void => {
-    setIsSearching(true);
     getLocation();
   };
 
