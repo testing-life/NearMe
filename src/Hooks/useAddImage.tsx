@@ -1,20 +1,12 @@
 import { User } from 'firebase/auth';
 import { FirebaseStorage } from 'firebase/storage';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
 export const useAddImage = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [downloadUrl, setDownloadUrl] = useState('');
   const [uploadError, setUploadError] = useState('');
-
-  //   useEffect(() => {
-  //     first;
-
-  //     return () => {
-  //       second;
-  //     };
-  //   }, [third]);
 
   const storageUploadHook = (
     user: User,

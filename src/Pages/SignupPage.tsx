@@ -1,5 +1,5 @@
 import { setDoc, doc } from 'firebase/firestore';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import Signup from '../Components/SignUp/Signup';

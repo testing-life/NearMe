@@ -36,8 +36,6 @@ const AddSpot: FC<Props> = ({ submitHandler, userId, db }) => {
   const { uploadProgress, downloadUrl, uploadError, storageUploadHook } =
     useAddImage();
   const tags = useTagsStore((state) => state.tags);
-  // TODO look into making this common - existing hook ?
-  const [isSearching, setIsSearching] = useState(false);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -69,7 +67,6 @@ const AddSpot: FC<Props> = ({ submitHandler, userId, db }) => {
   useEffect(() => {
     if (Object.keys(address).length) {
       setSpot({ ...spot, address: address.formatted });
-      setIsSearching(false);
     }
   }, [address]);
 
@@ -86,7 +83,6 @@ const AddSpot: FC<Props> = ({ submitHandler, userId, db }) => {
   }, [downloadUrl]);
 
   const guessAddress = (): void => {
-    setIsSearching(true);
     getLocation();
   };
 
