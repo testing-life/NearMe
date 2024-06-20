@@ -19,6 +19,7 @@ import useTagsStore from '../../Stores/tagsStore';
 import TagFilter from '../TagFilter/TagFilter';
 import { saveTagToSpot } from '../../Utils/tags';
 import CustomTag from '../CustomTag/CustomTag';
+import Compressor from 'compressorjs';
 
 interface Props {
   submitHandler: (spot: Spot) => void;
@@ -45,7 +46,17 @@ const AddSpot: FC<Props> = ({ submitHandler, userId, db }) => {
     }
     const newSpot = { ...spot, userId: user!.uid };
     if (image && user) {
-      storageUploadHook(user, storage, image);
+      new Compressor(image, {
+        quality: 0.6,
+        maxWidth: 800,
+        maxHeight: 1067,
+        success(compressedImage) {
+          storageUploadHook(user, storage, compressedImage as File);
+        },
+        error(error) {
+          console.error(error.message);
+        }
+      });
     } else {
       submitHandler(newSpot);
     }
