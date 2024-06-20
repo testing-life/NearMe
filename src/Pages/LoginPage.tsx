@@ -1,8 +1,5 @@
-import {
-  browserSessionPersistence,
-  browserLocalPersistence
-} from 'firebase/auth';
-import React, { useEffect } from 'react';
+import { browserLocalPersistence } from 'firebase/auth';
+import { useEffect } from 'react';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import Login from '../Components/Login/Login';

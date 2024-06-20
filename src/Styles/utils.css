@@ -29,6 +29,10 @@
   margin-block-end: 24px;
 }
 
+.mb-48 {
+  margin-block-end: 48px;;
+}
+
 .mb-32 {
   margin-block-end: 32px;
 }
