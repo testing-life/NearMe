@@ -15,6 +15,10 @@
   left: 0;
 }
 
+.spot__details {
+  text-shadow: 1px 1px var(--text-colour-inverted);
+}
+
 .spot__tools {
   position: absolute;
   top: 0;

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import Pill from '../Pill/Pill';
 import './PillsList.css';
 import { getIndexToTrimTo } from '../../Utils/element';
