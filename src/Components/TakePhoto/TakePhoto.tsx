@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useRef, useState } from 'react';
+import { ChangeEvent, FC, useRef, useState } from 'react';
 import { ReactComponent as Camera } from '../../Assets/Icons/camera.svg';
 import { ReactComponent as PlusCircle } from '../../Assets/Icons/add-circle.svg';
 import { ReactComponent as RemoveCircle } from '../../Assets/Icons/remove-circle.svg';
