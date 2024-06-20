@@ -1,6 +1,6 @@
 .take-photo__video {
-  width: 100%;
-  height: auto;
+  inline-size: 100%;
+  block-size: auto;
   border-radius: 12px;
   box-shadow: 0 0 15px var(--bg);
   margin-bottom: 20px;
@@ -43,9 +43,9 @@
   position: fixed;
   inset-block-start: 0;
   z-index: 9;
-  height: 100vh;
+  block-size: 100vh;
   outline: 1px solid green;
-  width: 100%;
+  inline-size: 100%;
   display: block;
   inset-inline-end: 0;
   padding: 8px;
@@ -107,7 +107,7 @@ progress[value] {
   background: var(--bg-sphere-4);
   background-repeat: repeat-x;
   animation-duration: 15s;
-  width: 100%;
+  inline-size: 100%;
   margin-block-end: 16px;
 }
 

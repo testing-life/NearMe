@@ -1,15 +1,15 @@
 .invisible {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
-  height: 1px;
+  block-size: 1px;
   overflow: hidden;
   position: absolute;
   white-space: nowrap;
-  width: 1px;
+  inline-size: 1px;
 }
 
 .-full-width {
-  width: 100%;
+  inline-size: 100%;
 }
 
 .column {
@@ -30,7 +30,7 @@
 }
 
 .mb-48 {
-  margin-block-end: 48px;;
+  margin-block-end: 48px;
 }
 
 .mb-32 {
@@ -39,4 +39,11 @@
 
 .mb-12 {
   margin-block-end: 12px;
+}
+
+.desktop-width-limit {
+  @media (width> 547px) {
+    max-width: 600px;
+    margin: 0 auto;
+  }
 }

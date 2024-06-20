@@ -24,7 +24,7 @@
 }
 
 .-full-width {
-  width: 100%;
+  inline-size: 100%;
 }
 
 .-is-highlight {
@@ -42,7 +42,7 @@
 }
 
 .-is-icon > svg {
-  width: 20px;
+  inline-size: 20px;
 }
 
 .-is-text {

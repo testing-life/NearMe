@@ -47,7 +47,7 @@ const EditSpotPage = () => {
       <div className='mb-12'>
         <Header auth={auth} />
       </div>
-      <div className='p-2 max-w-sm u-center'>
+      <div className='desktop-width-limit'>
         {user && data?.data() ? (
           <EditSpot
             editHandler={editHandler}

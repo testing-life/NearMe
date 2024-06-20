@@ -1,5 +1,5 @@
 .form-layout {
-  width: 100%;
+  inline-size: 100%;
 }
 
 .form-layout__child:not(:last-child) {
