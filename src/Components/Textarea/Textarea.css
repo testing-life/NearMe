@@ -3,11 +3,11 @@ textarea {
   border: 1px solid var(--input-stroke);
   padding: 18px 24px;
   border-radius: 12px;
-  width: 100%;
+  inline-size: 100%;
 }
 
 .input-wrapper {
-  width: 100%;
+  inline-size: 100%;
 }
 
 .-is-valid {

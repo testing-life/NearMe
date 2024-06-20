@@ -55,7 +55,7 @@ html {
 
 html,
 body {
-  height: 100vh;
+  block-size: 100vh;
 }
 
 .wrapper {

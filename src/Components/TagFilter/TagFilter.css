@@ -8,5 +8,5 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  width: calc(calc(var(--n) / 2) * 32vw);
+  inline-size: calc(calc(var(--n) / 2) * 32vw);
 }

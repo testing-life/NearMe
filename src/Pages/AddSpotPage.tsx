@@ -24,7 +24,7 @@ const AddSpotPage = () => {
   return (
     <>
       <Header auth={auth} />
-      <div className='p-2 max-w-sm u-center'>
+      <div className='desktop-width-limit'>
         {user ? (
           <AddSpot submitHandler={addSpot} userId={user.uid} db={db} />
         ) : null}

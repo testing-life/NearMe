@@ -62,7 +62,7 @@ const MapView: FC<Props> = ({ filteredData }) => {
         zoom={zoom}
         center={{ lat: location.latitude, lng: location.longitude }}
         scrollWheelZoom={true}
-        style={{ height: '80vh' }}>
+        style={{ blockSize: '80vh' }}>
         <SetView
           location={{ lat: location.latitude, lng: location.longitude }}
         />

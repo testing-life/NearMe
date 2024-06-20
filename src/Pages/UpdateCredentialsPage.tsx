@@ -26,7 +26,7 @@ const UpdateCredentialsPage = () => {
   };
 
   return (
-    <>
+    <div className='desktop-width-limit'>
       <div className='mb-48'>
         <div className='mb-12'>
           <UpdateCredentials type='password' submitHandler={onSubmitPassword} />
@@ -51,7 +51,7 @@ const UpdateCredentialsPage = () => {
       </div>
       {success && <p className='-is-success mb-32'>{success}</p>}
       <Link to={HOME}>Back</Link>
-    </>
+    </div>
   );
 };
 

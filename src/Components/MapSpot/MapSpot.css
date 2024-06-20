@@ -2,7 +2,7 @@
   position: fixed;
   z-index: 9999;
   bottom: 0;
-  width: calc(100% - 32px);
+  inline-size: calc(100% - 32px);
   border-radius: 20px 20px 0 0;
   padding: 15px 16px 0;
   overflow: hidden;
@@ -44,8 +44,8 @@
 }
 
 .map-spot__close {
-  width: 42px;
-  height: 42px;
+  inline-size: 42px;
+  block-size: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;

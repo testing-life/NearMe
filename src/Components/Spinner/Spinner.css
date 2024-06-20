@@ -16,8 +16,8 @@
 }
 
 .loader {
-  width: 48px;
-  height: 48px;
+  inline-size: 48px;
+  block-size: 48px;
   border: 2px solid var(--spinner-bg-1);
   border-radius: 50%;
   display: inline-block;
@@ -33,8 +33,8 @@
   left: 0;
   top: 0;
   background: var(--spinner-bg-2);
-  width: 6px;
-  height: 6px;
+  inline-size: 6px;
+  block-size: 6px;
   transform: translate(150%, 150%);
   border-radius: 50%;
 }
