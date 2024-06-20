@@ -29,12 +29,12 @@ const UpdateCredentials: FC<Props> = ({
         label={`New ${type}`}
         type={type}
         placeholder={type === 'email' ? `New ${type}` : undefined}
-        value={''}
+        value={credential}
         onChange={(value: string) => {
           setCredential(value);
         }}
       />
-      <Button>Update {type}</Button>
+      <Button type='submit'>Update {type}</Button>
     </FormLayout>
   );
 };

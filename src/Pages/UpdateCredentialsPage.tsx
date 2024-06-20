@@ -28,14 +28,26 @@ const UpdateCredentialsPage = () => {
   return (
     <>
       <div className='mb-48'>
-        <UpdateCredentials type='password' submitHandler={onSubmitPassword} />
-        {passUpdating && <Spinner label='Updating password' />}
-        {passError && <p className='-is-error'>{passError.message}</p>}
+        <div className='mb-12'>
+          <UpdateCredentials type='password' submitHandler={onSubmitPassword} />
+        </div>
+        <div className='mb-12'>
+          {passUpdating && <Spinner label='Updating password' />}
+        </div>
+        <div className='mb-12'>
+          {passError && <p className='-is-error'>{passError.message}</p>}
+        </div>
       </div>
       <div className='mb-48'>
-        <UpdateCredentials type='email' submitHandler={onSubmitEmail} />
-        {emailUpdating && <Spinner label='Updating email' />}
-        {emailError && <p className='-is-error'>{emailError.message}</p>}
+        <div className='mb-12'>
+          <UpdateCredentials type='email' submitHandler={onSubmitEmail} />
+        </div>
+        <div className='mb-12'>
+          {emailUpdating && <Spinner label='Updating email' />}
+        </div>
+        <div className='mb-12'>
+          {emailError && <p className='-is-error'>{emailError.message}</p>}
+        </div>
       </div>
       {success && <p className='-is-success mb-32'>{success}</p>}
       <Link to={HOME}>Back</Link>
