@@ -6,13 +6,13 @@ import HomePage from './Pages/HomePage';
 import LoginPage from './Pages/LoginPage';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import AddSpotPage from './Pages/AddSpotPage';
-// import "cirrus-ui";
 import UpdateCredentialsPage from './Pages/UpdateCredentialsPage';
 import ResetPasswordPage from './Pages/ResetPasswordPage';
 import EditSpotPage from './Pages/EditSpotPage';
 import Drawer from './Components/Drawer/Drawer';
 import useDrawerStore from './Stores/drawerStore';
 import { auth } from './Firebase/Firebase';
+import LandingPage from './Pages/LandingPage';
 
 function App() {
   const drawerOpen = useDrawerStore((state) => state.isOpen);
@@ -31,6 +31,7 @@ function App() {
         />
         <Route path={ROUTES.SIGN_UP} element={<SignupPage />} />
         <Route path={ROUTES.LOG_IN} element={<LoginPage />} />
+        <Route path={ROUTES.LANDING} element={<LandingPage />} />
         <Route
           path={ROUTES.ADD}
           element={
