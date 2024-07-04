@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (
-    <section>
+    <section className="desktop-width-limit">
       <header className="mb-48 landing__header">
         <div className="mb-32">
           <LogoVertical />

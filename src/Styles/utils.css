@@ -41,8 +41,8 @@
   margin-block-end: 12px;
 }
 
-.desktop-width-limit {
-  @media (width> 547px) {
+@media (width > 547px) {
+  .desktop-width-limit {
     max-width: 600px;
     margin: 0 auto;
   }
