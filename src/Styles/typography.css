@@ -1,8 +1,57 @@
 html,
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 62.5%;
-  line-height: 27px;
+  line-height: 1.65;
+}
+
+p {
+  font-size: 1rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: true;
+  line-height: 1.15;
+}
+
+h1,
+.-text-size-h1 {
+  font-weight: 400;
+  margin-top: 0;
+  font-size: 2.49rem;
+}
+
+h2,
+.-text-size-h2 {
+  font-size: 2.07rem;
+}
+
+h3,
+.-text-size-h3 {
+  font-size: 1.73rem;
+}
+
+h4,
+.-text-size-h4 {
+  font-size: 1.44rem;
+}
+
+h5,
+.-text-size-h5 {
+  font-size: 1.2rem;
+}
+
+.-text-caption {
+  font-size: 0.83rem;
+}
+
+small,
+.-text-small {
+  font-size: 0.69rem;
 }
 
 .-is-error {
@@ -32,6 +81,17 @@ body {
     91deg,
     var(--highlight-gradient-1) -4.37%,
     var(--valid) 53.69%
+  );
+  -webkit-background-clip: text;
+  color: rgba(0, 0, 0, 0);
+  background-clip: text;
+}
+
+.-is-cta {
+  background: linear-gradient(
+    91deg,
+    var(--gradient-1) -4.37%,
+    var(--highlight-gradient-1) 53.69%
   );
   -webkit-background-clip: text;
   color: rgba(0, 0, 0, 0);
