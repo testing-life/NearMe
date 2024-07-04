@@ -33,7 +33,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="column -space-bottom">
+    <div className="column -space-bottom desktop-width-limit">
       <div className="-space-bottom">
         <Signup submitHandler={onSubmit} />
         {loading && (

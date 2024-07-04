@@ -5,6 +5,8 @@ import DrawerButton from "../DrawerButton/DrawerButton";
 import { Link, useLocation } from "react-router-dom";
 import { ADD } from "../../Consts/Routes";
 import Button from "../Button/Button";
+import { HOME } from "../../Consts/Routes";
+import { ReactComponent as LogoIcon } from "../../Assets/logo-icon.svg";
 import "./Header.css";
 
 interface Props {
@@ -17,8 +19,10 @@ const Header: FC<Props> = ({ auth }) => {
   const location = useLocation();
   return (
     <ul className="header">
-      <li className="header__item">
-        <Link to="/">logo</Link>
+      <li className="header__item header__logo">
+        <Link to={HOME}>
+          <LogoIcon />
+        </Link>
       </li>
       {location.pathname !== ADD && (
         <li className="header__item">

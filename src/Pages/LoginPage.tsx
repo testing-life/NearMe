@@ -25,7 +25,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-page">
+    <div className="login-page desktop-width-limit">
       <div className="column -space-bottom">
         <div className="-space-bottom">
           <Login submitHandler={onSubmit} />
