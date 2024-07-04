@@ -1,6 +1,9 @@
 import { ReactComponent as LogoVertical } from "../Assets/logo-vertical.svg";
 import { ReactComponent as Heart } from "../Assets/Icons/heart.svg";
+import * as ROUTES from "../Consts/Routes";
 import "./LandingPage.css";
+import Button from "../Components/Button/Button";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (
@@ -63,6 +66,15 @@ const LandingPage = () => {
       <p className="landing__feature-cta -text-size-h4 -is-cta">
         Discover new adventures and hidden gems effortlessly with our app!
       </p>
+      <div className="column -is-centred-v -has-spearator">
+        <Button fullWidth>
+          <Link to={ROUTES.LOG_IN}>Log in</Link>
+        </Button>
+      </div>
+      <div className="column -is-centred-v">
+        <p>Not a member?</p>
+        <Link to={ROUTES.SIGN_UP}>Sign up</Link>
+      </div>
     </section>
   );
 };
