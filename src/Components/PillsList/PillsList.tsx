@@ -12,13 +12,15 @@ const PillsList: FC<Props> = ({ labels }) => {
   const [isOverflown, setIsOverflown] = useState(false);
   const [data, setData] = useState(labels);
   const getOverflow = (element: HTMLElement) =>
-    element.scrollWidth > element.closest('li')!.offsetWidth;
+    element.closest('li')
+      ? element.scrollWidth > element.closest('li')!.offsetWidth
+      : false;
 
   useEffect(() => {
     if (pillsRef.current && (pillsRef.current as HTMLElement).children.length) {
       const needsTrimming = getOverflow(pillsRef.current);
       if (needsTrimming) {
-        setIsOverflown(getOverflow(pillsRef.current));
+        setIsOverflown(needsTrimming);
         setData(labels.slice(0, getIndexToTrimTo(pillsRef.current, 10, 50)));
       }
     }
