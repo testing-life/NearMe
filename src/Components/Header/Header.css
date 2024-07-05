@@ -20,3 +20,7 @@
 .header__logo svg {
   height: 100%;
 }
+
+.header__item .btn > a {
+  padding: 18px 22px;
+}
