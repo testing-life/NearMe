@@ -1,28 +1,28 @@
-import './App.css';
-import { Route, Routes } from 'react-router-dom';
-import * as ROUTES from './Consts/Routes';
-import SignupPage from './Pages/SignupPage';
-import HomePage from './Pages/HomePage';
-import LoginPage from './Pages/LoginPage';
-import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
-import AddSpotPage from './Pages/AddSpotPage';
-// import "cirrus-ui";
-import UpdateCredentialsPage from './Pages/UpdateCredentialsPage';
-import ResetPasswordPage from './Pages/ResetPasswordPage';
-import EditSpotPage from './Pages/EditSpotPage';
-import Drawer from './Components/Drawer/Drawer';
-import useDrawerStore from './Stores/drawerStore';
-import { auth } from './Firebase/Firebase';
+import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import * as ROUTES from "./Consts/Routes";
+import SignupPage from "./Pages/SignupPage";
+import HomePage from "./Pages/HomePage";
+import LoginPage from "./Pages/LoginPage";
+import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
+import AddSpotPage from "./Pages/AddSpotPage";
+import UpdateCredentialsPage from "./Pages/UpdateCredentialsPage";
+import ResetPasswordPage from "./Pages/ResetPasswordPage";
+import EditSpotPage from "./Pages/EditSpotPage";
+import Drawer from "./Components/Drawer/Drawer";
+import useDrawerStore from "./Stores/drawerStore";
+import { auth } from "./Firebase/Firebase";
+import LandingPage from "./Pages/LandingPage";
 
 function App() {
   const drawerOpen = useDrawerStore((state) => state.isOpen);
 
   return (
-    <div className='wrapper'>
+    <div className="wrapper">
       <Drawer isOpen={drawerOpen} user={auth} />
       <Routes>
         <Route
-          path='/'
+          path={ROUTES.HOME}
           element={
             <PrivateRoute>
               <HomePage />
@@ -31,6 +31,7 @@ function App() {
         />
         <Route path={ROUTES.SIGN_UP} element={<SignupPage />} />
         <Route path={ROUTES.LOG_IN} element={<LoginPage />} />
+        <Route path={ROUTES.LANDING} element={<LandingPage />} />
         <Route
           path={ROUTES.ADD}
           element={

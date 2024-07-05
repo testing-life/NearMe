@@ -12,3 +12,15 @@
 .header__item:first-child {
   margin-inline-end: auto;
 }
+
+.header__logo {
+  max-block-size: 60px;
+}
+
+.header__logo svg {
+  height: 100%;
+}
+
+.header__item .btn > a {
+  padding: 18px 22px;
+}

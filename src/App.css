@@ -51,11 +51,12 @@ html {
     radial-gradient(ellipse at bottom center, var(--bg), transparent 157px),
     url(./Assets/lotsOfDots.png), var(--bg);
   background-repeat: no-repeat;
+  background-size: cover;
 }
 
 html,
 body {
-  block-size: 100vh;
+  min-block-size: 100%;
 }
 
 .wrapper {

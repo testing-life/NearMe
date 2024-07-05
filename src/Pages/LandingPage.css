@@ -1,0 +1,51 @@
+.landing__feature-heading {
+  display: flex;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.landing__header svg {
+  max-inline-size: 200px;
+  display: block;
+  margin: 0 auto;
+}
+
+.landing__feature-heading svg {
+  min-inline-size: 24px;
+  margin-block-start: 5px;
+}
+
+.landing__feature-heading {
+  line-height: 1.25;
+  margin-block-end: 5px;
+}
+
+.landing__feature-description {
+  padding-inline-start: 34px;
+}
+
+.landing__feature-list-item:nth-child(1) .landing__feature-heading svg {
+  color: var(--gradient-1);
+}
+
+.landing__feature-list-item:nth-child(2) .landing__feature-heading svg {
+  color: var(--gradient-2);
+}
+
+.landing__feature-list-item:nth-child(3) .landing__feature-heading svg {
+  color: var(--gradient-3);
+}
+
+.landing__feature-list-item:nth-child(4) .landing__feature-heading svg {
+  color: var(--highlight-gradient-1);
+}
+
+.landing__feature-list-item {
+  margin-block-end: 30px;
+}
+
+.landing__feature-cta {
+  margin-block-end: 32px;
+  font-weight: 600;
+  text-align: center;
+}
