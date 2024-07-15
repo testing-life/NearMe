@@ -1,5 +1,7 @@
 import { FC, FormEvent, useState } from 'react';
 import Input from '../Input/Input';
+import FormLayout from '../FormLayout/FormLayout';
+import Button from '../Button/Button';
 
 interface Props {
   submitHandler: (email: string) => void;
@@ -15,8 +17,10 @@ const ResetPassword: FC<Props> = ({ submitHandler }) => {
 
   return (
     <>
-      <form onSubmit={onSubmit}>
-        <p>Enter an email address to receive a reset password request.</p>
+      <p className='mb-12'>
+        Enter an email address to receive a reset password request.
+      </p>
+      <FormLayout onSubmit={onSubmit}>
         <Input
           id='email'
           required
@@ -26,8 +30,10 @@ const ResetPassword: FC<Props> = ({ submitHandler }) => {
           value={email}
           onChange={(value: string) => setEmail(value)}
         />
-        <button type='submit'>Reset password</button>
-      </form>
+        <Button fullWidth type='submit'>
+          Request reset email
+        </Button>
+      </FormLayout>
     </>
   );
 };
