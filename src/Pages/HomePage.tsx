@@ -4,7 +4,7 @@ import {
   auth,
   db,
   spotConverter,
-  storage as customStorage
+  storage as customStorage,
 } from '../Firebase/Firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import {
@@ -12,7 +12,7 @@ import {
   Firestore,
   deleteDoc,
   query,
-  where
+  where,
 } from 'firebase/firestore';
 import { ref, deleteObject, StorageReference } from 'firebase/storage';
 import { ISpot } from '../Models/spot';
@@ -31,18 +31,19 @@ import { User } from 'firebase/auth';
 
 export enum ViewMode {
   List = 'list',
-  Map = 'map'
+  Map = 'map',
 }
 
 export enum DataType {
   Global = 'global',
-  Local = 'local'
+  Local = 'local',
 }
 
 const HomePage = () => {
   const [user] = useAuthState(auth);
   const { location, getLocation } = useGeolocation();
   const [filteredData, setFilteredData] = useState<ISpot[]>();
+  const [localLoading, setLocalLoading] = useState(false);
   const [dataType, setDataType] = useState<DataType>(DataType.Local);
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.List);
   const [filterList, setFilterList] = useState<string[]>([]);
@@ -71,40 +72,46 @@ const HomePage = () => {
         setFilteredData(value);
       }
       if (viewMode === ViewMode.Map) {
-        getSpotsInRadius(location, db, 25000, user).then((res) => {
+        setLocalLoading(true);
+        getSpotsInRadius(location, db, 25000, user)
+          .then((res) => {
+            if (res) {
+              const onlyMine = res.filter(
+                (item: ISpot) => item.userId === user?.uid
+              );
+              if (filterList.length) {
+                const filteredData = filterByArray(
+                  onlyMine as ISpot[],
+                  filterList,
+                  'tags'
+                );
+                setFilteredData(filteredData);
+              } else {
+                setFilteredData(onlyMine);
+              }
+            }
+          })
+          .finally(() => setLocalLoading(false));
+      }
+    }
+    if (dataType === DataType.Global) {
+      setLocalLoading(true);
+      getSpotsInRadius(location, db, 25000)
+        .then((res) => {
           if (res) {
-            const onlyMine = res.filter(
-              (item: ISpot) => item.userId === user?.uid
-            );
             if (filterList.length) {
               const filteredData = filterByArray(
-                onlyMine as ISpot[],
+                res as ISpot[],
                 filterList,
                 'tags'
               );
               setFilteredData(filteredData);
             } else {
-              setFilteredData(onlyMine);
+              setFilteredData(res);
             }
           }
-        });
-      }
-    }
-    if (dataType === DataType.Global) {
-      getSpotsInRadius(location, db, 25000).then((res) => {
-        if (res) {
-          if (filterList.length) {
-            const filteredData = filterByArray(
-              res as ISpot[],
-              filterList,
-              'tags'
-            );
-            setFilteredData(filteredData);
-          } else {
-            setFilteredData(res);
-          }
-        }
-      });
+        })
+        .finally(() => setLocalLoading(false));
     }
   }, [dataType, viewMode, value, location, filterList, user]);
 
@@ -174,7 +181,7 @@ const HomePage = () => {
           id='view-mode'
           options={[
             { label: 'List View', value: 'list' },
-            { label: 'Map View', value: 'map' }
+            { label: 'Map View', value: 'map' },
           ]}
           onChange={(val: string) => viewModeChange(val as ViewMode)}
         />
@@ -182,8 +189,8 @@ const HomePage = () => {
           inverted
           id='data-mode'
           options={[
-            { label: 'My spots', value: DataType.Local },
-            { label: "Others' spots", value: DataType.Global }
+            { label: 'Only Mine', value: DataType.Local },
+            { label: "With Others'", value: DataType.Global },
           ]}
           onChange={(val: string) => dataTypeChange(val as DataType)}
         />
@@ -197,7 +204,14 @@ const HomePage = () => {
       {!loading && !value?.length && <p>You haven't added any spots yet.</p>}
       {filteredData ? (
         viewMode === ViewMode.Map ? (
-          <MapView filteredData={filteredData} />
+          <div className='map-spinner-container'>
+            {localLoading ? (
+              <div className='map-spinner'>
+                <Spinner label='Updating spots' />
+              </div>
+            ) : null}
+            <MapView filteredData={filteredData} dataType={dataType} />
+          </div>
         ) : (
           <ListView filteredData={filteredData} deleteHandler={deleteHandler} />
         )

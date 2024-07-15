@@ -19,3 +19,20 @@
 .space-between {
   justify-content: space-between;
 }
+
+.map-spinner-container {
+  position: relative;
+}
+
+.map-spinner {
+  position: absolute;
+  background: var(--transparent-black);
+  z-index: 9999;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
