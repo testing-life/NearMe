@@ -57,7 +57,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId, db }) => {
         error(error) {
           setCompressionError(error.message);
           console.error(error.message);
-        }
+        },
       });
     } else {
       submitHandler(newSpot);
@@ -69,7 +69,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId, db }) => {
       const geopoint = new GeoPoint(location.latitude, location.longitude);
       const hash = geofire.geohashForLocation([
         location.latitude,
-        location.longitude
+        location.longitude,
       ]);
       setSpot({ ...spot, location: geopoint, geohash: hash });
       getAddress(location);
@@ -88,7 +88,7 @@ const AddSpot: FC<Props> = ({ submitHandler, userId, db }) => {
       const newSpot = {
         ...spot,
         poster: { ...spot.poster, url: downloadUrl },
-        userId: user!.uid
+        userId: user!.uid,
       };
       submitHandler(newSpot);
       // TODO split this
@@ -154,19 +154,20 @@ const AddSpot: FC<Props> = ({ submitHandler, userId, db }) => {
                 classes='add-spot__locate-btn'
                 type='button'
                 variant='icon'
-                clickHandler={guessAddress}>
+                clickHandler={guessAddress}
+              >
                 <Locate />
               </Button>
             </div>
-            <div>
+            <div className='-full-grid-width'>
               {locationMissing && (
-                <p className='-is-error'>You need to add a location</p>
+                <p className='-is-error mb-12'>You need to add a location</p>
               )}
               {locationError && (
-                <p className='-is-error'>{locationError.message}</p>
+                <p className='-is-error mb-12'>{locationError.message}</p>
               )}
               {isDefaultLocation(location) && (
-                <p className='-is-warning'>
+                <p className='-is-warning mb-12'>
                   You may need to enable Location Services of your device.
                 </p>
               )}

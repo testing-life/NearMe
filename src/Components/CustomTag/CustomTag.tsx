@@ -23,7 +23,7 @@ const CustomTag: FC<Props> = ({ tagHandler }) => {
       <Input
         placeholder='Add a tag'
         id='customTag'
-        label='Add a tag'
+        label='Add a new custom tag'
         type='text'
         name='tag'
         value={tag}
