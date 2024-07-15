@@ -41,6 +41,10 @@
   margin-block-end: 12px;
 }
 
+.-full-grid-width {
+  grid-column: 1/-1;
+}
+
 @media (width > 547px) {
   .desktop-width-limit {
     max-width: 600px;

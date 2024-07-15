@@ -49,6 +49,11 @@
   text-overflow: ellipsis;
   overflow: hidden;
   font-weight: 600;
+  font-size: var(--font-size-1);
+}
+
+.spot__subtitle {
+  font-size: var(--font-size-default);
 }
 
 .image-cover {

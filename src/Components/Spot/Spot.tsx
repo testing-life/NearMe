@@ -20,12 +20,14 @@ const Spot: FC<Props> = ({ spot, children }) => {
         />
       </div>
       <div className='spot__overlay'>
-        <div className='spot__tags'>
-          <PillsList labels={spot.tags} />
-        </div>
+        {spot.tags.length ? (
+          <div className='spot__tags'>
+            <PillsList labels={spot.tags} />
+          </div>
+        ) : null}
         <div className='spot__details'>
-          <p className='spot__title'>{spot.name}</p>
-          <span className='subtitle'>{spot.address}</span>
+          <p className='spot__title mb-12 '>{spot.name}</p>
+          <span className='spot__subtitle'>{spot.address}</span>
         </div>
         {spot.notes ? (
           <div className='spot__notes'>

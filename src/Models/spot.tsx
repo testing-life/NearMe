@@ -12,6 +12,7 @@ export interface ISpot {
   ref: DocumentReference<DocumentData>;
   geohash: string;
   userId: string;
+  others?: boolean;
 }
 
 export class Spot {

@@ -1,12 +1,20 @@
 html,
 body {
-  font-family: "Inter", sans-serif;
+  --font-size-default: 1.6rem;
+  --font-size-1: 2.49rem;
+  --font-size-2: 2.07rem;
+  --font-size-3: 1.73rem;
+  --font-size-4: 1.44rem;
+  --font-size-5: 1.2rem;
+  --font-size-6: 0.69rem;
+  --font-size-7: 1;
+  font-family: 'Inter', sans-serif;
   font-size: 62.5%;
-  line-height: 1.65;
 }
 
-p {
-  font-size: 1rem;
+p,
+body {
+  font-size: var(--font-size-default);
 }
 
 h1,
@@ -22,36 +30,32 @@ h1,
 .-text-size-h1 {
   font-weight: 400;
   margin-top: 0;
-  font-size: 2.49rem;
+  font-size: var(--font-size-1);
 }
 
 h2,
 .-text-size-h2 {
-  font-size: 2.07rem;
+  font-size: var(--font-size-2);
 }
 
 h3,
 .-text-size-h3 {
-  font-size: 1.73rem;
+  font-size: var(--font-size-3);
 }
 
 h4,
 .-text-size-h4 {
-  font-size: 1.44rem;
+  font-size: var(--font-size-4);
 }
 
 h5,
 .-text-size-h5 {
-  font-size: 1.2rem;
-}
-
-.-text-caption {
-  font-size: 0.83rem;
+  font-size: var(--font-size-5);
 }
 
 small,
 .-text-small {
-  font-size: 0.69rem;
+  font-size: var(--font-size-6);
 }
 
 .-is-error {

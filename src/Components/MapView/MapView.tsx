@@ -5,16 +5,19 @@ import useGeolocation, { Ilocation } from '../../Hooks/useGeolocation';
 import SetNavigation from '../Navigating/Navigating';
 import Pin from '../../Assets/pin.svg';
 import YouPin from '../../Assets/youPin.svg';
+import OthersPin from '../../Assets/othersPin.svg';
 import { Icon } from 'leaflet';
 import './MapView.css';
 import MapSpot from '../MapSpot/MapSpot';
+import { DataType } from '../../Pages/HomePage';
 
 interface Props {
   filteredData: ISpot[];
+  dataType?: DataType;
 }
 
 const SetView = ({
-  location: { lat, lng }
+  location: { lat, lng },
 }: {
   location: { lat: number; lng: number };
 }) => {
@@ -25,7 +28,7 @@ const SetView = ({
   return null;
 };
 
-const MapView: FC<Props> = ({ filteredData }) => {
+const MapView: FC<Props> = ({ filteredData, dataType }) => {
   const { location, locationError, getLocation } = useGeolocation();
   const [destination, setDestination] = useState<Ilocation>();
   const [openSpot, setOpenSpot] = useState<ISpot>();
@@ -34,14 +37,21 @@ const MapView: FC<Props> = ({ filteredData }) => {
     iconUrl: Pin,
     iconSize: [32, 38],
     iconAnchor: [32, 38],
-    popupAnchor: [-100, -100]
+    popupAnchor: [-100, -100],
   });
 
   const youIcon = new Icon({
     iconUrl: YouPin,
     iconSize: [37, 43],
     iconAnchor: [37, 43],
-    popupAnchor: [-3, -76]
+    popupAnchor: [-3, -76],
+  });
+
+  const othersIcon = new Icon({
+    iconUrl: OthersPin,
+    iconSize: [37, 43],
+    iconAnchor: [37, 43],
+    popupAnchor: [-3, -76],
   });
 
   useEffect(() => {
@@ -62,7 +72,8 @@ const MapView: FC<Props> = ({ filteredData }) => {
         zoom={zoom}
         center={{ lat: location.latitude, lng: location.longitude }}
         scrollWheelZoom={true}
-        style={{ blockSize: '80vh' }}>
+        style={{ blockSize: '80vh' }}
+      >
         <SetView
           location={{ lat: location.latitude, lng: location.longitude }}
         />
@@ -71,7 +82,7 @@ const MapView: FC<Props> = ({ filteredData }) => {
             source={{ lat: location.latitude, lng: location.longitude }}
             destination={{
               lat: destination.latitude,
-              lng: destination.longitude
+              lng: destination.longitude,
             }}
           />
         )}
@@ -83,20 +94,22 @@ const MapView: FC<Props> = ({ filteredData }) => {
           icon={youIcon}
           position={{
             lat: location.latitude,
-            lng: location.longitude
-          }}></Marker>
+            lng: location.longitude,
+          }}
+        ></Marker>
         {filteredData.map((spot: ISpot, index: number) => {
           return (
             <Marker
               eventHandlers={{
-                click: () => setOpenSpot(spot)
+                click: () => setOpenSpot(spot),
               }}
               key={`${spot.name}${index}`}
-              icon={spotIcon}
+              icon={dataType === DataType.Global ? othersIcon : spotIcon}
               position={{
                 lat: spot.location.latitude,
-                lng: spot.location.longitude
-              }}></Marker>
+                lng: spot.location.longitude,
+              }}
+            ></Marker>
           );
         })}
       </MapContainer>
