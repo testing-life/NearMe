@@ -1,3 +1,15 @@
 .spots-list__item {
   margin-block-end: 16px;
 }
+
+.delete__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.delete__controls {
+  display: flex;
+  gap: 16px;
+}
