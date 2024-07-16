@@ -9,6 +9,8 @@ import { ReactComponent as Bin } from '../../Assets/Icons/trash.svg';
 import { ReactComponent as Pencil } from '../../Assets/Icons/pen.svg';
 import Dialog from '../Dialog/Dialog';
 import Button from '../Button/Button';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../Firebase/Firebase';
 
 interface Props {
   deleteHandler: (ref: DocumentReference, imageUrl?: string) => void;
@@ -18,6 +20,7 @@ interface Props {
 const ListView: FC<Props> = ({ filteredData, deleteHandler }) => {
   const [trulyDelete, setTrulyDelete] = useState(false);
   const [spotToDelete, setSpotToDelete] = useState<ISpot>();
+  const [user] = useAuthState(auth);
 
   const onDeletePrompt = (spot: ISpot) => {
     setSpotToDelete(spot);
@@ -40,10 +43,11 @@ const ListView: FC<Props> = ({ filteredData, deleteHandler }) => {
   return (
     <>
       <ul className='spots-list'>
-        {filteredData.map((spot: ISpot, index: number) => (
+        {filteredData.map((spot: ISpot) => (
           <li className='spots-list__item' key={spot.id}>
+            <>{console.log('first', spot.userId, user?.uid)}</>
             <Spot spot={spot}>
-              {spot?.id && (
+              {spot?.id && spot.userId === user?.uid && (
                 <Link
                   className='spot__edit'
                   title='edit post'
@@ -54,13 +58,15 @@ const ListView: FC<Props> = ({ filteredData, deleteHandler }) => {
                   <span className='invisible'> Edit post</span>
                 </Link>
               )}
-              <button
-                className='spot__delete'
-                onClick={() => onDeletePrompt(spot)}
-              >
-                <Bin />
-                <span className='invisible'>Tap twice to delete post</span>
-              </button>
+              {spot.userId === user?.uid && (
+                <button
+                  className='spot__delete'
+                  onClick={() => onDeletePrompt(spot)}
+                >
+                  <Bin />
+                  <span className='invisible'>Tap twice to delete post</span>
+                </button>
+              )}
             </Spot>
           </li>
         ))}

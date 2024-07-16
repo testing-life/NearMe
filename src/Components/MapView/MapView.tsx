@@ -10,6 +10,8 @@ import { Icon } from 'leaflet';
 import './MapView.css';
 import MapSpot from '../MapSpot/MapSpot';
 import { DataType } from '../../Pages/HomePage';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../Firebase/Firebase';
 
 interface Props {
   filteredData: ISpot[];
@@ -32,6 +34,7 @@ const MapView: FC<Props> = ({ filteredData, dataType }) => {
   const { location, locationError, getLocation } = useGeolocation();
   const [destination, setDestination] = useState<Ilocation>();
   const [openSpot, setOpenSpot] = useState<ISpot>();
+  const [user] = useAuthState(auth);
 
   const spotIcon = new Icon({
     iconUrl: Pin,
@@ -104,7 +107,7 @@ const MapView: FC<Props> = ({ filteredData, dataType }) => {
                 click: () => setOpenSpot(spot),
               }}
               key={`${spot.name}${index}`}
-              icon={dataType === DataType.Global ? othersIcon : spotIcon}
+              icon={spot.userId === user?.uid ? spotIcon : othersIcon}
               position={{
                 lat: spot.location.latitude,
                 lng: spot.location.longitude,
