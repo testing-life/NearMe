@@ -51,3 +51,28 @@
     margin: 0 auto;
   }
 }
+
+.-is-danger {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--invalid),
+    var(--invalid) 10px,
+    var(--light-invalid) 10px,
+    var(--light-invalid) 20px
+  );
+}
+
+.-is-danger:hover,
+.-is-danger:focus {
+  background-size: 55px 100%;
+  animation: move-diagonal-lines 2s linear infinite;
+}
+
+@keyframes move-diagonal-lines {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 55px 0;
+  }
+}

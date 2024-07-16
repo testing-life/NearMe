@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { EDIT } from '../../Consts/Routes';
 import { ISpot } from '../../Models/spot';
@@ -7,6 +7,7 @@ import { DocumentReference } from 'firebase/firestore';
 import './ListView.css';
 import { ReactComponent as Bin } from '../../Assets/Icons/trash.svg';
 import { ReactComponent as Pencil } from '../../Assets/Icons/pen.svg';
+import Dialog from '../Dialog/Dialog';
 
 interface Props {
   deleteHandler: (ref: DocumentReference, imageUrl?: string) => void;
@@ -14,31 +15,50 @@ interface Props {
 }
 
 const ListView: FC<Props> = ({ filteredData, deleteHandler }) => {
+  const [trulyDelete, setTrulyDelete] = useState(false);
+
+  const onDelete = (spot: ISpot) => {
+    if (!trulyDelete) {
+      setTrulyDelete(true);
+    } else {
+      // deleteHandler(spot.ref, spot?.poster.url);
+      console.log('isDeleted');
+    }
+  };
+
+  const dialogCloseHandler = () => {
+    setTrulyDelete(false);
+  };
+
   return (
-    <ul className='spots-list'>
-      {filteredData.map((spot: ISpot) => (
-        <li className='spots-list__item' key={spot.id}>
-          <Spot spot={spot}>
-            {spot?.id && (
-              <Link
-                className='spot__edit'
-                title='edit post'
-                state={{ id: spot.id }}
-                to={EDIT}>
-                <Pencil />
-                <span className='invisible'> Edit post</span>
-              </Link>
-            )}
-            <button
-              className='spot__delete'
-              onClick={() => deleteHandler(spot.ref, spot?.poster.url)}>
-              <Bin />
-              <span className='invisible'>Delete post</span>
-            </button>
-          </Spot>
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className='spots-list'>
+        {filteredData.map((spot: ISpot, index: number) => (
+          <li className='spots-list__item' key={spot.id}>
+            <Spot spot={spot}>
+              {spot?.id && (
+                <Link
+                  className='spot__edit'
+                  title='edit post'
+                  state={{ id: spot.id }}
+                  to={EDIT}
+                >
+                  <Pencil />
+                  <span className='invisible'> Edit post</span>
+                </Link>
+              )}
+              <button className='spot__delete' onClick={() => onDelete(spot)}>
+                <Bin />
+                <span className='invisible'>Tap twice to delete post</span>
+              </button>
+            </Spot>
+          </li>
+        ))}
+      </ul>
+      <Dialog onClose={dialogCloseHandler} isOpen={trulyDelete}>
+        for sure
+      </Dialog>
+    </>
   );
 };
 
