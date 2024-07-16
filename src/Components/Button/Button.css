@@ -1,4 +1,4 @@
-.btn {
+:where(.btn) {
   border-radius: 12px;
   background: linear-gradient(
     91deg,
@@ -12,8 +12,8 @@
   color: var(--text-colour-inverted);
 }
 
-.btn:hover,
-.btn:focus {
+:where(.btn:hover),
+:where(.btn:focus) {
   cursor: pointer;
   background: linear-gradient(
     272deg,

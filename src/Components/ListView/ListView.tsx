@@ -8,6 +8,7 @@ import './ListView.css';
 import { ReactComponent as Bin } from '../../Assets/Icons/trash.svg';
 import { ReactComponent as Pencil } from '../../Assets/Icons/pen.svg';
 import Dialog from '../Dialog/Dialog';
+import Button from '../Button/Button';
 
 interface Props {
   deleteHandler: (ref: DocumentReference, imageUrl?: string) => void;
@@ -16,18 +17,24 @@ interface Props {
 
 const ListView: FC<Props> = ({ filteredData, deleteHandler }) => {
   const [trulyDelete, setTrulyDelete] = useState(false);
+  const [spotToDelete, setSpotToDelete] = useState<ISpot>();
 
-  const onDelete = (spot: ISpot) => {
-    if (!trulyDelete) {
-      setTrulyDelete(true);
-    } else {
-      // deleteHandler(spot.ref, spot?.poster.url);
-      console.log('isDeleted');
-    }
+  const onDeletePrompt = (spot: ISpot) => {
+    setSpotToDelete(spot);
+    setTrulyDelete(true);
   };
 
-  const dialogCloseHandler = () => {
+  const onDeleteCancel = () => {
+    setSpotToDelete(undefined);
     setTrulyDelete(false);
+  };
+
+  const onDeleteConfirm = () => {
+    if (trulyDelete && spotToDelete) {
+      deleteHandler(spotToDelete.ref, spotToDelete?.poster.url);
+      setSpotToDelete(undefined);
+      setTrulyDelete(false);
+    }
   };
 
   return (
@@ -47,7 +54,10 @@ const ListView: FC<Props> = ({ filteredData, deleteHandler }) => {
                   <span className='invisible'> Edit post</span>
                 </Link>
               )}
-              <button className='spot__delete' onClick={() => onDelete(spot)}>
+              <button
+                className='spot__delete'
+                onClick={() => onDeletePrompt(spot)}
+              >
                 <Bin />
                 <span className='invisible'>Tap twice to delete post</span>
               </button>
@@ -55,8 +65,16 @@ const ListView: FC<Props> = ({ filteredData, deleteHandler }) => {
           </li>
         ))}
       </ul>
-      <Dialog onClose={dialogCloseHandler} isOpen={trulyDelete}>
-        for sure
+      <Dialog isOpen={trulyDelete}>
+        <div className='delete__content column'>
+          <p className='-is-warning mb-32'>Are you sure?</p>
+          <div className='delete__controls'>
+            <Button clickHandler={onDeleteCancel}>Cancel</Button>
+            <Button classes='-is-danger' clickHandler={onDeleteConfirm}>
+              Delete
+            </Button>
+          </div>
+        </div>
       </Dialog>
     </>
   );
