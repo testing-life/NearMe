@@ -23,7 +23,7 @@ const useGeolocation = (): Ihook => {
     if (coords) {
       setLocation({
         latitude: coords.latitude,
-        longitude: coords.longitude
+        longitude: coords.longitude,
       });
     }
   };
@@ -32,7 +32,7 @@ const useGeolocation = (): Ihook => {
 
   const getLocation = () =>
     navigator.geolocation.getCurrentPosition(onChange, onError, {
-      enableHighAccuracy: true
+      enableHighAccuracy: true,
     });
 
   return { location, getLocation, locationError };

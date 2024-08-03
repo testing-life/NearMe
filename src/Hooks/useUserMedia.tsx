@@ -1,16 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 export const useUserMedia = (requestedMedia: object) => {
   const [mediaStream, setMediaStream] = useState<MediaStream>();
 
   const enableStream = async () => {
-    try {
-      const stream = await navigator.mediaDevices
-        .getUserMedia(requestedMedia)
-        .catch((e) => console.error("user media error", e));
+    const stream = await navigator.mediaDevices
+      .getUserMedia(requestedMedia)
+      .catch((e) => console.error('user media error', e));
+    if (stream) {
       setMediaStream(stream as MediaStream);
-    } catch (e) {
-      console.error("user media error", e);
     }
   };
 
