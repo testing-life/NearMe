@@ -12,10 +12,9 @@ export const useUserMedia = (requestedMedia: object) => {
     }
   };
 
-  const stopStream = async () => {
+  const stopStream = () => {
     if (mediaStream) {
-      const tracks = mediaStream.getTracks();
-      tracks.forEach((track) => track.stop());
+      mediaStream?.getTracks?.()?.forEach((track) => track.stop());
     }
   };
 
