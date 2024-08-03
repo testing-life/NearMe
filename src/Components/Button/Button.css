@@ -65,10 +65,6 @@
   );
 }
 
-.btn:has(a) {
-  padding: 0;
-}
-
-.btn > a {
+.btn:has(a):not([className*='fullWidth']) .btn > a {
   display: block;
 }

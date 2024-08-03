@@ -15,18 +15,17 @@ export interface ISpot {
   others?: boolean;
 }
 
-export class Spot {
-  id = '';
-  ref = {};
-  poster = { url: '' };
-  tags: string[] = [];
-  address: string = '';
-  notes: string = '';
-  name: string = '';
-  geohash: string = '';
-  userId: string = '';
-  location: Ilocation = new GeoPoint(0, 0);
-  static create(): Spot {
-    return new Spot();
-  }
-}
+const mockDocRef = {} as DocumentReference<DocumentData>;
+
+export const DefaultSpot: ISpot = {
+  id: '',
+  ref: mockDocRef,
+  poster: { url: '' },
+  tags: [],
+  address: '',
+  notes: '',
+  name: '',
+  geohash: '',
+  userId: '',
+  location: new GeoPoint(0, 0),
+};

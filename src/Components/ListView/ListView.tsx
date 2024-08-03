@@ -33,7 +33,7 @@ const ListView: FC<Props> = ({ filteredData, deleteHandler }) => {
   };
 
   const onDeleteConfirm = () => {
-    if (trulyDelete && spotToDelete) {
+    if (trulyDelete && spotToDelete?.ref) {
       deleteHandler(spotToDelete.ref, spotToDelete?.poster.url);
       setSpotToDelete(undefined);
       setTrulyDelete(false);
@@ -45,7 +45,6 @@ const ListView: FC<Props> = ({ filteredData, deleteHandler }) => {
       <ul className='spots-list'>
         {filteredData.map((spot: ISpot) => (
           <li className='spots-list__item' key={spot.id}>
-            <>{console.log('first', spot.userId, user?.uid)}</>
             <Spot spot={spot}>
               {spot?.id && spot.userId === user?.uid && (
                 <Link
