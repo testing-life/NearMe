@@ -7,7 +7,6 @@ import { LOG_IN, LANDING } from '../Consts/Routes';
 import { auth, db } from '../Firebase/Firebase';
 import { UserCredential } from 'firebase/auth';
 import Spinner from '../Components/Spinner/Spinner';
-import { DefaultSpot } from '../Models/spot';
 
 const SignupPage = () => {
   const [createUserWithEmailAndPassword, user, loading, createUserError] =
