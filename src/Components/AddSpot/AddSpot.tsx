@@ -1,7 +1,7 @@
 import React, { FC, FormEvent, useEffect, useState } from 'react';
 import useGeolocation from '../../Hooks/useGeolocation';
 import useReverseGeocode from '../../Hooks/useReverseGeocode';
-import { Spot } from '../../Models/spot';
+import { DefaultSpot, ISpot } from '../../Models/spot';
 import { Firestore, GeoPoint } from 'firebase/firestore';
 import Input from '../Input/Input';
 import { auth, storage } from '../../Firebase/Firebase';
@@ -22,13 +22,13 @@ import CustomTag from '../CustomTag/CustomTag';
 import Compressor from 'compressorjs';
 
 interface Props {
-  submitHandler: (spot: Spot) => void;
+  submitHandler: (spot: ISpot) => void;
   userId: string;
   db: Firestore;
 }
 
 const AddSpot: FC<Props> = ({ submitHandler, userId, db }) => {
-  const [spot, setSpot] = useState(Spot.create());
+  const [spot, setSpot] = useState(DefaultSpot);
   const [locationMissing, setLocationMissing] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const { location, locationError, getLocation } = useGeolocation();

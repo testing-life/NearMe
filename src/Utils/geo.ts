@@ -5,20 +5,21 @@ import {
   startAt,
   endAt,
   getDocs,
-  Firestore
+  Firestore,
 } from 'firebase/firestore';
 
 import { spotConverter } from '../Firebase/Firebase';
 import { spotsCollectionRef } from '../Consts/SpotsRef';
 import { User } from 'firebase/auth';
 import { Ilocation } from '../Hooks/useGeolocation';
+import { Requests } from '../Consts/Requests';
 
-export function distanceMetres(
+export const distanceMetres = (
   lat1: number,
   lon1: number,
   lat2: number,
   lon2: number
-) {
+): number => {
   const R = 6371; // Radius of the Earth in kilometers
   const dLat = deg2rad(lat2 - lat1); // deg2rad below
   const dLon = deg2rad(lon2 - lon1);
@@ -31,11 +32,11 @@ export function distanceMetres(
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const distance = R * c; // Distance in kilometers
   return distance * 1000;
-}
+};
 
-function deg2rad(deg: number) {
+const deg2rad = (deg: number): number => {
   return deg * (Math.PI / 180);
-}
+};
 
 export const spotsInRadius = async (
   centre: geofire.Geopoint,
@@ -89,5 +90,8 @@ export const spotsInRadius = async (
   return matchingDocs.length ? matchingDocs : [];
 };
 
-export const isDefaultLocation = (location: Ilocation) =>
+export const isDefaultLocation = (location: Ilocation): boolean =>
   location.latitude === 0 && location.longitude === 0;
+
+export const reverseGeocodeUrl = (location: Ilocation): string =>
+  `${Requests.ReverseGeocodeUrl}lat=${location.latitude}&lon=${location.longitude}&apiKey=${process.env.REACT_APP_REVERSE_GEOCODE_API}`;

@@ -6,7 +6,7 @@ import {
   QueryDocumentSnapshot,
   SnapshotOptions,
   WithFieldValue,
-  getFirestore
+  getFirestore,
 } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { ISpot } from '../Models/spot';
@@ -17,7 +17,7 @@ const firebaseConfig = {
   databaseURL: process.env.REACT_APP_DB_URL,
   projectId: process.env.REACT_APP_PROJECT_ID,
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGE_SENDER
+  messagingSenderId: process.env.REACT_APP_MESSAGE_SENDER,
 };
 
 const app = initializeApp(firebaseConfig);
@@ -36,7 +36,7 @@ export const spotConverter: FirestoreDataConverter<ISpot> = {
       name: spot.name,
       location: spot.location,
       geohash: spot.geohash,
-      userId: spot.userId
+      userId: spot.userId,
     };
   },
   fromFirestore(
@@ -54,7 +54,7 @@ export const spotConverter: FirestoreDataConverter<ISpot> = {
       location: data.location,
       id: snapshot.id,
       ref: snapshot.ref,
-      geohash: data.hash
+      geohash: data.hash,
     };
-  }
+  },
 };

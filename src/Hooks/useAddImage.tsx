@@ -3,7 +3,14 @@ import { FirebaseStorage } from 'firebase/storage';
 import { useState } from 'react';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
-export const useAddImage = () => {
+interface Ihook {
+  uploadProgress: number;
+  downloadUrl: string;
+  storageUploadHook: (user: User, storage: FirebaseStorage, data: File) => void;
+  uploadError: string;
+}
+
+export const useAddImage = (): Ihook => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [downloadUrl, setDownloadUrl] = useState('');
   const [uploadError, setUploadError] = useState('');

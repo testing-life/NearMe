@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Requests } from '../Consts/Requests';
 import { Ilocation } from './useGeolocation';
+import { reverseGeocodeUrl } from '../Utils/geo';
 
 interface Ihook {
   addressError: Error | undefined;
@@ -13,12 +13,12 @@ const useReverseGeocode = (): Ihook => {
   const [addressError, setAddressError] = useState<Error>();
 
   const getAddress = async (location: Ilocation): Promise<void> => {
-    const requestUrl = `${Requests.ReverseGeocodeUrl}lat=${location.latitude}&lon=${location.longitude}&apiKey=${process.env.REACT_APP_REVERSE_GEOCODE_API}`;
+    const requestUrl = reverseGeocodeUrl(location);
     const res = await fetch(requestUrl, { method: 'GET' }).catch(
       (error: Error) => setAddressError(error)
     );
 
-    if (res && res.ok) {
+    if (res?.ok) {
       const data = await res.json();
       setAddress(data.features[0].properties);
     }

@@ -15,7 +15,7 @@ const EditSpotPage = () => {
   const [updateError, setUpdateError] = useState('');
   const navigate = useNavigate();
   let {
-    state: { id }
+    state: { id },
   } = useLocation();
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const EditSpotPage = () => {
       <div className='mb-12'>
         <Header auth={auth} />
       </div>
-      <div className='desktop-width-limit'>
+      <div className='-desktop-width-limit'>
         {user && data?.data() ? (
           <EditSpot
             editHandler={editHandler}

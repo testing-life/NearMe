@@ -46,7 +46,7 @@
 }
 
 @media (width > 547px) {
-  .desktop-width-limit {
+  .-desktop-width-limit {
     max-width: 600px;
     margin: 0 auto;
   }

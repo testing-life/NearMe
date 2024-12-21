@@ -24,7 +24,7 @@ const ResetPasswordPage = () => {
   };
 
   return (
-    <div className='desktop-width-limit'>
+    <div className='-desktop-width-limit'>
       <div className='mb-32'>
         <div className='mb-12'>
           <ResetPassword submitHandler={onSubmitPasswordReset} />

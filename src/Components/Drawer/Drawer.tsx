@@ -14,7 +14,7 @@ interface Props {
 
 const Drawer: FC<Props> = ({ isOpen, user }) => {
   const toggleDrawer = useDrawerStore((state) => state.toggleDrawer);
-  const [signOut, loading, error] = useSignOut(user);
+  const [signOut] = useSignOut(user);
   return (
     <div className={`drawer__wrapper ${isOpen ? '-is-open' : ''}`}>
       <div className='drawer '>
@@ -27,7 +27,8 @@ const Drawer: FC<Props> = ({ isOpen, user }) => {
                 onClick={async () => {
                   toggleDrawer(false);
                   await signOut();
-                }}>
+                }}
+              >
                 Log out
               </button>
             </li>
