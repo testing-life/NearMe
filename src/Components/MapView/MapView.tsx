@@ -18,19 +18,30 @@ interface Props {
   dataType?: DataType;
 }
 
-const SetView = ({
-  location: { lat, lng },
-}: {
-  location: { lat: number; lng: number };
-}) => {
-  const map = useMap();
-  if (lat && lng) {
-    map.setView({ lat, lng }, map.getZoom());
-  }
-  return null;
+const locationPropsAreEqual = (
+  prevLoc: { location: { lat: number; lng: number } },
+  nextLoc: { location: { lat: number; lng: number } }
+) => {
+  return (
+    prevLoc.location.lat !== 0 &&
+    nextLoc.location.lat !== 0 &&
+    prevLoc.location.lat === prevLoc.location.lat &&
+    nextLoc.location.lng === nextLoc.location.lng
+  );
 };
 
-const MapView: FC<Props> = ({ filteredData, dataType }) => {
+const SetView = React.memo(
+  ({ location: { lat, lng } }: { location: { lat: number; lng: number } }) => {
+    const map = useMap();
+
+    map.setView({ lat, lng }, map.getZoom());
+
+    return null;
+  },
+  locationPropsAreEqual
+);
+
+const MapView: FC<Props> = ({ filteredData }) => {
   const { location, locationError, getLocation } = useGeolocation();
   const [destination, setDestination] = useState<Ilocation>();
   const [openSpot, setOpenSpot] = useState<ISpot>();
