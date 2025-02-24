@@ -40,13 +40,16 @@ const TagFilter: FC<Props> = ({ clickHandler }) => {
   return (
     <div
       className='tag-filter'
-      style={{ '--n': customTags?.data()?.tags.length } as React.CSSProperties}>
+      style={
+        { '--n': customTags?.data()?.tags?.length ?? 0 } as React.CSSProperties
+      }
+    >
       {loading && <p>Loading tags...</p>}
       {error && (
         <p className='-is-error'>Couldn't load tags. {error.message}</p>
       )}
       <ul className='tag-filter__tags'>
-        {customTags?.data()?.tags.map((tag: string, index: number) => {
+        {customTags?.data()?.tags?.map((tag: string, index: number) => {
           return (
             <li key={`${tag}${index}`}>
               <TagButton
